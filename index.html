@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welcome</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+    :root {
+      --bg-color: #111;
+      --text-color: #eee;
+      --accent-color: #00d4ff;
+      --section-heading: #ffe066;
+      --link-color: #80ffdb;
+    }
+
+    body.light {
+      --bg-color: #f5f5f5;
+      --text-color: #222;
+      --accent-color: #0077cc;
+      --section-heading: #444;
+      --link-color: #0077cc;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding: 40px;
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 2.8em;
+      margin-bottom: 10px;
+      color: var(--accent-color);
+    }
+
+    p.tagline {
+      color: #aaa;
+      font-size: 1.2em;
+    }
+
+    .toggle-mode {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 0.9em;
+      background: none;
+      border: 1px solid var(--text-color);
+      color: var(--text-color);
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .section {
+      max-width: 800px;
+      margin: 40px auto;
+    }
+
+    .section h2 {
+      color: var(--section-heading);
+      font-size: 1.5em;
+      margin-bottom: 10px;
+    }
+
+    .section p, .section li {
+      color: var(--text-color);
+    }
+
+    .projects-list a {
+      display: block;
+      margin: 8px 0;
+      color: var(--link-color);
+      text-decoration: none;
+    }
+
+    .projects-list a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      font-size: 0.9em;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Welcome to My Universe</h1>
+    <p class="tagline">Exploring science, code, stars, and stories.</p>
+    <button class="toggle-mode" onclick="toggleMode()">Toggle Mode</button>
+  </header>
+
+  <div class="section">
+    <h2>Reading</h2>
+    <p>I read a lot — mostly fiction and some sci-fi. I’m into books that explain how things work, especially in science, history, or tech. Sometimes I’ll reread a passage just because it explained something in a really clean way.</p>
+  </div>
+
+  <div class="section">
+    <h2>Science & Space</h2>
+    <p>I’m fascinated by how the universe works. Physics, astronomy, biology — it’s all connected. I don’t claim to know it all, but I like learning how things came to be, especially when it involves planets, stars, or life itself.</p>
+  </div>
+
+  <div class="section">
+    <h2>Programming</h2>
+    <p>I spend time coding — mostly web stuff right now. I like figuring out how to build things from scratch or automate stuff just to see if I can. It's fun when something finally works after you debug it for an hour.</p>
+  </div>
+
+  <div class="section">
+    <h2>History</h2>
+    <p>I'm not a historian, but I like understanding how people used to live and how events shaped the world. Sometimes I’ll fall into a rabbit hole reading about ancient civilizations or tech from 50 years ago that still matters today.</p>
+  </div>
+
+  <div class="section">
+    <h2>Random Facts I Think Are Cool</h2>
+    <ul>
+      <li>Octopuses have three hearts and blue blood.</li>
+      <li>The Voyager 1 spacecraft is over 15 billion miles from Earth and still sending signals.</li>
+      <li>Ancient Roman concrete gets stronger over time and can harden underwater.</li>
+      <li>Binary code (just 0s and 1s) powers almost everything in modern computing.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Projects</h2>
+    <p>Below are a few projects I feel comfortable sharing with others. I'll add more as I go.</p>
+    <div class="projects-list">
+      <a href="https://github.com/Blue-Ursa/Water-wave" target="_blank">Water-wave</a>
+      <a href="#" target="_blank">[Another Project Link Here]</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>This site is a little side project. Just exploring stuff I enjoy.</p>
+    <p style="margin-top: 10px; font-size: 0.8em;">Last updated: July 9, 2025</p>
+  </footer>
+
+  <script>
+    function toggleMode() {
+      document.body.classList.toggle("light");
+    }
+  </script>
+</body>
+</html>
