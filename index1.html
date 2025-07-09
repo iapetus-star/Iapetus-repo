@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Water Clicker</title>
+  <style>
+    body {
+      font-family: monospace;
+      background: #0d0d0d;
+      color: #00ffff;
+      text-align: center;
+      padding: 30px;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      background-color: #111;
+      color: #0ff;
+      border: 1px solid #0ff;
+      cursor: pointer;
+    }
+    .resource {
+      font-size: 24px;
+      margin: 10px;
+    }
+    .upgrade-section {
+      margin-top: 20px;
+    }
+    .help-section {
+      margin-top: 40px;
+      border-top: 1px solid #0ff;
+      padding-top: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 16px;
+      color: #ff8080;
+    }
+    footer {
+      margin-top: 40px;
+      color: #888;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <h1>💧 Infinite Water Clicker 💧</h1>
+
+  <div class="resource">Oxygen: <span id="oxygen">0</span></div>
+  <div class="resource">Hydrogen: <span id="hydrogen">0</span></div>
+  <div class="resource">Water: <span id="water">0</span></div>
+
+  <button onclick="getOxygen()">Inhale Atmosphere</button>
+  <button onclick="getHydrogen()">Crack Open Atoms</button>
+  <button onclick="combineWater()">Conjure Some H₂O</button>
+  <button onclick="saveGame()">Save Game</button>
+  <button onclick="loadGame()">Load Game</button>
+  <button onclick="toggleHelp()">Help</button>
+
+  <div id="message"></div>
+
+  <div class="upgrade-section">
+    <h2>Upgrades</h2>
+    <h3>Oxygen Upgrades</h3>
+    <div id="oxygen-upgrades"></div>
+
+    <h3>Hydrogen Upgrades</h3>
+    <div id="hydrogen-upgrades"></div>
+
+    <h3>Water Upgrades</h3>
+    <div id="water-upgrades"></div>
+  </div>
+
+  <div class="help-section hidden" id="help-section">
+    <h2>How to Play</h2>
+    <p>🔘 Click "Inhale Atmosphere" to gather oxygen.</p>
+    <p>🔘 Click "Crack Open Atoms" to gather hydrogen.</p>
+    <p>🧪 Use the "Conjure Some H₂O" button to turn 1 Oxygen + 2 Hydrogen into Water.</p>
+    <p>📈 Use Water to buy upgrades that increase the amount you get per click <em>and</em> passively over time.</p>
+    <p>💾 Save and load your progress using the buttons above.</p>
+  </div>
+
+  <footer>
+    <p>© This game and all its pixels are owned by the creator. All rights reserved — forever, even after the heat death of the universe or if the internet is replaced by telepathic soup. 🧠💀📡</p>
+<p>This is a test and will be removed...</p>
+  </footer>
+
+  <script>
+    let oxygen = 0;
+    let hydrogen = 0;
+    let water = 0;
+
+    let oxygenRate = 1;
+    let hydrogenRate = 1;
+    let waterRate = 1;
+
+    let oxygenAuto = 0;
+    let hydrogenAuto = 0;
+    let waterAuto = 0;
+
+    const upgrades = {
+      oxygen: [
+        { name: "Lung Expansion", cost: 10, boost: 1 },
+        { name: "Deep Breaths", cost: 50, boost: 2 },
+        { name: "O₂ Synthesizer", cost: 200, boost: 5 },
+        { name: "Atmospheric Harvester", cost: 1000, boost: 10 },
+        { name: "Terraformer", cost: 5000, boost: 20 },
+        { name: "Sky Miner", cost: 15000, boost: 40 },
+        { name: "Cloud Cannibalizer", cost: 40000, boost: 100 }
+      ],
+      hydrogen: [
+        { name: "H-Tap", cost: 10, boost: 1 },
+        { name: "Fusion Flask", cost: 50, boost: 2 },
+        { name: "Hydro Splitter", cost: 200, boost: 5 },
+        { name: "Molecular Mine", cost: 1000, boost: 10 },
+        { name: "Stellar Reactor", cost: 5000, boost: 20 },
+        { name: "Quantum Bubble Maker", cost: 15000, boost: 40 },
+        { name: "Big Bang Juice Box", cost: 40000, boost: 100 }
+      ],
+      water: [
+        { name: "Condensation Chamber", cost: 10, boost: 1 },
+        { name: "Liquid Synthesizer", cost: 50, boost: 2 },
+        { name: "H₂O Plant", cost: 200, boost: 5 },
+        { name: "Ocean Generator", cost: 1000, boost: 10 },
+        { name: "Hydrological Godcore", cost: 5000, boost: 20 },
+        { name: "Rainmaker 3000", cost: 15000, boost: 40 },
+        { name: "Tidal Engine", cost: 40000, boost: 100 }
+      ]
+    };
+
+    const owned = { oxygen: [], hydrogen: [], water: [] };
+
+    function showMessage(text) {
+      const msg = document.getElementById("message");
+      msg.textContent = text;
+      setTimeout(() => { msg.textContent = ""; }, 15000);
+    }
+
+    function getOxygen() {
+      oxygen += oxygenRate;
+      updateDisplay();
+    }
+
+    function getHydrogen() {
+      hydrogen += hydrogenRate;
+      updateDisplay();
+    }
+
+    function combineWater() {
+      const maxCombinations = Math.min(
+        Math.floor(oxygen / 1),
+        Math.floor(hydrogen / 2)
+      );
+      if (maxCombinations >= 1) {
+        oxygen -= maxCombinations * 1;
+        hydrogen -= maxCombinations * 2;
+        water += maxCombinations * waterRate;
+        updateDisplay();
+      } else {
+        showMessage("Nice try, but you can’t just wish water into existence. You need actual atoms.");
+      }
+    }
+
+    function buyUpgrade(type, index) {
+      const upgrade = upgrades[type][index];
+      if (water >= upgrade.cost && !owned[type].includes(index)) {
+        water -= upgrade.cost;
+        owned[type].push(index);
+        if (type === "oxygen") {
+          oxygenRate += upgrade.boost;
+          oxygenAuto += upgrade.boost / 2;
+        }
+        if (type === "hydrogen") {
+          hydrogenRate += upgrade.boost;
+          hydrogenAuto += upgrade.boost / 2;
+        }
+        if (type === "water") {
+          waterRate += upgrade.boost;
+          waterAuto += upgrade.boost / 4;
+        }
+        updateUpgrades();
+        updateDisplay();
+      }
+    }
+
+    function updateDisplay() {
+      document.getElementById("oxygen").textContent = Math.floor(oxygen);
+      document.getElementById("hydrogen").textContent = Math.floor(hydrogen);
+      document.getElementById("water").textContent = Math.floor(water);
+    }
+
+    function updateUpgrades() {
+      ["oxygen", "hydrogen", "water"].forEach((type) => {
+        const container = document.getElementById(`${type}-upgrades`);
+        container.innerHTML = "";
+        upgrades[type].forEach((upgrade, index) => {
+          if (!owned[type].includes(index)) {
+            const btn = document.createElement("button");
+            btn.textContent = `${upgrade.name} (${upgrade.cost}💧)`;
+            btn.onclick = () => buyUpgrade(type, index);
+            container.appendChild(btn);
+          }
+        });
+      });
+    }
+
+    function autoGenerate() {
+      const maxAutoCombinations = Math.min(
+        Math.floor(oxygen / 1),
+        Math.floor(hydrogen / 2)
+      );
+      const waterMade = Math.min(maxAutoCombinations, waterAuto);
+      if (waterMade > 0) {
+        oxygen -= waterMade * 1;
+        hydrogen -= waterMade * 2;
+        water += waterMade;
+      }
+      oxygen += oxygenAuto;
+      hydrogen += hydrogenAuto;
+      updateDisplay();
+    }
+
+    function saveGame() {
+      const gameState = {
+        oxygen,
+        hydrogen,
+        water,
+        oxygenRate,
+        hydrogenRate,
+        waterRate,
+        oxygenAuto,
+        hydrogenAuto,
+        waterAuto,
+        owned
+      };
+      localStorage.setItem("clickerSave", JSON.stringify(gameState));
+    }
+
+    function loadGame() {
+      const saved = JSON.parse(localStorage.getItem("clickerSave"));
+      if (saved) {
+        ({
+          oxygen,
+          hydrogen,
+          water,
+          oxygenRate,
+          hydrogenRate,
+          waterRate,
+          oxygenAuto,
+          hydrogenAuto,
+          waterAuto,
+          owned
+        } = saved);
+        updateUpgrades();
+        updateDisplay();
+      }
+    }
+
+    function toggleHelp() {
+      const help = document.getElementById("help-section");
+      help.classList.toggle("hidden");
+    }
+
+    updateDisplay();
+    updateUpgrades();
+    setInterval(autoGenerate, 1000);
+  </script>
+</body>
+</html>
