@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Would You Rather</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #ff7e5f, #feb47b);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 2rem;
+      border-radius: 1rem;
+      text-align: center;
+      max-width: 500px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .question-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .option-btn {
+      flex: 1;
+      padding: 1rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      background: #fff;
+      color: #333;
+      transition: 0.2s ease;
+    }
+
+    .option-btn:hover {
+      background: #e0e0e0;
+    }
+
+    .option-btn.selected {
+      background: #4caf50;
+      color: white;
+      font-weight: bold;
+    }
+
+    .result {
+      margin-top: 1rem;
+      font-size: 1rem;
+    }
+
+    .next-btn {
+      margin-top: 1.5rem;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      background: #333;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+
+    .next-btn:hover {
+      background: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Would You Rather...</h1>
+    <div class="question-box">
+      <button id="optionA" class="option-btn">Option A</button>
+      <span>or</span>
+      <button id="optionB" class="option-btn">Option B</button>
+    </div>
+    <div id="result" class="result"></div>
+    <button id="nextBtn" class="next-btn">Next Question</button>
+  </div>
+
+  <script>
+    const questions = [
+      { a: "Live without music", b: "Live without movies" },
+      { a: "Have a rewind button on life", b: "Have a pause button" },
+      { a: "Be able to fly", b: "Be invisible" },
+      { a: "Only eat sweet food", b: "Only eat salty food" },
+      { a: "Time travel to the past", b: "Time travel to the future" },
+      { a: "Never use the internet again", b: "Never watch TV again" },
+      { a: "Fight 100 duck-sized horses", b: "Fight 1 horse-sized duck" },
+      { a: "Be able to speak all languages", b: "Be able to talk to animals" },
+      { a: "Win $1 million", b: "Find true love" },
+      { a: "Be famous but poor", b: "Rich but unknown" },
+  { a: "Be able to teleport", b: "Be able to time travel" },
+  { a: "Live in space", b: "Live under the sea" },
+  { a: "Never have to sleep", b: "Never have to eat" },
+  { a: "Be a superhero", b: "Be a supervillain" },
+  { a: "Only whisper", b: "Only shout" },
+  { a: "Always be cold", b: "Always be hot" },
+  { a: "Have a pet dinosaur", b: "Have a pet dragon" },
+  { a: "Be 10 minutes late", b: "Be 20 minutes early" },
+  { a: "Only be able to walk on all fours", b: "Only be able to crawl everywhere" },
+  { a: "Have unlimited tacos", b: "Have unlimited burgers" },
+  { a: "Be able to breathe fire", b: "Be able to shoot ice" },
+  { a: "Only be able to use a flip phone", b: "Only be able to use dial-up internet" },
+  { a: "Eat pizza with chocolate topping", b: "Eat ice cream with ketchup" },
+  { a: "Be stuck in a rom-com", b: "Be stuck in a horror movie" },
+  { a: "Only be able to sing instead of talk", b: "Only be able to dance instead of walk" },
+  { a: "Live without your phone", b: "Live without friends" },
+  { a: "Have a rewind button for your life", b: "Have a fast-forward button" },
+  { a: "Only wear clown clothes", b: "Only speak in rhymes" },
+  { a: "Be covered in fur", b: "Be covered in scales" },
+  { a: "Have fingers as long as your legs", b: "Have legs as short as your fingers" },
+  { a: "Be able to talk to plants", b: "Be able to control the weather" },
+  { a: "Sleep 20 hours a day", b: "Never sleep at all" },
+  { a: "Live forever", b: "Have unlimited money for 50 years" },
+  { a: "Only eat spicy food", b: "Only eat bland food" },
+  { a: "Fight a zombie", b: "Fight a vampire" },
+  { a: "Have a third eye", b: "Have a third arm" },
+  { a: "Wake up in the middle of a desert", b: "Wake up in the middle of the ocean" },
+  { a: "Be in a video game", b: "Be in a movie" },
+  { a: "Have to sing everything", b: "Have to dance everywhere" },
+  { a: "Live with no electricity", b: "Live with no running water" },
+  { a: "Be allergic to sunlight", b: "Be allergic to your favorite food" },
+  { a: "Always have an itch you can't scratch", b: "Always feel like you have to sneeze" },
+  { a: "Have invisibility for one hour per day", b: "Be able to fly for 10 minutes a day" },
+  { a: "Only be able to watch one movie forever", b: "Only be able to listen to one song forever" },
+  { a: "Be super strong", b: "Be super fast" },
+  { a: "Be a genius nobody listens to", b: "Be a fool everyone listens to" },
+  { a: "Have a permanent clown nose", b: "Have permanent elf ears" },
+  { a: "Always have wet socks", b: "Always have a pebble in your shoe" },
+  { a: "Only drink soda", b: "Only drink water" },
+  { a: "Be friends with Batman", b: "Be friends with Iron Man" },
+  { a: "Live in a world without music", b: "Live in a world without color" },
+  { a: "Have your dream job but be poor", b: "Have a boring job but be rich" },
+  { a: "Be stuck in a room with no windows", b: "Be stuck outside in a thunderstorm" },
+  { a: "Be able to grow 10 feet tall at will", b: "Shrink to 6 inches at will" },
+  { a: "Be haunted by ghosts", b: "Be abducted by aliens" },
+  { a: "Have to wear winter clothes in summer", b: "Wear summer clothes in winter" },
+  { a: "Get a paper cut every day", b: "Bite your tongue every meal" },
+  { a: "Only speak in riddles", b: "Only speak in questions" },
+  { a: "Live in a world made of candy", b: "Live in a world made of LEGO" },
+  { a: "Have a jetpack", b: "Have a robot assistant" },
+  { a: "Be trapped in a musical", b: "Be trapped in a silent film" },
+  { a: "Always have to skip everywhere", b: "Always have to hop" },
+  { a: "Only be able to eat through a straw", b: "Only be able to eat with chopsticks forever" },
+  { a: "Have rainbow-colored hair", b: "Glow in the dark skin" },
+  { a: "Be stuck in a time loop for one year", b: "Skip one random year of your life" },
+  { a: "Live in a giant shoe", b: "Live in a mushroom house" },
+  { a: "Have spaghetti for hair", b: "Sweat maple syrup" },
+  { a: "Sleep in a haunted house", b: "Work at a graveyard overnight" },
+  { a: "Have a rewind button for dreams", b: "Record your dreams to watch later" },
+  { a: "Be able to stop time for everyone else", b: "Skip forward one minute every time you're bored" },
+  { a: "Only be able to eat food that's blue", b: "Only be able to drink liquids that are green" },
+  { a: "Only be able to text using emojis", b: "Only be able to call people using Morse code" },
+  { a: "Have your laugh sound like a foghorn", b: "Have your sneeze sound like a trumpet" },
+  { a: "Have no eyebrows", b: "Have a unibrow you can’t remove" },
+  { a: "Be followed by ducks wherever you go", b: "Randomly shout 'surprise!' every hour" },
+  { a: "Have feet for hands", b: "Have hands for feet" },
+  { a: "Speak only in movie quotes", b: "Sing everything you want to say" },
+  { a: "Drink pickle juice every morning", b: "Eat a raw onion every night" },
+  { a: "Live in Minecraft", b: "Live in Mario’s Mushroom Kingdom" },
+  { a: "Be allergic to your favorite color", b: "Be allergic to your favorite food" },
+  { a: "Always feel slightly sticky", b: "Always feel slightly itchy" },
+  { a: "Have hiccups for a day once a week", b: "Always feel like you’re about to sneeze" },
+  { a: "Only be able to walk backward", b: "Only be able to talk backward" },
+  { a: "Have a rewind button but only 5 uses", b: "Have a pause button but only 3 uses" },
+  { a: "Only be able to wear one outfit forever", b: "Change outfits every 5 minutes" },
+  { a: "Live in a world with no caffeine", b: "Live in a world with no sugar" },
+  { a: "Have your thoughts broadcast out loud", b: "Have everything you do livestreamed" },
+  { a: "Own a pet that can talk", b: "Be able to understand all animals" },
+  { a: "Teleport anywhere but leave your clothes behind", b: "Fly but only 2 feet off the ground" },
+  { a: "Be stuck in traffic forever", b: "Always lose internet connection at 10 PM" },
+  { a: "Have a permanent cartoon voice", b: "Walk like a cartoon character forever" },
+  { a: "Forget how to read", b: "Forget how to write" },
+  { a: "Only watch cartoons forever", b: "Only listen to children's songs forever" },
+  { a: "Eat cake that tastes like broccoli", b: "Eat broccoli that tastes like cake" },
+  { a: "Have a nose that grows when you lie", b: "Have ears that wiggle when you're nervous" },
+  { a: "Be friends with Shrek", b: "Be roommates with SpongeBob" },
+  { a: "Live in a world where it's always night", b: "Live in a world where it’s always daytime" },
+  { a: "Never be able to use a door again", b: "Never be able to sit again" },
+  { a: "Only be able to laugh when you’re sad", b: "Only be able to cry when you’re happy" },
+  { a: "Lose all your teeth", b: "Lose all your hair" },
+  { a: "Have your phone auto-correct everything wrong", b: "Have your GPS always be 5 miles off" },
+  { a: "Have a tail you can't hide", b: "Have horns you can't explain" },
+  { a: "Live on a floating island", b: "Live underground in a cozy cave" },
+  { a: "Be chased by bees every time you yawn", b: "Be tickled by invisible hands every time you sneeze" },
+  { a: "Smell like garlic forever", b: "Sound like a kazoo when you talk" },
+  { a: "Have to wear flippers everywhere", b: "Have to wear a snorkeling mask forever" },
+  { a: "Sleep in a room filled with rubber ducks", b: "Work in an office filled with helium balloons" },
+  { a: "Have spaghetti arms", b: "Have pogo stick legs" },
+  { a: "Sweat glitter", b: "Cry sprinkles" },
+  { a: "Be a giant hamster", b: "Be a tiny giraffe" },
+  { a: "Only be able to talk in hashtags", b: "Only be able to talk in song lyrics" },
+  { a: "Be able to control lightning", b: "Be able to control water" },
+  { a: "Have unlimited batteries", b: "Have unlimited Wi-Fi" },
+  { a: "Only be able to eat food you hate", b: "Only be able to drink warm water" },
+  { a: "Live in a world without music", b: "Live in a world without books" },
+  { a: "Have reverse vision (everything backward)", b: "Have inverted hearing (left is right, right is left)" },
+  { a: "Own a jet but never fly it", b: "Own a boat but never sail it" },
+  { a: "Sleep on a bed of marshmallows", b: "Sleep on a bed of jelly" },
+  { a: "Speak only Pig Latin", b: "Speak only in robot voice" },
+  { a: "Be trapped inside your favorite game", b: "Be trapped inside your favorite TV show" },
+  { a: "Have square-shaped pupils", b: "Have triangle-shaped ears" },
+  { a: "Sweat slime", b: "Drool glitter" },
+  { a: "Have hair that changes color with your mood", b: "Have skin that lights up when you lie" },
+  { a: "Only be able to hop like a frog", b: "Only be able to slither like a snake" },
+  { a: "Drink a cup of ketchup", b: "Eat a raw potato with hot sauce" },
+  { a: "Be a background character in a movie", b: "Be the villain in a video game" },
+  { a: "Live in a treehouse forever", b: "Live in a tent on a beach forever" },
+  { a: "Have giant inflatable arms", b: "Have shoes that squeak loudly forever" },
+  { a: "Only be able to wear mismatched shoes", b: "Only be able to wear clothes two sizes too small" },
+  { a: "Have a beard made of bees", b: "Have eyebrows made of spaghetti" },
+  { a: "Turn into a goat for one hour each day", b: "Randomly make goat noises during conversation" },
+  { a: "Be a famous juggler", b: "Be a world-record hula hooper" },
+  { a: "Have to high-five everyone you see", b: "Have to wink at everyone you meet" },
+  { a: "Only be able to walk in zigzags", b: "Only be able to move by moonwalking" },
+  { a: "Live in a world where gravity randomly turns off", b: "Live in a world where time randomly slows down" },
+  { a: "Be trapped inside a vending machine", b: "Be stuck in a claw machine" },
+  { a: "Have a fridge that talks back", b: "Have a couch that moves on its own" },
+  { a: "Only speak backwards", b: "Only be able to understand whispers" },
+  { a: "Sleep upside-down like a bat", b: "Sleep in a pile of leaves like a squirrel" },
+  { a: "Wear clown shoes every day", b: "Wear a top hat that can’t be removed" },
+  { a: "Have a tail that wags when you're excited", b: "Have ears that flap when you're angry" },
+  { a: "Be able to smell lies", b: "Be able to taste emotions" },
+  { a: "Have an invisible pet", b: "Have an imaginary friend that follows you everywhere" },
+  { a: "Laugh every time someone cries", b: "Cry every time someone laughs" },
+  { a: "Have to carry a giant spoon everywhere", b: "Have to wear a cape at all times" },
+  { a: "Be allergic to air conditioning", b: "Be allergic to socks" },
+  { a: "Only be able to blink one eye", b: "Only be able to whistle when you breathe" },
+  { a: "Live in a silent disco", b: "Live in a karaoke bar" },
+  { a: "Have your life narrated in real-time", b: "Have background music play everywhere you go" },
+  { a: "Be able to jump like a kangaroo", b: "Be able to climb like a monkey" },
+  { a: "Have your shadow talk", b: "Have your reflection ignore you" },
+  { a: "Have to do the chicken dance every hour", b: "Speak in pirate slang forever" },
+  { a: "Only be able to eat things you grow yourself", b: "Only be able to wear clothes you sew yourself" },
+  { a: "Get stuck in a revolving door", b: "Get stuck in a hammock forever" },
+  { a: "Have a magical talking sock", b: "Have sunglasses that see into the future" },
+  { a: "Only be able to take baths in jello", b: "Only be able to brush your teeth with honey" },
+  { a: "Be a foghorn every morning", b: "Be a disco ball every night" },
+  { a: "Be able to shoot spaghetti from your fingers", b: "Sweat marinara sauce" },
+  { a: "Be chased by one angry duck forever", b: "Be watched by 100 silent cats forever" }
+
+    ];
+
+    const optionA = document.getElementById("optionA");
+    const optionB = document.getElementById("optionB");
+    const result = document.getElementById("result");
+    const nextBtn = document.getElementById("nextBtn");
+
+    let currentQuestion = {};
+
+    function loadQuestion() {
+      // Reset
+      result.textContent = "";
+      optionA.classList.remove("selected");
+      optionB.classList.remove("selected");
+
+      // Get random question
+      currentQuestion = questions[Math.floor(Math.random() * questions.length)];
+      optionA.textContent = currentQuestion.a;
+      optionB.textContent = currentQuestion.b;
+    }
+
+    function choose(option) {
+      const percentA = Math.floor(Math.random() * 100);
+      const percentB = 100 - percentA;
+
+      optionA.classList.remove("selected");
+      optionB.classList.remove("selected");
+
+      if (option === "a") {
+        optionA.classList.add("selected");
+      } else {
+        optionB.classList.add("selected");
+      }
+
+      result.textContent = `💡 ${percentA}% chose "${currentQuestion.a}" and ${percentB}% chose "${currentQuestion.b}"`;
+    }
+
+    optionA.addEventListener("click", () => choose("a"));
+    optionB.addEventListener("click", () => choose("b"));
+    nextBtn.addEventListener("click", loadQuestion);
+
+    // Load first question on start
+    loadQuestion();
+  </script>
+</body>
+</html>
