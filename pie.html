@@ -43,9 +43,23 @@
 <body>
   <h1>Accessible Periodic Table — Full Element Data</h1>
   <div class="periodic-table" role="grid" aria-label="Periodic table of elements"></div>
+<footer style="margin-top: 2rem; padding: 1rem; background-color: #f2f2f2; font-size: 0.9rem; border-top: 1px solid #ccc;">
+  <p><strong>Content Attribution Notice:</strong></p>
+  <p>
+    Most of the scientific data shown on this page (such as element properties, atomic numbers, and other chemical information)
+    is not my original work. The data is sourced from the open JSON project
+    <a href="https://github.com/Bowserinator/Periodic-Table-JSON" target="_blank" rel="noopener noreferrer">
+      Periodic Table JSON by Bowserinator
+    </a> on GitHub.
+  </p>
+  <p>
+    This site is intended as an educational and accessibility-focused resource.
+    Credit for the original dataset belongs to the contributors of that project.
+  </p>
+</footer>
 
   <script>
-    fetch('https://unpkg.com/periodic-table-json@1.5.0/PeriodicTable.json')
+    fetch('./PeriodicTable.json') 
       .then(r => r.json())
       .then(data => {
         const container = document.querySelector('.periodic-table');
