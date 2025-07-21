@@ -73,6 +73,49 @@
       margin-bottom: 10px;
     }
 
+    #notebook {
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-top: 2px solid #ddd;
+  font-family: sans-serif;
+}
+
+#notebook h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.note {
+  margin-bottom: 1rem;
+  border-left: 4px solid #333;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.note-toggle {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: #eee;
+  padding: 0.75rem 1rem;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.note-toggle:hover {
+  background: #ddd;
+}
+
+.note-content {
+  display: none;
+  padding: 1rem;
+  font-size: 1rem;
+  border-top: 1px solid #ccc;
+  white-space: pre-wrap;
+}
+
     .section p, .section li {
       color: var(--text-color);
     }
@@ -127,7 +170,7 @@
 
   <div class="section">
     <h2>Reading</h2>
-    <p>I read a lot — mostly fiction and some sci-fi. I’m into books that explain how things work, especially in science, history, or tech. Sometimes I’ll reread a passage just because it explained something in a really clean way.</p>
+    <p>I’m really into fiction, especially when it’s got a bit of sci-fi or fantasy mixed in. Artemis Fowl is one of my favorites — it’s smart and full of action, which makes it a great combo. I also love Percy Jackson & the Olympians because it brings myths to life in such a fun, easy way. And honestly, I’m hooked on pretty much all of Brandon Mull’s books. His stories are full of magic and epic adventures that keep me coming back for more. For me, reading isn’t just about passing time — it’s about escaping into different worlds and getting inspired.</p>
   </div>
 
   <div class="section">
@@ -142,7 +185,7 @@
 
   <div class="section">
     <h2>History</h2>
-    <p>I'm not a historian, but I like understanding how people used to live and how events shaped the world. Sometimes I’ll fall into a rabbit hole reading about ancient civilizations or tech from 50 years ago that still matters today.</p>
+    <p>I like history in a way where I don’t spend all my time digging into every detail. Instead, I stumble upon something cool or interesting, and that’s when I dive deeper and do some research. For me, it’s about discovering those moments or stories that catch my attention, then exploring them just enough to satisfy my curiosity. I’m especially into empires — how they rise, fall, and everything in between — but I prefer to keep it fun and not get lost in endless facts.</p>
   </div>
 
   <div class="section">
@@ -154,6 +197,37 @@
       <li>Binary code (just 0s and 1s) powers almost everything in modern computing.</li>
     </ul>
   </div>
+<section id="notebook">
+  <h2>Notebook 🧠</h2>
+
+  <div class="note">
+    <button class="note-toggle">Could you simulate a galaxy using only basic physics and Python?</button>
+    <div class="note-content">
+      Probably not a full galaxy with billions of stars — but a simplified version? Definitely. You could simulate gravitational attraction between a few hundred stars or particles, using Newton’s laws. Libraries like Pygame or even Matplotlib can visualize it. The real challenge is performance — once you have thousands of objects, you need smarter algorithms (like Barnes-Hut) to keep it running smoothly. Still, it’s a fun way to learn physics and optimization.
+    </div>
+  </div>
+
+  <div class="note">
+    <button class="note-toggle">Could you program a spacecraft to generate and follow its own mission plan?</button>
+    <div class="note-content">
+      In theory, yes — with the right onboard AI and sensors, a spacecraft could dynamically generate its own mission plan based on goals and environmental input. You’d need modules for navigation, prioritization, diagnostics, and fallback behaviors. Think of it like a space version of a self-driving car. The hard part is making it safe and reliable, especially without real-time communication with Earth. 
+    </div>
+  </div>
+
+  <div class="note">
+    <button class="note-toggle">What would a coding language look like if it was built only for space missions?</button>
+    <div class="note-content">
+      It would probably be dead simple, highly fault-tolerant, and ultra-conservative. No dynamic memory allocation. No garbage collection. Every function tightly defined, and performance predictable down to the clock cycle. 
+    </div>
+  </div>
+
+  <div class="note">
+    <button class="note-toggle">Can you simulate a black hole’s gravity with 2D code and basic math?</button>
+    <div class="note-content">
+      You actually can — not with full general relativity, but with Newtonian gravity or approximations of spacetime curvature. For example, you can model how light or particles bend near a massive object using a simple "force field" analogy. Or use a gradient map to bend virtual space around a center. It won’t be perfectly accurate, but it’ll look convincing — and you can build cool visualizations that mimic lensing and orbit decay.
+    </div>
+  </div>
+</section>
 
   <div class="section">
     <h2>Projects</h2>
@@ -166,13 +240,20 @@
 
   <footer>
     <p>This site is a little side project. Just exploring stuff I enjoy.</p>
-    <p style="margin-top: 10px; font-size: 0.8em;">Last updated: July 10, 2025</p>
+    <p style="margin-top: 10px; font-size: 0.8em;">Last updated: July 21, 2025</p>
   </footer>
 
   <script>
     function toggleMode() {
       document.body.classList.toggle("light");
     }
+      document.querySelectorAll('.note-toggle').forEach(button => {
+    button.addEventListener('click', () => {
+      const content = button.nextElementSibling;
+      content.style.display = (content.style.display === 'block') ? 'none' : 'block';
+    });
+  });
+
   </script>
 </body>
 </html>
