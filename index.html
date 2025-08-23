@@ -137,6 +137,105 @@
       font-size: 0.9em;
       color: #888;
     }
+
+.navbar {
+  background-color: var(--bg-color);
+  padding: 10px 0;
+  text-align: center;
+  border-bottom: 1px solid #444;
+  margin-bottom: 30px;
+}
+
+.navbar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.navbar li {
+  margin: 0;
+}
+
+.navbar a {
+  color: var(--link-color);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: color 0.3s;
+}
+
+.navbar a:hover {
+  color: var(--accent-color);
+}
+    
+html {
+  scroll-behavior: smooth;
+}
+
+    #backToTop {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  display: none;
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+  border: none;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: opacity 0.3s;
+  z-index: 1000;
+}
+
+#backToTop:hover {
+  opacity: 0.8;
+}
+    #apod-container img {
+  max-width: 100%;
+  border-radius: 10px;
+  margin-top: 15px;
+}
+
+#apod-container p {
+  margin-top: 10px;
+}
+
+
+@media (max-width: 600px) {
+  .navbar ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.cursor {
+  display: inline-block;
+  color: var(--accent-color);
+  animation: blink 0.7s infinite;
+  font-weight: bold;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+    #stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background: black;
+}
+
     @media (max-width: 600px) {
   h1 {
     font-size: 2em; /* down from 2.8em */
@@ -163,27 +262,46 @@
 </head>
 <body>
   <header>
+    <canvas id="stars" aria-hidden="true"></canvas>
     <h1>Welcome to My Universe</h1>
-    <p class="tagline">Exploring science, code, stars, and stories.</p>
+    <p class="tagline"><span id="typed-text"></span><span class="cursor">|</span></p>
+
     <button class="toggle-mode" onclick="toggleMode()">Toggle Mode</button>
   </header>
 
-  <div class="section">
+  <nav class="navbar" aria-label="Main navigation">
+  <ul>
+    <li><a href="#reading">Reading</a></li>
+    <li><a href="#science">Science & Space</a></li>
+    <li><a href="#programming">Programming</a></li>
+    <li><a href="#history">History</a></li>
+    <li><a href="#notebook">Notebook</a></li>
+    <li><a href="#projects">Projects</a></li>
+  </ul>
+</nav>
+
+  <div class="section" id="reading">
     <h2>Reading</h2>
     <p>I’m really into fiction, especially when it’s got a bit of sci-fi or fantasy mixed in. Artemis Fowl is one of my favorites — it’s smart and full of action, which makes it a great combo. I also love Percy Jackson & the Olympians because it brings myths to life in such a fun, easy way. And honestly, I’m hooked on pretty much all of Brandon Mull’s books. His stories are full of magic and epic adventures that keep me coming back for more. For me, reading isn’t just about passing time — it’s about escaping into different worlds and getting inspired.</p>
   </div>
 
-  <div class="section">
+  <div class="section" id="science">
     <h2>Science & Space</h2>
     <p>I’m fascinated by how the universe works. Physics, astronomy, biology — it’s all connected. I don’t claim to know it all, but I like learning how things came to be, especially when it involves planets, stars, or life itself.</p>
   </div>
+  <div class="section" id="apod">
+  <h2>Astronomy Picture of the Day</h2>
+  <div id="apod-container">
+    <p>Loading...</p>
+  </div>
+</div>
 
-  <div class="section">
+  <div class="section" id="programming">
     <h2>Programming</h2>
     <p>I spend time coding — mostly web stuff right now. I like figuring out how to build things from scratch or automate stuff just to see if I can. It's fun when something finally works after you debug it for an hour.</p>
   </div>
 
-  <div class="section">
+  <div class="section" id="history">
     <h2>History</h2>
     <p>I like history in a way where I don’t spend all my time digging into every detail. Instead, I stumble upon something cool or interesting, and that’s when I dive deeper and do some research. For me, it’s about discovering those moments or stories that catch my attention, then exploring them just enough to satisfy my curiosity. I’m especially into empires — how they rise, fall, and everything in between — but I prefer to keep it fun and not get lost in endless facts.</p>
   </div>
@@ -197,6 +315,7 @@
       <li>Binary code (just 0s and 1s) powers almost everything in modern computing.</li>
     </ul>
   </div>
+  
 <section id="notebook">
   <h2>Notebook</h2>
 <p>The place where I do my thinking and random questions that I have done research on.</p>
@@ -229,7 +348,7 @@
   </div>
 </section>
 
-  <div class="section">
+  <div class="section" id="projects">
     <h2>Projects</h2>
     <p>Below are a few projects I feel comfortable sharing with others. I'll add more as I go.</p>
     <div class="projects-list">
@@ -253,7 +372,97 @@
       content.style.display = (content.style.display === 'block') ? 'none' : 'block';
     });
   });
+    // Back to Top button
+const backToTopButton = document.getElementById("backToTop");
 
-  </script>
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 300) {
+    backToTopButton.style.display = "block";
+  } else {
+    backToTopButton.style.display = "none";
+  }
+});
+
+backToTopButton.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+    console.log("%c👋 Hey explorer! Found the console? You're my kind of curious.", "color: #00d4ff; font-size: 16px; font-family: monospace;");
+
+const text = "Exploring science, code, stars, and stories.";
+const typedTextSpan = document.getElementById("typed-text");
+let i = 0;
+
+function type() {
+  if (i < text.length) {
+    typedTextSpan.textContent += text.charAt(i);
+    i++;
+    setTimeout(type, 60); // speed (ms)
+  }
+}
+
+window.addEventListener("DOMContentLoaded", type);
+
+  const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+const numStars = 150;
+const stars = [];
+
+for (let i = 0; i < numStars; i++) {
+  stars.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    radius: Math.random() * 1.5 + 0.5,
+    velocity: Math.random() * 0.3 + 0.1
+  });
+}
+
+function animateStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#fff";
+
+  stars.forEach(star => {
+    star.y += star.velocity;
+    if (star.y > canvas.height) {
+      star.y = 0;
+      star.x = Math.random() * canvas.width;
+    }
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  requestAnimationFrame(animateStars);
+}
+
+animateStars();
+
+    fetch("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY")
+  .then(response => response.json())
+  .then(data => {
+    const container = document.getElementById("apod-container");
+    container.innerHTML = `
+      <h3>${data.title}</h3>
+      <img src="${data.url}" alt="${data.title}">
+      <p>${data.explanation}</p>
+    `;
+  })
+  .catch(err => {
+    document.getElementById("apod-container").innerHTML = "<p>Could not load APOD.</p>";
+    console.error(err);
+  });
+
+</script>
+  
+  <button id="backToTop" title="Back to Top" aria-label="Back to top">↑ Top</button>
 </body>
 </html>
+
