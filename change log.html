@@ -5,64 +5,86 @@
   <title>Iapetus Project Changelog — Loud Edition</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f0f4f8;
-      color: #222;
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 1rem 2rem;
-      line-height: 1.7;
-    }
+  :root {
+    --bg: #f0f4f8;
+    --text: #222;
+    --entry-bg: white;
+    --entry-border: #e67e22;
+    --header: #2c3e50;
+    --subheader: #555;
+  }
 
-    h1 {
-      text-align: center;
-      color: #2c3e50;
-      margin-bottom: 2rem;
-      font-size: 2.5rem;
-      font-weight: 900;
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121212;
+      --text: #ddd;
+      --entry-bg: #1e1e1e;
+      --entry-border: #f39c12;
+      --header: #f1c40f;
+      --subheader: #aaa;
     }
+  }
 
-    .entry {
-      border-left: 5px solid #e67e22;
-      background: white;
-      padding: 1.25rem 1.5rem;
-      margin-bottom: 2rem;
-      border-radius: 6px;
-      box-shadow: 0 2px 5px rgb(0 0 0 / 0.05);
-    }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem 2rem;
+    line-height: 1.7;
+    transition: background 0.3s, color 0.3s;
+  }
 
-    .entry h2 {
-      margin: 0 0 0.3rem 0;
-      color: #e67e22;
-      font-weight: 700;
-      font-size: 1.3rem;
-    }
+  h1 {
+    text-align: center;
+    color: var(--header);
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    font-weight: 900;
+  }
 
-    .entry .date {
-      font-size: 0.9rem;
-      color: #555;
-      margin-bottom: 1rem;
-      font-style: italic;
-    }
+  .entry {
+    border-left: 5px solid var(--entry-border);
+    background: var(--entry-bg);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgb(0 0 0 / 0.05);
+  }
 
-    ul {
-      margin: 0.5rem 0 0 1.5rem;
-      padding: 0;
-    }
+  .entry h2 {
+    margin: 0 0 0.3rem 0;
+    color: var(--entry-border);
+    font-weight: 700;
+    font-size: 1.3rem;
+  }
 
-    ul li {
-      margin-bottom: 0.4rem;
-    }
+  .entry .date {
+    font-size: 0.9rem;
+    color: var(--subheader);
+    margin-bottom: 1rem;
+    font-style: italic;
+  }
 
-    footer {
-      margin-top: 3rem;
-      font-size: 0.9rem;
-      color: #555;
-      text-align: center;
-      font-style: italic;
-    }
-  </style>
+  ul {
+    margin: 0.5rem 0 0 1.5rem;
+    padding: 0;
+  }
+
+  ul li {
+    margin-bottom: 0.4rem;
+  }
+
+  footer {
+    margin-top: 3rem;
+    font-size: 0.9rem;
+    color: var(--subheader);
+    text-align: center;
+    font-style: italic;
+  }
+</style>
+
 </head>
 <body>
 
@@ -170,8 +192,8 @@
   </div>
 
   <footer>
-    Future plans: Add a JavaScript array to serve up random fun facts daily (because why not).  
-    Set up that elusive backend server for NASA’s image.  
+    Future plans:<br> Add a JavaScript array to serve up random fun facts daily (because why not).  <br>
+    Set up that elusive backend server for NASA’s image. <br> 
     Maybe get new ideas once I’m not drowning in homework.  
     <br><br>
     Stay tuned. Or don’t. I’m not your boss.
@@ -179,3 +201,4 @@
 
 </body>
 </html>
+
