@@ -9,7 +9,9 @@
 
     @media (prefers-color-scheme: light) {
   :root {
-    --bg-color: #f5f5f5;
+    --bg-color: #f9fbfd;
+        --star-bg: #f9fbfd;      
+    --star-color: #4a90e2;   
     --text-color: #222;
     --accent-color: #0077cc;
     --section-heading: #444;
@@ -19,7 +21,9 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg-color: #111;
+    --bg-color: #121417;
+        --star-bg: #0a0c0f;         
+    --star-color: #add8e6;   
     --text-color: #eee;
     --accent-color: #00d4ff;
     --section-heading: #ffe066;
@@ -251,7 +255,7 @@ html {
   z-index: -1;
   width: 100%;
   height: 100%;
-  background: black;
+  background: var(--star-bg);
 }
 
     @media (max-width: 600px) {
@@ -426,7 +430,7 @@ html {
 
   <footer>
     <p>This site is a little side project. Just exploring stuff I enjoy.</p>
-    <p style="margin-top: 10px; font-size: 0.8em;">Last updated: August 23, 2025</p>
+    <p style="margin-top: 10px; font-size: 0.8em;">Last updated: August 30, 2025</p>
     <p><a href="https://iapetus-star.github.io/Iapetus-repo/change%20log.html" target="_blank">📜 View Changelog (where I log my legendary feats)</a></p>
   </footer>
   
@@ -502,7 +506,7 @@ for (let i = 0; i < numStars; i++) {
 
 function animateStars() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#fff";
+  ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--star-color').trim();
 
   stars.forEach(star => {
     star.y += star.velocity;
@@ -538,6 +542,7 @@ animateStars();
 </script>
 </body>
 </html>
+
 
 
 
