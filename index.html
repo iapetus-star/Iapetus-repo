@@ -7,21 +7,25 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
-    :root {
-      --bg-color: #111;
-      --text-color: #eee;
-      --accent-color: #00d4ff;
-      --section-heading: #ffe066;
-      --link-color: #80ffdb;
-    }
+    @media (prefers-color-scheme: light) {
+  :root {
+    --bg-color: #f5f5f5;
+    --text-color: #222;
+    --accent-color: #0077cc;
+    --section-heading: #444;
+    --link-color: #0077cc;
+  }
+}
 
-    body.light {
-      --bg-color: #f5f5f5;
-      --text-color: #222;
-      --accent-color: #0077cc;
-      --section-heading: #444;
-      --link-color: #0077cc;
-    }
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #111;
+    --text-color: #eee;
+    --accent-color: #00d4ff;
+    --section-heading: #ffe066;
+    --link-color: #80ffdb;
+  }
+}
 
     body {
       font-family: 'Inter', sans-serif;
@@ -151,8 +155,9 @@
   padding: 10px 0;
   text-align: center;
     border-bottom: 1px solid var(--text-color);
-  opacity: 0.3;
+  opacity: 0.6;
   margin-bottom: 30px;
+    transition: box-shadow 0.3s ease-in-out;
 }
 
 .navbar ul {
@@ -163,8 +168,9 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
+  flex-direction: row;
 }
-
+    
 .navbar li {
   margin: 0;
 }
@@ -181,6 +187,16 @@
   color: var(--accent-color);
 }
     
+    .navbar.scrolled {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); 
+}
+
+    @media (prefers-color-scheme: dark) {
+  .navbar.scrolled {
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.08);
+  }
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -216,14 +232,6 @@ html {
   margin-top: 10px;
 }
 
-
-@media (max-width: 600px) {
-  .navbar ul {
-    flex-direction: column;
-    gap: 10px;
-  }
-}
-
 .cursor {
   display: inline-block;
   color: var(--accent-color);
@@ -247,27 +255,78 @@ html {
 }
 
     @media (max-width: 600px) {
+  body {
+    padding: 20px;
+    font-size: 16px;
+  }
+
   h1 {
-    font-size: 2em; /* down from 2.8em */
+    font-size: 2em;
+    text-align: center;
+    word-wrap: break-word;
   }
 
   p.tagline {
-    font-size: 1em; /* down from 1.2em */
-  }
-
-  .toggle-mode {
-    font-size: 0.8em; /* down from 0.9em */
-    padding: 5px 10px; /* slightly smaller padding */
+    font-size: 1em;
+    text-align: center;
   }
 
   .section h2 {
-    font-size: 1.3em; /* down from 1.5em */
+    font-size: 1.3em;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    text-align: left;
   }
 
-  body {
-    padding: 20px; /* reduce side padding */
+  .section p, 
+  .section li {
+    font-size: 1em;
+    line-height: 1.6;
+  }
+
+  .navbar {
+    padding: 10px 0;
+    margin-bottom: 20px;
+    opacity: 1;
+    border-bottom: 1px solid var(--text-color);
+  }
+
+  .navbar ul {
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .navbar a {
+    font-size: 1rem;
+    padding: 8px 0;
+    display: block;
+  }
+
+  #notebook .note-toggle {
+    font-size: 1rem;
+    padding: 0.6rem 1rem;
+  }
+
+  #notebook .note-content {
+    font-size: 0.95rem;
+    padding: 0.8rem 1rem;
+  }
+
+  #apod-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  #backToTop {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    bottom: 20px;
+    right: 20px;
   }
 }
+
   </style>
 </head>
 <body>
@@ -275,8 +334,6 @@ html {
     <canvas id="stars" aria-hidden="true"></canvas>
     <h1>Welcome to My Universe</h1>
     <p class="tagline"><span id="typed-text"></span><span class="cursor">|</span></p>
-
-    <button class="toggle-mode" onclick="toggleMode()">Toggle Mode</button>
   </header>
 
   <nav class="navbar" aria-label="Main navigation">
@@ -376,9 +433,7 @@ html {
   <button id="backToTop" title="Back to Top" aria-label="Back to top">↑ Top</button>
 
   <script>
-    function toggleMode() {
-      document.body.classList.toggle("light");
-    }
+    
       document.querySelectorAll('.note-toggle').forEach(button => {
     button.addEventListener('click', () => {
       const content = button.nextElementSibling;
@@ -387,12 +442,19 @@ html {
   });
     // Back to Top button
 const backToTopButton = document.getElementById("backToTop");
-
+const navbar = document.querySelector('.navbar');
+    
 window.addEventListener("scroll", () => {
   if (window.scrollY > 300) {
     backToTopButton.style.display = "block";
   } else {
     backToTopButton.style.display = "none";
+  }
+  
+    if (window.scrollY > 50) {
+    navbar.classList.add("scrolled");
+  } else {
+    navbar.classList.remove("scrolled");
   }
 });
 
@@ -476,6 +538,7 @@ animateStars();
 </script>
 </body>
 </html>
+
 
 
 
