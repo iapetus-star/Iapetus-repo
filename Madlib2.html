@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Space Mad Lib</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0b3d91, #000000);
+    color: #e0e7ff;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 2rem;
+    margin: 0;
+  }
+  .container {
+    background-color: #121a3d;
+    border-radius: 12px;
+    padding: 2rem 3rem;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 0 15px #5c80d6;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 0.2rem;
+  }
+  p.instructions {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    color: #a9b9ff;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  label {
+    font-weight: 600;
+  }
+  input[type="text"] {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+  }
+  input[type="text"]:focus {
+    box-shadow: 0 0 6px #5c80d6;
+  }
+  button {
+    margin-top: 1.5rem;
+    background-color: #4169e1;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #5a8aff;
+  }
+  .story {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    background-color: #1f2b59;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-top: 1rem;
+    white-space: pre-line;
+  }
+  #tryAgainBtn {
+    margin-top: 1rem;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Space Mad Lib</h1>
+  <form id="madLibForm">
+  <p class="instructions">
+    Fill in the fields below to create your own cosmic adventure story! All fields are required.
+  </p>  
+    <label for="planet">1. Name of a planet</label>
+    <input type="text" id="planet" name="planet" required />
+
+    <label for="adjective">2. An adjective</label>
+    <input type="text" id="adjective" name="adjective" required />
+
+    <label for="creature">3. Type of space creature</label>
+    <input type="text" id="creature" name="creature" required />
+
+    <label for="verb">4. A verb</label>
+    <input type="text" id="verb" name="verb" required />
+
+    <label for="noun">5. A noun</label>
+    <input type="text" id="noun" name="noun" required />
+
+    <label for="color">6. A color</label>
+    <input type="text" id="color" name="color" required />
+
+    <label for="number">7. A number</label>
+    <input type="text" id="number" name="number" required />
+
+    <label for="emotion">8. An emotion</label>
+    <input type="text" id="emotion" name="emotion" required />
+
+    <button type="submit">Create My Story</button>
+  </form>
+
+  <div id="story" class="story" style="display:none;"></div>
+  <button id="tryAgainBtn">Try Again</button>
+</div>
+
+<script>
+  const form = document.getElementById('madLibForm');
+  const storyDiv = document.getElementById('story');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // Collect form data
+    const planet = form.planet.value.trim();
+    const adjective = form.adjective.value.trim();
+    const creature = form.creature.value.trim();
+    const verb = form.verb.value.trim();
+    const noun = form.noun.value.trim();
+    const color = form.color.value.trim();
+    const number = form.number.value.trim();
+    const emotion = form.emotion.value.trim();
+
+    if (!planet || !adjective || !creature || !verb || !noun || !color || !number || !emotion) {
+      alert('Please fill in all the fields!');
+      return;
+    }
+
+    // Hide the form
+    form.style.display = 'none';
+
+    // Create story text
+    const storyText = `
+One day, on the mysterious planet ${planet}, a ${adjective} ${creature} decided to ${verb} a giant ${noun}.
+The ${creature} was glowing ${color} and had ${number} eyes, making everyone feel very ${emotion}.
+It was the most unforgettable adventure across the stars!`;
+
+    // Show the story
+    storyDiv.textContent = storyText.trim();
+    storyDiv.style.display = 'block';
+
+    // Show the try again button
+    tryAgainBtn.style.display = 'block';
+  });
+
+  tryAgainBtn.addEventListener('click', () => {
+    // Reset form
+    form.reset();
+
+    storyDiv.style.display = 'none';
+    tryAgainBtn.style.display = 'none';
+
+    form.style.display = 'flex';
+  });
+</script>
+
+</body>
+</html>
