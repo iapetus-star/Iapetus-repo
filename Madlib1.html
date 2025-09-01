@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mad Lib: The Great Adventure</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      background: #f0f8ff;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    #story {
+      margin-top: 20px;
+      background: #fffbea;
+      padding: 15px;
+      border-left: 5px solid #ffcc00;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Mad Lib: The Great Adventure</h1>
+
+  <label>A name:</label>
+  <input type="text" id="name">
+
+  <label>A place:</label>
+  <input type="text" id="place">
+
+  <label>A plural noun:</label>
+  <input type="text" id="pluralNoun">
+
+  <label>A verb ending in -ing:</label>
+  <input type="text" id="verbIng">
+
+  <label>An adjective:</label>
+  <input type="text" id="adjective">
+
+  <label>A number:</label>
+  <input type="number" id="number">
+
+  <label>A silly word:</label>
+  <input type="text" id="sillyWord">
+
+  <label>A type of animal:</label>
+  <input type="text" id="animal">
+
+  <label>A body part (plural):</label>
+  <input type="text" id="bodyPart">
+
+  <label>An exclamation:</label>
+  <input type="text" id="exclamation">
+
+  <button onclick="generateStory()">Create My Story</button>
+
+  <div id="story"></div>
+
+  <script>
+    function generateStory() {
+      const name = document.getElementById('name').value;
+      const place = document.getElementById('place').value;
+      const pluralNoun = document.getElementById('pluralNoun').value;
+      const verbIng = document.getElementById('verbIng').value;
+      const adjective = document.getElementById('adjective').value;
+      const number = document.getElementById('number').value;
+      const sillyWord = document.getElementById('sillyWord').value;
+      const animal = document.getElementById('animal').value;
+      const bodyPart = document.getElementById('bodyPart').value;
+      const exclamation = document.getElementById('exclamation').value;
+
+      const story = `
+        <p>One day, <strong>${name}</strong> was walking through <strong>${place}</strong> when they suddenly stumbled upon a group of <strong>${pluralNoun}</strong>. 
+        They were all <strong>${verbIng}</strong> in the most <strong>${adjective}</strong> way!</p>
+
+        <p>Curious, <strong>${name}</strong> decided to join in. After exactly <strong>${number}</strong> minutes, someone shouted, 
+        "<strong>${sillyWord}</strong>!" and everything stopped. Out of nowhere, a giant <strong>${animal}</strong> appeared, 
+        shaking its <strong>${bodyPart}</strong> furiously.</p>
+
+        <p>"<strong>${exclamation}</strong>!" yelled <strong>${name}</strong>, and everyone ran in different directions. 
+        It was a day they would never forget.</p>
+      `;
+
+      document.getElementById('story').innerHTML = story;
+    }
+  </script>
+
+</body>
+</html>
+  
