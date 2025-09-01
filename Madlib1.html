@@ -35,7 +35,8 @@
 
   <h1>Mad Lib: The Great Adventure</h1>
 
-  <p>Fill in the blanks below with your own words to create a hilarious story! Once you've entered all your answers, click the "Create My Story" button to see your personalized adventure come to life.</p>
+  <div id="form-container">
+  <p id="instructions">Fill in the blanks below with your own words to create a hilarious story! Once you've entered all your answers, click the "Create My Story" button to see your personalized adventure come to life.</p>
 
   <label>A name:</label>
   <input type="text" id="name">
@@ -68,10 +69,10 @@
   <input type="text" id="exclamation">
 
   <button onclick="generateStory()">Create My Story</button>
-
+  </div>
   <div id="story"></div>
   
-<script>
+  <script>
   function generateStory() {
     const inputs = document.querySelectorAll('input');
     let allFilled = true;
@@ -81,7 +82,7 @@
         input.style.border = '2px solid red';
         allFilled = false;
       } else {
-        input.style.border = ''; // reset if valid
+        input.style.border = '';
       }
     });
 
@@ -90,6 +91,7 @@
       return;
     }
 
+    // Get values
     const name = document.getElementById('name').value;
     const place = document.getElementById('place').value;
     const pluralNoun = document.getElementById('pluralNoun').value;
@@ -100,8 +102,10 @@
     const animal = document.getElementById('animal').value;
     const bodyPart = document.getElementById('bodyPart').value;
     const exclamation = document.getElementById('exclamation').value;
+    
+    document.getElementById('form-container').style.display = 'none';
 
-    // Build story
+
     const storyHTML = `
       <p>One day, <strong>${name}</strong> was walking through <strong>${place}</strong> when they suddenly stumbled upon a group of <strong>${pluralNoun}</strong>. 
       They were all <strong>${verbIng}</strong> in the most <strong>${adjective}</strong> way!</p>
@@ -116,24 +120,20 @@
       <button onclick="resetForm()">Try Again</button>
     `;
 
-    document.querySelectorAll('input, button').forEach(el => el.style.display = 'none');
     document.getElementById('story').innerHTML = storyHTML;
   }
 
   function resetForm() {
-    // Clear inputs
+    document.getElementById('form-container').style.display = '';
     document.querySelectorAll('input').forEach(input => {
       input.value = '';
-      input.style.display = '';
+      input.style.border = '';
     });
 
-    // Show the button again
-    document.querySelector('button').style.display = '';
-
-    // Clear the story
     document.getElementById('story').innerHTML = '';
   }
 </script>
+
 
 </body>
 </html>
