@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chaos Mad Lib</title>
+  <style>
+    body {
+      background: radial-gradient(circle at top left, #300030, #000000);
+      color: #ffeaea;
+      font-family: 'Courier New', Courier, monospace;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: #1a001a;
+      border: 2px solid #ff3c3c;
+      border-radius: 10px;
+      padding: 2rem;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 0 20px #ff0000aa;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #ff5555;
+    }
+    p.instructions {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #ff9b9b;
+      margin-bottom: 1.5rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    label {
+      font-weight: bold;
+    }
+    input[type="text"] {
+      padding: 0.6rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      background-color: #2e002e;
+      color: #ffdddd;
+      outline: none;
+    }
+    input[type="text"]:focus {
+      box-shadow: 0 0 5px #ff4c4c;
+    }
+    button {
+      margin-top: 1.5rem;
+      padding: 0.75rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      background-color: #ff1f1f;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background-color: #ff3c3c;
+    }
+    .story {
+      background-color: #2a002a;
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin-top: 2rem;
+      white-space: pre-line;
+      line-height: 1.6;
+      display: none;
+    }
+    #tryAgainBtn {
+      display: none;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Welcome to the Chaos</h1>
+    <form id="madLibForm">
+
+  <p class="instructions">Enter your words below to unleash a story of absolute chaos. All fields are required.</p>
+
+    <input type="text" name="location" placeholder="A location" required />
+    <input type="text" name="adjective1" placeholder="An adjective" required />
+    <input type="text" name="object" placeholder="A dangerous object" required />
+    <input type="text" name="emotion" placeholder="An emotion" required />
+    <input type="text" name="action" placeholder="A chaotic action (e.g. 'explode')" required />
+    <input type="text" name="creature" placeholder="A creature" required />
+    <input type="text" name="sound" placeholder="A strange sound" required />
+    <input type="text" name="color" placeholder="A color" required />
+    <input type="text" name="verb" placeholder="A verb" required />
+
+    <button type="submit">Unleash the Story</button>
+  </form>
+
+  <div id="story" class="story"></div>
+  <button id="tryAgainBtn">Try Again</button>
+</div>
+
+<script>
+  const form = document.getElementById('madLibForm');
+  const storyDiv = document.getElementById('story');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const values = Object.fromEntries(new FormData(form).entries());
+
+    const {
+      location,
+      adjective1,
+      object,
+      emotion,
+      action,
+      creature,
+      sound,
+      color,
+      verb
+    } = values;
+
+    form.style.display = 'none';
+
+    const story = `
+In the depths of ${location}, where time forgets and logic crumbles, a ${adjective1} ${object} pulsed with pure chaos.
+
+The sky split open with ${sound}, and every soul within a mile felt a wave of ${emotion} surge through their veins. Without warning, the air began to ${action}, turning the very ground into liquid confusion.
+
+From the shadows emerged a ${creature}, eyes glowing ${color}, muttering ancient curses in forgotten tongues. It stared into your soul and whispered:
+
+  "To ${verb} is to surrender. To resist... is to burn."
+
+And just like that, everything changed. Again.
+
+Welcome to the spiral.
+    `;
+
+    storyDiv.textContent = story.trim();
+    storyDiv.style.display = 'block';
+    tryAgainBtn.style.display = 'block';
+  });
+
+  tryAgainBtn.addEventListener('click', () => {
+    form.reset();
+    form.style.display = 'flex';
+    storyDiv.style.display = 'none';
+    tryAgainBtn.style.display = 'none';
+  });
+</script>
+
+</body>
+</html>
