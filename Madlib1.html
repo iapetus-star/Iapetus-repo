@@ -35,6 +35,8 @@
 
   <h1>Mad Lib: The Great Adventure</h1>
 
+  <p>Fill in the blanks below with your own words to create a hilarious story! Once you've entered all your answers, click the "Create My Story" button to see your personalized adventure come to life.</p>
+
   <label>A name:</label>
   <input type="text" id="name">
 
@@ -68,35 +70,70 @@
   <button onclick="generateStory()">Create My Story</button>
 
   <div id="story"></div>
+  
+<script>
+  function generateStory() {
+    const inputs = document.querySelectorAll('input');
+    let allFilled = true;
 
-  <script>
-    function generateStory() {
-      const name = document.getElementById('name').value;
-      const place = document.getElementById('place').value;
-      const pluralNoun = document.getElementById('pluralNoun').value;
-      const verbIng = document.getElementById('verbIng').value;
-      const adjective = document.getElementById('adjective').value;
-      const number = document.getElementById('number').value;
-      const sillyWord = document.getElementById('sillyWord').value;
-      const animal = document.getElementById('animal').value;
-      const bodyPart = document.getElementById('bodyPart').value;
-      const exclamation = document.getElementById('exclamation').value;
+    inputs.forEach(input => {
+      if (!input.value.trim()) {
+        input.style.border = '2px solid red';
+        allFilled = false;
+      } else {
+        input.style.border = ''; // reset if valid
+      }
+    });
 
-      const story = `
-        <p>One day, <strong>${name}</strong> was walking through <strong>${place}</strong> when they suddenly stumbled upon a group of <strong>${pluralNoun}</strong>. 
-        They were all <strong>${verbIng}</strong> in the most <strong>${adjective}</strong> way!</p>
-
-        <p>Curious, <strong>${name}</strong> decided to join in. After exactly <strong>${number}</strong> minutes, someone shouted, 
-        "<strong>${sillyWord}</strong>!" and everything stopped. Out of nowhere, a giant <strong>${animal}</strong> appeared, 
-        shaking its <strong>${bodyPart}</strong> furiously.</p>
-
-        <p>"<strong>${exclamation}</strong>!" yelled <strong>${name}</strong>, and everyone ran in different directions. 
-        It was a day they would never forget.</p>
-      `;
-
-      document.getElementById('story').innerHTML = story;
+    if (!allFilled) {
+      alert("Please fill in all the blanks before creating your story.");
+      return;
     }
-  </script>
+
+    const name = document.getElementById('name').value;
+    const place = document.getElementById('place').value;
+    const pluralNoun = document.getElementById('pluralNoun').value;
+    const verbIng = document.getElementById('verbIng').value;
+    const adjective = document.getElementById('adjective').value;
+    const number = document.getElementById('number').value;
+    const sillyWord = document.getElementById('sillyWord').value;
+    const animal = document.getElementById('animal').value;
+    const bodyPart = document.getElementById('bodyPart').value;
+    const exclamation = document.getElementById('exclamation').value;
+
+    // Build story
+    const storyHTML = `
+      <p>One day, <strong>${name}</strong> was walking through <strong>${place}</strong> when they suddenly stumbled upon a group of <strong>${pluralNoun}</strong>. 
+      They were all <strong>${verbIng}</strong> in the most <strong>${adjective}</strong> way!</p>
+
+      <p>Curious, <strong>${name}</strong> decided to join in. After exactly <strong>${number}</strong> minutes, someone shouted, 
+      "<strong>${sillyWord}</strong>!" and everything stopped. Out of nowhere, a giant <strong>${animal}</strong> appeared, 
+      shaking its <strong>${bodyPart}</strong> furiously.</p>
+
+      <p>"<strong>${exclamation}</strong>!" yelled <strong>${name}</strong>, and everyone ran in different directions. 
+      It was a day they would never forget.</p>
+
+      <button onclick="resetForm()">Try Again</button>
+    `;
+
+    document.querySelectorAll('input, button').forEach(el => el.style.display = 'none');
+    document.getElementById('story').innerHTML = storyHTML;
+  }
+
+  function resetForm() {
+    // Clear inputs
+    document.querySelectorAll('input').forEach(input => {
+      input.value = '';
+      input.style.display = '';
+    });
+
+    // Show the button again
+    document.querySelector('button').style.display = '';
+
+    // Clear the story
+    document.getElementById('story').innerHTML = '';
+  }
+</script>
 
 </body>
 </html>
