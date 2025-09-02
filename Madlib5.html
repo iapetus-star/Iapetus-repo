@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Math Mayhem Mad Lib</title>
+  <style>
+    body {
+      background-color: #f0f0f5;
+      font-family: 'Arial', sans-serif;
+      color: #333;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #222266;
+      margin-bottom: 0.5rem;
+    }
+    p.instructions {
+      text-align: center;
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 1.5rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input[type="text"] {
+      padding: 0.6rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 1.5rem;
+      background-color: #4b6cb7;
+      color: white;
+      padding: 0.75rem;
+      border: none;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #3a53a4;
+    }
+    .story {
+      background-color: #f7f7ff;
+      border: 1px solid #ccc;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 8px;
+      white-space: pre-line;
+      display: none;
+    }
+    #tryAgainBtn {
+      display: none;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Math Mayhem</h1>
+  <p class="instructions">Enter some random words below and get ready for a math class you won't forget!</p>
+
+  <form id="madLibForm">
+    <input type="text" name="number" placeholder="A number" required />
+    <input type="text" name="adjective" placeholder="An adjective" required />
+    <input type="text" name="noun1" placeholder="A classroom object" required />
+    <input type="text" name="verb" placeholder="A verb ending in -ing" required />
+    <input type="text" name="celebrity" placeholder="A celebrity or famous person" required />
+    <input type="text" name="mathTerm" placeholder="A math term" required />
+    <input type="text" name="animal" placeholder="An animal" required />
+    <input type="text" name="snack" placeholder="A type of snack" required />
+
+    <button type="submit">Do the Math!</button>
+  </form>
+
+  <div id="story" class="story"></div>
+  <button id="tryAgainBtn">Try Again</button>
+</div>
+
+<script>
+  const form = document.getElementById('madLibForm');
+  const storyDiv = document.getElementById('story');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const values = Object.fromEntries(new FormData(form).entries());
+
+    const {
+      number,
+      adjective,
+      noun1,
+      verb,
+      celebrity,
+      mathTerm,
+      animal,
+      snack
+    } = values;
+
+    form.style.display = 'none';
+
+    const story = `
+It started like any other Monday. The bell rang ${number} times, and I dragged my ${adjective} backpack into math class. 
+
+But today was different. Instead of our usual teacher, a hologram of ${celebrity} appeared, floating above the ${noun1}. 
+"Welcome to Advanced ${mathTerm} Mayhem," it announced in a robotic voice.
+
+Before we could process that, the floor turned into a massive grid, and we were all standing on giant number tiles. 
+Every time someone got an answer wrong, a ${animal} dropped from the ceiling yelling, "${verb.toUpperCase()}!"
+
+I tried to solve a problem about square roots, but somehow ended up accidentally dividing by my own lunch. 
+The room exploded into a pile of floating ${snack}s, and the whiteboard started laughing at us.
+
+By the end of class, only three students had passed the final test — and one of them was a calculator with legs.
+
+Math will never be the same again.
+    `;
+
+    storyDiv.textContent = story.trim();
+    storyDiv.style.display = 'block';
+    tryAgainBtn.style.display = 'block';
+  });
+
+  tryAgainBtn.addEventListener('click', () => {
+    form.reset();
+    form.style.display = 'flex';
+    storyDiv.style.display = 'none';
+    tryAgainBtn.style.display = 'none';
+  });
+</script>
+
+</body>
+</html>
