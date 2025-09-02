@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>How to Travel Around the World in a Bathtub</title>
+  <style>
+    body {
+      background-color: #e6f7ff;
+      font-family: 'Georgia', serif;
+      color: #333;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #006994;
+      margin-bottom: 1rem;
+    }
+    p.instructions {
+      text-align: center;
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 2rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input[type="text"] {
+      padding: 0.6rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 1.5rem;
+      background-color: #0099cc;
+      color: white;
+      padding: 0.75rem;
+      border: none;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #007aa3;
+    }
+    .story {
+      background-color: #f9f9f9;
+      border-left: 5px solid #00aaff;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 8px;
+      white-space: pre-line;
+      display: none;
+    }
+    #tryAgainBtn {
+      display: none;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>How to Travel Around the World in a Bathtub</h1>
+  
+  <form id="madLibForm">
+
+  <p class="instructions">Fill in the blanks and discover the most absurd travel guide ever written.</p>
+  
+    <input type="text" name="name" placeholder="Your name" required />
+    <input type="text" name="adjective1" placeholder="An adjective" required />
+    <input type="text" name="bathtubName" placeholder="A name for a bathtub" required />
+    <input type="text" name="food" placeholder="A type of food" required />
+    <input type="text" name="animal" placeholder="An animal" required />
+    <input type="text" name="tool" placeholder="A tool or object" required />
+    <input type="text" name="city" placeholder="A famous city" required />
+    <input type="text" name="emotion" placeholder="An emotion" required />
+    <input type="text" name="sound" placeholder="A funny sound" required />
+
+    <button type="submit">Begin the Journey</button>
+  </form>
+
+  <div id="story" class="story"></div>
+  <button id="tryAgainBtn">Try Again</button>
+</div>
+
+<script>
+  const form = document.getElementById('madLibForm');
+  const storyDiv = document.getElementById('story');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const values = Object.fromEntries(new FormData(form).entries());
+    const {
+      name,
+      adjective1,
+      bathtubName,
+      food,
+      animal,
+      tool,
+      city,
+      emotion,
+      sound
+    } = values;
+
+    form.style.display = 'none';
+
+    const story = `
+So, you want to travel around the world in a bathtub? You're in luck. This guide, written by the one and only ${name}, will teach you how to become a global explorer without ever using a passport or a single plane ticket. All you need is a ${adjective1} bathtub named "${bathtubName}", a bit of determination, and approximately three buckets of ${food}.
+
+First, fill your bathtub with imagination. This part is crucial. If your imagination is stale, try shouting "${sound}!" three times into a sock. It works, trust me. Once your bathtub starts vibrating slightly and humming the national anthem of a country that doesn’t exist, you’ll know it’s working.
+
+Your first stop? The open sea, obviously. Prepare for waves, wind, and occasional visits from flying ${animal}s who may or may not offer unsolicited life advice. Be polite. Offer them a bite of ${food}. They won't eat it, but it's a gesture of goodwill.
+
+By the time you reach ${city}, your bathtub will have grown sentient and developed opinions on local politics. Let it speak. You’ll find yourself in unexpected conversations with street performers, accordion-playing squirrels, and a man named Greg who thinks he's the reincarnation of algebra.
+
+Now, to steer a bathtub across international borders, you’ll need your trusty ${tool}. It's not just for fixing leaks—it also doubles as a diplomatic badge of honor. Customs officers won’t know what to do, so they’ll usually let you pass if you offer them a signed picture of ${bathtubName} doing a backflip.
+
+Eventually, after many hours of floating, drifting, and daydreaming, you'll discover that the journey isn't about the destinations—it's about the weird detours, the strange smells, and that one unforgettable moment when your bathtub did karaoke in Mongolia.
+
+You’ll cry (from ${emotion}), laugh (probably also from ${emotion}), and learn to speak fluent dolphin. And when you finally arrive back home, sunburned and smelling like bath salts and pride, you'll realize one thing: every good journey begins in the bathroom.
+
+So go forth, dear reader. Pack your snacks, charge your bathtub, and yell "${sound.toUpperCase()}!" into the wind.
+
+The world is waiting.
+    `;
+    
+        const tips = [
+      "🚿 Always carry a waterproof map. Paper ones get soggy and judgmental.",
+      "🛁 Never trust a bathtub with more than two rubber ducks onboard.",
+      "🌊 If you hear your bathtub humming jazz, you're approaching international waters.",
+      "🥒 Bring pickles. Not for eating. Just... bring them.",
+      "🎩 Bathtubs love compliments. Tell yours it has nice curves before launch.",
+      "🧼 Bubble bath = fuel. The fizzier, the faster.",
+      "🔧 A plunger can double as both an oar and a diplomatic handshake.",
+      "🦀 If you see a crab waving at you, wave back. It's polite.",
+      "📡 Do not attempt to connect your bathtub to public Wi-Fi. Trust me.",
+      "🧽 A sponge makes a great co-pilot. Quiet, absorbent, and rarely argues."
+    ];
+
+    const tipsHTML = `
+<hr />
+<h3> Bathtub Travel Tips</h3>
+<ul>
+  ${tips.map(tip => `<li>${tip}</li>`).join('')}
+</ul>
+    `;
+
+    const formattedStory = "<p>" + story.trim().replace(/\n/g, "</p><p>") + "</p>";
+storyDiv.innerHTML = formattedStory + tipsHTML;
+    storyDiv.style.display = 'block';
+    tryAgainBtn.style.display = 'block';
+  });
+
+  tryAgainBtn.addEventListener('click', () => {
+    form.reset();
+    form.style.display = 'flex';
+    storyDiv.style.display = 'none';
+    tryAgainBtn.style.display = 'none';
+  });
+</script>
+
+</body>
+</html>
