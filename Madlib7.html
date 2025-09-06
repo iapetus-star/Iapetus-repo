@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Very Unusual Job Interview -</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #story, #tryAgain {
+      display: none;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>A Very Unusual Job Interview</h1>
+  <p id="instructions">
+    Fill in all the blanks below with the requested words. Once you submit the form, you'll see your completed Mad Lib story. Have fun!
+  </p>
+
+  <form id="madLibForm">
+    <label>Occupation:
+      <input type="text" name="occupation" required>
+    </label>
+    <label>Adjective:
+      <input type="text" name="adjective1" required>
+    </label>
+    <label>Noun:
+      <input type="text" name="noun1" required>
+    </label>
+    <label>Animal:
+      <input type="text" name="animal" required>
+    </label>
+    <label>Verb (past tense):
+      <input type="text" name="verbPast" required>
+    </label>
+    <label>Adjective:
+      <input type="text" name="adjective2" required>
+    </label>
+    <label>Sound (e.g., 'bang', 'meow'):
+      <input type="text" name="sound" required>
+    </label>
+    <label>Object:
+      <input type="text" name="object" required>
+    </label>
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="story"></div>
+  <button id="tryAgain" onclick="resetForm()">Try Again</button>
+
+  <script>
+    const form = document.getElementById('madLibForm');
+    const storyDiv = document.getElementById('story');
+    const tryAgainBtn = document.getElementById('tryAgain');
+    const instructions = document.getElementById('instructions');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const data = new FormData(form);
+      const occupation = data.get('occupation');
+      const adjective1 = data.get('adjective1');
+      const noun1 = data.get('noun1');
+      const animal = data.get('animal');
+      const verbPast = data.get('verbPast');
+      const adjective2 = data.get('adjective2');
+      const sound = data.get('sound');
+      const object = data.get('object');
+
+      const story = `
+        <h2>Your Mad Lib Story:</h2>
+        <p>Yesterday, I had an interview for a job as a <strong>${occupation}</strong>. I arrived ten minutes early, dressed in my best outfit, only to be greeted at the front desk by a <strong>${noun1}</strong>—not a receptionist, an actual <strong>${noun1}</strong> with a nametag and everything.</p>
+
+        <p>Trying to stay professional, I followed the <strong>${noun1}</strong> into a waiting room filled with <strong>${adjective1}</strong> artwork and music that sounded like someone trying to play jazz with a nose flute. Just as I sat down, a loud <strong>${sound}</strong> echoed through the building, and a <strong>${animal}</strong> bolted out of a side door, knocking over a potted plant and nearly tripping me.</p>
+
+        <p>The interviewer finally arrived, completely unfazed by the chaos. He wore a suit made of what looked like recycled <strong>${object}</strong>s and offered me a seat on a wobbly chair that squeaked every time I moved. We started the interview with some basic questions, but then he asked, "If you had to <strong>${verbPast}</strong> during a team-building exercise, how would you explain it to upper management?" I laughed nervously, unsure whether he was joking.</p>
+
+        <p>Then things got even more <strong>${adjective2}</strong>. The lights dimmed, a disco ball lowered from the ceiling, and the <strong>${animal}</strong> returned—this time wearing a tiny tie and sunglasses. “Don’t mind Gerald,” the interviewer said. “He leads our mindfulness sessions.”</p>
+
+        <p>By the time I left, I wasn’t sure if I had just interviewed for a job, attended a performance art piece, or unknowingly joined a secret society. One thing’s for sure: it was the most bizarre, unforgettable job interview of my life.</p>
+      `;
+
+      storyDiv.innerHTML = story;
+      storyDiv.style.display = 'block';
+      tryAgainBtn.style.display = 'inline-block';
+      form.style.display = 'none';
+      instructions.style.display = 'none';
+    });
+
+    function resetForm() {
+      form.reset();
+      form.style.display = 'block';
+      instructions.style.display = 'block';
+      storyDiv.style.display = 'none';
+      tryAgainBtn.style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>
