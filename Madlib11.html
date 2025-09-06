@@ -1,0 +1,162 @@
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Weirdest Vacation Ever</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      color: #2d3436;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    h1 {
+      text-align: center;
+      color: #d63031;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    p.instructions {
+      text-align: center;
+      font-size: 1rem;
+      color: #636e72;
+      margin-bottom: 2rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input[type="text"] {
+      padding: 0.6rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 1.5rem;
+      background-color: #00cec9;
+      color: white;
+      padding: 0.75rem;
+      border: none;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #0984e3;
+    }
+    .story {
+      background-color: #f9f9f9;
+      border-left: 5px solid #e17055;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 8px;
+      white-space: pre-line;
+      display: none;
+    }
+    #tryAgainBtn {
+      display: none;
+      margin-top: 1.5rem;
+      background-color: #d63031;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Weirdest Vacation Ever</h1>
+  
+  <form id="madLibForm">
+    <p class="instructions">Fill in all the fields to create your bizarre travel tale!</p>
+    
+    <input type="text" name="name" placeholder="A name" required />
+    <input type="text" name="adjective1" placeholder="An adjective" required />
+    <input type="text" name="adjective2" placeholder="Another adjective" required />
+    <input type="text" name="place1" placeholder="A vacation destination" required />
+    <input type="text" name="vehicle" placeholder="A type of vehicle" required />
+    <input type="text" name="animal" placeholder="An animal" required />
+    <input type="text" name="food" placeholder="A type of food" required />
+    <input type="text" name="celebrity" placeholder="A celebrity's name" required />
+    <input type="text" name="verb1" placeholder="A verb ending in -ing" required />
+    <input type="text" name="emotion" placeholder="An emotion" required />
+    <input type="text" name="sound" placeholder="A funny sound" required />
+    <input type="text" name="object" placeholder="A random object" required />
+    <input type="text" name="adjective3" placeholder="One more adjective" required />
+
+    <button type="submit">Create My Story</button>
+  </form>
+
+  <div id="story" class="story"></div>
+  <button id="tryAgainBtn">Try Again</button>
+</div>
+
+<script>
+  const form = document.getElementById('madLibForm');
+  const storyDiv = document.getElementById('story');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const values = Object.fromEntries(new FormData(form).entries());
+
+    form.style.display = 'none';
+
+    const rawStory = generateStory(values);
+    const formattedStory = formatStoryText(rawStory);
+
+    storyDiv.innerHTML = formattedStory;
+    storyDiv.style.display = 'block';
+    tryAgainBtn.style.display = 'inline-block';
+  });
+
+  tryAgainBtn.addEventListener('click', () => {
+    form.reset();
+    form.style.display = 'flex';
+    storyDiv.style.display = 'none';
+    tryAgainBtn.style.display = 'none';
+  });
+
+  function generateStory(values) {
+    const {
+      name, adjective1, adjective2, place1, vehicle, animal,
+      food, celebrity, verb1, emotion, sound, object, adjective3
+    } = values;
+
+    return `
+Let me tell you about the weirdest vacation ${name} ever went on.
+
+It all started on a ${adjective1} morning, when ${name} decided to visit ${place1} using a ${vehicle} made entirely out of recycled ${object}s. As soon as they arrived, they were greeted by a ${adjective2} ${animal} wearing sunglasses and offering free ${food}.
+
+Things only got stranger from there. While ${verb1} through a jungle made of inflatable flamingos, ${name} bumped into ${celebrity}, who was also vacationing there—but for "government research," they whispered.
+
+Suddenly, there was a loud "${sound.toUpperCase()}!" and the sky turned ${adjective3}. Everyone at the resort started dancing uncontrollably, overwhelmed by a mysterious sense of ${emotion}.
+
+In the end, ${name} never figured out whether it was all a dream or just really bad ${food}. But one thing’s for sure:
+
+That vacation was absolutely unforgettable.
+    `;
+  }
+
+  function formatStoryText(story) {
+    return "<p>" + story.trim().replace(/\n/g, "</p><p>") + "</p>";
+  }
+</script>
+
+</body>
+</html>
