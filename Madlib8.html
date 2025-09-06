@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dragon-Slaying for Beginners</title>
+  <style>
+    body {
+      background-color: #f1f1f1;
+      font-family: 'Georgia', serif;
+      color: #333;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #b22222;
+      margin-bottom: 1rem;
+    }
+    p.instructions {
+      text-align: center;
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 2rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input[type="text"] {
+      padding: 0.6rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 1.5rem;
+      background-color: #b22222;
+      color: white;
+      padding: 0.75rem;
+      border: none;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #8b0000;
+    }
+    .story {
+      background-color: #f9f9f9;
+      border-left: 5px solid #b22222;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 8px;
+      white-space: pre-line;
+      display: none;
+    }
+    #tryAgainBtn {
+      display: none;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Dragon-Slaying for Beginners</h1>
+  
+  <form id="madLibForm">
+    <p class="instructions">Sharpen your swords and fill in the blanks — your legend awaits!</p>
+
+    <input type="text" name="heroName" placeholder="Name of the hero" required />
+    <input type="text" name="weapon" placeholder="A type of weapon" required />
+    <input type="text" name="adjective" placeholder="An adjective" required />
+    <input type="text" name="magicalObject" placeholder="A magical object" required />
+    <input type="text" name="dragonName" placeholder="Name of a dragon" required />
+    <input type="text" name="sillyWord" placeholder="A silly word" required />
+    <input type="text" name="verb" placeholder="A verb (present tense)" required />
+    <input type="text" name="bodyPart" placeholder="A body part" required />
+    <input type="text" name="place" placeholder="A fantasy place" required />
+    <input type="text" name="sound" placeholder="A dramatic sound" required />
+
+    <button type="submit">Create My Epic</button>
+  </form>
+
+  <div id="story" class="story"></div>
+  <button id="tryAgainBtn">Try Again</button>
+</div>
+
+<script>
+  const form = document.getElementById('madLibForm');
+  const storyDiv = document.getElementById('story');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const values = Object.fromEntries(new FormData(form).entries());
+
+    form.style.display = 'none';
+
+    const rawStory = generateStory(values);
+    const formattedStory = formatStoryText(rawStory);
+
+    storyDiv.innerHTML = formattedStory;
+    storyDiv.style.display = 'block';
+    tryAgainBtn.style.display = 'block';
+  });
+
+  tryAgainBtn.addEventListener('click', () => {
+    form.reset();
+    form.style.display = 'flex';
+    storyDiv.style.display = 'none';
+    tryAgainBtn.style.display = 'none';
+  });
+
+  function generateStory(values) {
+    const {
+      heroName, weapon, adjective, magicalObject, dragonName,
+      sillyWord, verb, bodyPart, place, sound
+    } = values;
+
+    return `
+In the ancient kingdom of ${place}, tales were told of a brave soul named ${heroName}, who wielded a mighty ${weapon} forged in the fires of Mount ${sillyWord}.
+
+One ${adjective} morning, a terrifying dragon named ${dragonName} descended from the skies, breathing fire and demanding snacks. The villagers, trembling in their tunics, had only one hope — ${heroName}.
+
+Clad in armor and fueled by determination (and three stale muffins), ${heroName} set out, clutching their ${magicalObject} in one hand and the ${weapon} in the other.
+
+As ${heroName} approached the dragon’s lair, they could hear the distant ${sound} echoing off the cliffs. Suddenly, ${dragonName} appeared with a roar, its scales shimmering like flaming emeralds.
+
+Without hesitation, ${heroName} shouted, "Prepare to ${verb}, you oversized lizard!" and charged. The battle was fierce — sparks flew, claws clashed, and at one point, ${heroName} got whacked in the ${bodyPart}.
+
+But just when hope seemed lost, the ${magicalObject} began to glow. With a final leap and a wild cry of "${sillyWord.toUpperCase()}!", ${heroName} struck the final blow.
+
+The dragon collapsed, peace returned to ${place}, and ${heroName} became a legend — not just for slaying ${dragonName}, but for doing it with impeccable style and a bruised ${bodyPart}.
+
+The end... or is it?
+    `;
+  }
+
+  function formatStoryText(story) {
+    return "<p>" + story.trim().replace(/\n/g, "</p><p>") + "</p>";
+  }
+</script>
+
+</body>
+</html>
