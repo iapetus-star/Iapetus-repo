@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Internet Breaks</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    body {
+      background-color: #0f0f0f;
+      color: #00ffcc;
+      font-family: 'Press Start 2P', monospace;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: #1a1a1a;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0 0 25px rgba(0, 255, 204, 0.3);
+    }
+    h1 {
+      text-align: center;
+      color: #ff00ff;
+      margin-bottom: 1rem;
+      font-size: 1.6rem;
+    }
+    p.instructions {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #ccc;
+      margin-bottom: 2rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input[type="text"] {
+      padding: 0.6rem;
+      font-size: 0.9rem;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background-color: #222;
+      color: #00ffcc;
+    }
+    button {
+      margin-top: 1.5rem;
+      background-color: #00ffcc;
+      color: #000;
+      padding: 0.75rem;
+      border: none;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      background-color: #ff00ff;
+      color: #fff;
+    }
+    .story {
+      background-color: #111;
+      border-left: 5px solid #ff00ff;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 8px;
+      white-space: pre-line;
+      display: none;
+    }
+    #tryAgainBtn {
+      display: none;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>The Internet Breaks</h1>
+  
+  <form id="madLibForm">
+    <p class="instructions">Plug in your nonsense and brace for global digital disaster.</p>
+
+    <input type="text" name="username" placeholder="A cringey username" required />
+    <input type="text" name="socialMedia" placeholder="A social media platform" required />
+    <input type="text" name="animal" placeholder="An animal (plural)" required />
+    <input type="text" name="adjective1" placeholder="An adjective" required />
+    <input type="text" name="celebrity" placeholder="A random celebrity" required />
+    <input type="text" name="verb1" placeholder="A verb ending in -ing" required />
+    <input type="text" name="website" placeholder="A website (without https://)" required />
+    <input type="text" name="weirdObject" placeholder="A weird household object" required />
+    <input type="text" name="emotion" placeholder="An emotion" required />
+    <input type="text" name="food" placeholder="A snack food" required />
+    <input type="text" name="soundEffect" placeholder="A sound effect" required />
+    <input type="text" name="noun1" placeholder="A noun" required />
+    <input type="text" name="techBuzzword" placeholder="A tech buzzword" required />
+    <input type="text" name="exclamation" placeholder="An exclamation!" required />
+
+    <button type="submit">Initiate Breakdown</button>
+  </form>
+
+  <div id="story" class="story"></div>
+  <button id="tryAgainBtn">Try Again</button>
+</div>
+
+<script>
+  const form = document.getElementById('madLibForm');
+  const storyDiv = document.getElementById('story');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const values = Object.fromEntries(new FormData(form).entries());
+
+    form.style.display = 'none';
+
+    const rawStory = generateStory(values);
+    const formattedStory = formatStoryText(rawStory);
+
+    storyDiv.innerHTML = formattedStory;
+    storyDiv.style.display = 'block';
+    tryAgainBtn.style.display = 'block';
+  });
+
+  tryAgainBtn.addEventListener('click', () => {
+    form.reset();
+    form.style.display = 'flex';
+    storyDiv.style.display = 'none';
+    tryAgainBtn.style.display = 'none';
+  });
+
+  function generateStory(v) {
+    return `
+It started on a quiet Tuesday morning. ${v.username} was scrolling through ${v.socialMedia}, liking photos of ${v.animal} wearing ${v.adjective1} sunglasses. All was well.
+
+Suddenly, the screen glitched. A deepfake of ${v.celebrity} appeared, ${v.verb1} uncontrollably while shouting, "${v.exclamation.toUpperCase()}!" Seconds later, every page on ${v.website} redirected to a livestream of a ${v.weirdObject} doing interpretive dance.
+
+The internet panicked. Influencers cried. Reddit caught fire (literally). AI toasters began expressing ${v.emotion}, while rogue fridges ordered $400 worth of ${v.food} on Amazon.
+
+Meanwhile, in a bunker powered by hamster wheels, the World Internet Council (all 3 of them) tried to reboot the servers by chanting "${v.soundEffect}" in unison and slapping a sacred ${v.noun1}.
+
+But nothing worked.
+
+Memes merged into sentient data blobs. One blob, now known as “Blorb,” declared itself President of the Internet and banned the word "${v.techBuzzword}" worldwide.
+
+Digital chaos reigned. Smart toilets overflushed. Virtual assistants proposed to microwaves. Meanwhile, ${v.username} just sat there, eating ${v.food}, whispering: "${v.exclamation}..."
+
+And that, dear user, is how the internet broke. Forever? Maybe. But probably just until someone resets the Wi-Fi.
+    `;
+  }
+
+  function formatStoryText(story) {
+    return "<p>" + story.trim().replace(/\n/g, "</p><p>") + "</p>";
+  }
+</script>
+
+</body>
+</html>
