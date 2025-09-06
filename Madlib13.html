@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Victorian Tea Party Gossip</title>
+  <style>
+    body {
+      background-color: #f9f6f0;
+      font-family: 'Garamond', serif;
+      color: #3c2f2f;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 850px;
+      width: 100%;
+      box-shadow: 0 0 20px rgba(153, 114, 114, 0.2);
+    }
+    h1 {
+      text-align: center;
+      color: #8b5e3c;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+    p.instructions {
+      text-align: center;
+      font-size: 1rem;
+      color: #665555;
+      margin-bottom: 2rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input[type="text"] {
+      padding: 0.7rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #cbbfbf;
+    }
+    button {
+      margin-top: 1.5rem;
+      background-color: #8b5e3c;
+      color: white;
+      padding: 0.75rem;
+      border: none;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #734c2d;
+    }
+    .story {
+      background-color: #fcf8f4;
+      border-left: 5px solid #d3b09d;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 8px;
+      white-space: pre-line;
+      display: none;
+    }
+    #tryAgainBtn {
+      display: none;
+      margin-top: 1.5rem;
+      background-color: #c94f4f;
+    }
+    #tryAgainBtn:hover {
+      background-color: #a43d3d;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Victorian Tea Party Gossip</h1>
+  
+  <form id="madLibForm">
+    <p class="instructions">Enter your scandalous vocabulary and spill the tea, darling.</p>
+
+    <input type="text" name="lastName" placeholder="Last name (e.g., Featherstone)" required />
+    <input type="text" name="noun1" placeholder="A noun (e.g., ferret)" required />
+    <input type="text" name="adjective1" placeholder="An adjective (e.g., flustered)" required />
+    <input type="text" name="adjective2" placeholder="Another adjective" required />
+    <input type="text" name="adjective3" placeholder="Another adjective" required />
+    <input type="text" name="object1" placeholder="Fancy object (e.g., monocle)" required />
+    <input type="text" name="emotion" placeholder="An emotion (e.g., rage)" required />
+    <input type="text" name="verb1" placeholder="Verb ending in -ing" required />
+    <input type="text" name="food" placeholder="A fancy food (e.g., cucumber sandwich)" required />
+    <input type="text" name="drink" placeholder="A type of tea or drink" required />
+    <input type="text" name="exclamation" placeholder="Exclamation (e.g., Heavens!)" required />
+    <input type="text" name="animal" placeholder="An animal" required />
+    <input type="text" name="famousPerson" placeholder="Famous person (alive or historical)" required />
+    <input type="text" name="verb2" placeholder="Another verb ending in -ing" required />
+
+    <button type="submit">Spill the Tea</button>
+  </form>
+
+  <div id="story" class="story"></div>
+  <button id="tryAgainBtn">Try Again</button>
+</div>
+
+<script>
+  const form = document.getElementById('madLibForm');
+  const storyDiv = document.getElementById('story');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const values = Object.fromEntries(new FormData(form).entries());
+    form.style.display = 'none';
+
+    const rawStory = generateStory(values);
+    const formattedStory = formatStoryText(rawStory);
+
+    storyDiv.innerHTML = formattedStory;
+    storyDiv.style.display = 'block';
+    tryAgainBtn.style.display = 'block';
+  });
+
+  tryAgainBtn.addEventListener('click', () => {
+    form.reset();
+    form.style.display = 'flex';
+    storyDiv.style.display = 'none';
+    tryAgainBtn.style.display = 'none';
+  });
+
+  function generateStory(values) {
+    const {
+      lastName, noun1, adjective1, adjective2, adjective3,
+      object1, emotion, verb1, food, drink, exclamation,
+      animal, famousPerson, verb2
+    } = values;
+
+    return `
+Lady ${lastName} fainted when she saw a ${noun1} in the parlour.
+
+The scandal occurred at precisely 3:17 PM, just as the ${adjective1} butler was ${verb1} past the tea trolley. A loud crash echoed through the drawing room as Lady ${lastName} dropped her ${object1} into the ${drink}, splashing it across the lace doilies.
+
+"${exclamation}!" gasped Duchess Fluffington, clutching her pearls like they were the last biscuits at the ball.
+
+The ${noun1} in question was no ordinary one—it wore a ${adjective2} hat and was accompanied by what witnesses described as “an unsettlingly calm ${animal}.” The room, filled with ${emotion} and the faint aroma of ${food}, fell into a stunned silence.
+
+Lord Picklebottom attempted to regain control by loudly clearing his throat and offering the ${noun1} a scone. It declined.
+
+Rumors began to swirl—some say it was a spy from the East Wing. Others claim it was planted by ${famousPerson} to sabotage the Earl’s ${verb2} lessons.
+
+Lady ${lastName}, ever the dramatic hostess, eventually regained consciousness only after being wafted with a fan made of ${adjective3} feathers and misted with elderflower water.
+
+The rest of the tea was uneventful, save for a heated debate about whether the ${drink} was properly steeped and whether anyone had seen the ${animal} wink.
+
+To this day, no one knows how the ${noun1} got in, or why it had such disdain for ${food}.
+
+But one thing is certain: no one will ever forget the Tea Incident of the ${lastName} Estate.
+    `;
+  }
+
+  function formatStoryText(story) {
+    return "<p>" + story.trim().replace(/\n/g, "</p><p>") + "</p>";
+  }
+</script>
+
+</body>
+</html>
