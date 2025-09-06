@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Courtroom Drama</title>
+  <style>
+    body {
+      background-color: #f2f4f8;
+      font-family: 'Georgia', serif;
+      color: #2c2c2c;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 850px;
+      width: 100%;
+      box-shadow: 0 0 20px rgba(0,0,0,0.15);
+    }
+    h1 {
+      text-align: center;
+      color: #34495e;
+      margin-bottom: 1rem;
+    }
+    p.instructions {
+      text-align: center;
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 2rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input[type="text"] {
+      padding: 0.7rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 1.5rem;
+      background-color: #2c3e50;
+      color: white;
+      padding: 0.75rem;
+      border: none;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #1a252f;
+    }
+    .story {
+      background-color: #f8f9fa;
+      border-left: 5px solid #7f8c8d;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 8px;
+      white-space: pre-line;
+      display: none;
+    }
+    #tryAgainBtn {
+      display: none;
+      margin-top: 1.5rem;
+      background-color: #e74c3c;
+    }
+    #tryAgainBtn:hover {
+      background-color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Courtroom Drama: The Trial of the Century</h1>
+  
+  <form id="madLibForm">
+    <p class="instructions">Fill out the form and make your case!</p>
+
+    <input type="text" name="noun1" placeholder="A noun (e.g., banana)" required />
+    <input type="text" name="verb1" placeholder="A verb (e.g., danced)" required />
+    <input type="text" name="profession" placeholder="Profession (e.g., magician)" required />
+    <input type="text" name="adjective1" placeholder="An adjective (e.g., suspicious)" required />
+    <input type="text" name="object1" placeholder="Object (e.g., top hat)" required />
+    <input type="text" name="name1" placeholder="First name (e.g., Clarence)" required />
+    <input type="text" name="emotion" placeholder="Emotion (e.g., confusion)" required />
+    <input type="text" name="place" placeholder="Place (e.g., janitor’s closet)" required />
+    <input type="text" name="animal" placeholder="An animal (e.g., llama)" required />
+    <input type="text" name="adjective2" placeholder="Another adjective" required />
+    <input type="text" name="verb2" placeholder="Another verb (e.g., shouted)" required />
+    <input type="text" name="bodyPart" placeholder="Body part (e.g., elbow)" required />
+    <input type="text" name="sillyPhrase" placeholder="Silly phrase (e.g., jelly justice!)" required />
+    <input type="text" name="celebrity" placeholder="Celebrity (real or fake)" required />
+
+    <button type="submit">Present the Evidence</button>
+  </form>
+
+  <div id="story" class="story"></div>
+  <button id="tryAgainBtn">Try Again</button>
+</div>
+
+<script>
+  const form = document.getElementById('madLibForm');
+  const storyDiv = document.getElementById('story');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const values = Object.fromEntries(new FormData(form).entries());
+    form.style.display = 'none';
+
+    const rawStory = generateStory(values);
+    const formattedStory = formatStoryText(rawStory);
+
+    storyDiv.innerHTML = formattedStory;
+    storyDiv.style.display = 'block';
+    tryAgainBtn.style.display = 'block';
+  });
+
+  tryAgainBtn.addEventListener('click', () => {
+    form.reset();
+    form.style.display = 'flex';
+    storyDiv.style.display = 'none';
+    tryAgainBtn.style.display = 'none';
+  });
+
+  function generateStory(values) {
+    const {
+      noun1, verb1, profession, adjective1, object1, name1, emotion,
+      place, animal, adjective2, verb2, bodyPart, sillyPhrase, celebrity
+    } = values;
+
+    return `
+"Objection, Your Honor! The witness clearly saw the ${noun1} before the ${verb1}!"
+
+It was a tense afternoon in Courtroom 9B. The defendant, a former ${profession}, sat with ${emotion} plastered across their face. The prosecution had just revealed a ${adjective1} piece of evidence: a ${object1} found in the ${place}, covered in glitter and... marmalade.
+
+The lead attorney, ${name1}, leaned dramatically on the judge’s bench, glaring at the witness like a hawk that had just misplaced its monocle.
+
+"Are you telling this court that a ${animal} walked into the ${place}, wearing a ${adjective2} cape, and simply ${verb2} the ${noun1} with its ${bodyPart}?!"
+
+Gasps echoed through the courtroom.
+
+"That’s exactly what I’m saying!" the witness declared, their voice trembling like overcooked jelly.
+
+Judge ${celebrity}, sipping from a mug that read “World’s Sassiest Gavel,” raised one eyebrow. "This is highly irregular," they muttered, before slamming the gavel and shouting, "${sillyPhrase.toUpperCase()}!"
+
+Chaos broke out. One juror tried to climb out the window. The stenographer fainted. And the ${animal}? It sneezed, turned around, and left the courtroom with all the dignity of a tap-dancing flamingo.
+
+By day's end, the trial was declared a mistrial, the ${object1} was put into evidence, and ${name1} was offered a book deal and a sitcom on legal cable.
+
+Justice may not have been served—but drama certainly was.
+    `;
+  }
+
+  function formatStoryText(story) {
+    return "<p>" + story.trim().replace(/\n/g, "</p><p>") + "</p>";
+  }
+</script>
+
+</body>
+</html>
