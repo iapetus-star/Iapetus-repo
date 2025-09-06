@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Great Squirrel Uprising</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
+
+    body {
+      background: linear-gradient(135deg, #a3d9a5 0%, #f5f0e6 100%);
+      font-family: 'Comic Neue', cursive, sans-serif;
+      color: #3a3a3a;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: #fffef7;
+      border-radius: 12px;
+      padding: 2rem 3rem;
+      max-width: 850px;
+      width: 100%;
+      box-shadow: 0 6px 20px rgba(101, 131, 94, 0.25);
+    }
+    h1 {
+      text-align: center;
+      color: #49772b;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+    p.instructions {
+      text-align: center;
+      font-size: 1rem;
+      color: #5a704f;
+      margin-bottom: 2rem;
+      font-style: italic;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input[type="text"] {
+      padding: 0.7rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 2px solid #7aa56b;
+      background-color: #f7f9f2;
+      color: #355324;
+      transition: border-color 0.3s ease;
+    }
+    input[type="text"]:focus {
+      border-color: #3c662a;
+      outline: none;
+    }
+    button {
+      margin-top: 1.5rem;
+      background-color: #4a7c29;
+      color: white;
+      padding: 0.85rem;
+      border: none;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #3a5e1f;
+    }
+    .story {
+      background-color: #e6f0d4;
+      border-left: 6px solid #49772b;
+      padding: 1.8rem;
+      margin-top: 2rem;
+      border-radius: 10px;
+      white-space: pre-line;
+      display: none;
+      font-size: 1.1rem;
+      line-height: 1.5;
+      color: #2f3d19;
+    }
+    #tryAgainBtn {
+      display: none;
+      margin-top: 1.5rem;
+      background-color: #7aa56b;
+      color: #fff;
+      border-radius: 8px;
+      padding: 0.7rem;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+    #tryAgainBtn:hover {
+      background-color: #5a7a40;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>The Great Squirrel Uprising</h1>
+  
+  <form id="madLibForm">
+    <p class="instructions">Fill in the blanks and prepare for an epic tale of furry rebellion!</p>
+
+    <input type="text" name="heroName" placeholder="Name of a human hero" required />
+    <input type="text" name="city" placeholder="A city name" required />
+    <input type="text" name="adjective1" placeholder="An adjective" required />
+    <input type="text" name="pluralAnimal" placeholder="A plural animal" required />
+    <input type="text" name="weapon" placeholder="A type of weapon" required />
+    <input type="text" name="squirrelName" placeholder="A squirrel's name" required />
+    <input type="text" name="adjective2" placeholder="Another adjective" required />
+    <input type="text" name="food" placeholder="A type of food" required />
+    <input type="text" name="number" placeholder="A number" required />
+    <input type="text" name="verb1" placeholder="A verb (past tense)" required />
+    <input type="text" name="emotion" placeholder="An emotion" required />
+    <input type="text" name="place" placeholder="A place (real or fictional)" required />
+    <input type="text" name="pluralNoun" placeholder="A plural noun" required />
+    <input type="text" name="sound" placeholder="A funny sound" required />
+
+    <button type="submit">Start the Uprising</button>
+  </form>
+
+  <div id="story" class="story"></div>
+  <button id="tryAgainBtn">Try Again</button>
+</div>
+
+<script>
+  const form = document.getElementById('madLibForm');
+  const storyDiv = document.getElementById('story');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const values = Object.fromEntries(new FormData(form).entries());
+
+    form.style.display = 'none';
+
+    const storyText = generateStory(values);
+    storyDiv.innerHTML = formatStoryText(storyText);
+    storyDiv.style.display = 'block';
+    tryAgainBtn.style.display = 'block';
+  });
+
+  tryAgainBtn.addEventListener('click', () => {
+    form.reset();
+    form.style.display = 'flex';
+    storyDiv.style.display = 'none';
+    tryAgainBtn.style.display = 'none';
+  });
+
+  function generateStory({
+    heroName, city, adjective1, pluralAnimal, weapon, squirrelName,
+    adjective2, food, number, verb1, emotion, place, pluralNoun, sound
+  }) {
+    return `
+In the heart of ${city}, life was peaceful... until the ${adjective1} ${pluralAnimal} arrived.
+
+No one expected an uprising — especially not led by the fearless squirrel named ${squirrelName}. Armed with nothing but a ${weapon} and an ${adjective2} glint in their eye, ${squirrelName} rallied ${number} of their furry comrades.
+
+At dawn, they ${verb1} through the streets, stealing all the ${food} and chattering ${emotion}ly at bewildered humans.
+
+${heroName}, the bravest resident of ${city}, tried to intervene, but was met with an army of squirrels wielding tiny ${pluralNoun}. The battle echoed with ${sound} noises that scared even the toughest dogs.
+
+The squirrels claimed the city’s parks and ${place}, transforming them into their new kingdom. Legends say the uprising ended when ${heroName} and ${squirrelName} shared a truce over a pile of ${food} — but the squirrels still run the underground tunnels to this day.
+
+Beware when you hear that ${sound} outside... the uprising may begin anew.
+    `;
+  }
+
+  function formatStoryText(story) {
+    return "<p>" + story.trim().replace(/\n/g, "</p><p>") + "</p>";
+  }
+</script>
+
+</body>
+</html>
