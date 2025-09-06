@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Musical Courtroom Trial</title>
+  <style>
+    body {
+      background-color: #fff7f0;
+      font-family: 'Georgia', serif;
+      color: #2d1b17;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 850px;
+      width: 100%;
+      box-shadow: 0 0 25px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #b03a2e;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+    p.instructions {
+      text-align: center;
+      font-size: 1rem;
+      color: #6e4b3c;
+      margin-bottom: 2rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input[type="text"] {
+      padding: 0.7rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 1.5rem;
+      background-color: #b03a2e;
+      color: white;
+      padding: 0.75rem;
+      border: none;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #962d22;
+    }
+    .story {
+      background-color: #fffaf5;
+      border-left: 5px solid #d98880;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 8px;
+      white-space: pre-line;
+      display: none;
+    }
+    #tryAgainBtn {
+      display: none;
+      margin-top: 1.5rem;
+      background-color: #cb4335;
+    }
+    #tryAgainBtn:hover {
+      background-color: #943126;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🎤 The Trial That Sang Itself</h1>
+  
+  <form id="madLibForm">
+    <p class="instructions">Fill in the blanks for a musical courtroom spectacular!</p>
+
+    <input type="text" name="noun1" placeholder="Noun (e.g., banana)" required />
+    <input type="text" name="verb1" placeholder="Verb (e.g., slipped)" required />
+    <input type="text" name="profession" placeholder="Profession (e.g., baker)" required />
+    <input type="text" name="object1" placeholder="Object (e.g., trumpet)" required />
+    <input type="text" name="place" placeholder="Place (e.g., salad bar)" required />
+    <input type="text" name="emotion1" placeholder="Emotion (e.g., guilt)" required />
+    <input type="text" name="emotion2" placeholder="Another emotion" required />
+    <input type="text" name="adjective1" placeholder="Adjective (e.g., shiny)" required />
+    <input type="text" name="sillyWord" placeholder="Silly word (e.g., sporkle)" required />
+    <input type="text" name="animal" placeholder="Animal (e.g., ferret)" required />
+    <input type="text" name="celebrity" placeholder="Celebrity (e.g., Beyonce)" required />
+    <input type="text" name="catchphrase" placeholder="Catchphrase (e.g., Case closed!)" required />
+
+    <button type="submit">Sing My Verdict</button>
+  </form>
+
+  <div id="story" class="story"></div>
+  <button id="tryAgainBtn">Try Again</button>
+</div>
+
+<script>
+  const form = document.getElementById('madLibForm');
+  const storyDiv = document.getElementById('story');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const values = Object.fromEntries(new FormData(form).entries());
+    form.style.display = 'none';
+
+    const rawStory = generateStory(values);
+    const formattedStory = formatStoryText(rawStory);
+
+    storyDiv.innerHTML = formattedStory;
+    storyDiv.style.display = 'block';
+    tryAgainBtn.style.display = 'block';
+  });
+
+  tryAgainBtn.addEventListener('click', () => {
+    form.reset();
+    form.style.display = 'flex';
+    storyDiv.style.display = 'none';
+    tryAgainBtn.style.display = 'none';
+  });
+
+  function generateStory(values) {
+    const {
+      noun1, verb1, profession, object1, place, emotion1, emotion2,
+      adjective1, sillyWord, animal, celebrity, catchphrase
+    } = values;
+
+    return `
+🎵 *Objection sustained! But it’s all been explained... in a song about a ${noun1} and a ${verb1} that went wrong!* 🎵
+
+🎙️ **[Act 1: The Opening Statement]**
+JUDGE: (sung)
+Welcome all to Courtroom 3B,
+Where justice is served musically.
+Today we try a ${profession}, bold,
+Whose secrets are about to unfold...
+
+🎙️ **[Act 2: The Witness Sings]**
+WITNESS: (singing, dramatically)
+I saw the ${noun1}, I swear on my toe,
+Before the ${verb1} started, down low!
+It was there by the ${object1}, all alone,
+Inside the ${place}, on a xylophone.
+
+🎙️ **[Act 3: The Defense Rebuttal — Tap Number]**
+DEFENSE ATTORNEY: (rhythmic)
+My client felt ${emotion1}, yes it’s true,
+But ${emotion2} is what they mostly knew.
+They danced with a ${animal}, they wore a ${adjective1} coat,
+They sang the truth — you should take note!
+
+🎵 *Don’t blame the hat... blame the ferret!*
+🎵 *He’s the one who tried to wear it!*
+
+🎙️ **[Act 4: Surprise Witness (Celebrity Cameo)]**
+${celebrity}: (singing through a spotlight)
+I came to say it wasn't fair,
+The ${profession} was framed, I swear!
+I saw it all, the ${sillyWord} was fake,
+This whole court is a big mistake!
+
+🎙️ **[Act 5: Jury Chorus]**
+JURY (in harmony):
+He had the ${noun1}, she had the ${object1},
+But what they didn’t have... was intent!
+Let’s not be rash, let’s not be cruel,
+Let’s not convict for breakin’ a rule!
+
+🎙️ **[Finale: The Verdict Waltz]**
+JUDGE:
+By the power of rhyme and theatrical flair,
+This courtroom declares — we don’t care!
+
+(Everyone sings)
+🎵 *Justice is weird, but justice is sung,*
+🎵 *When truth is tap-danced and drama is flung!*
+🎵 *We rest our case, we sang our piece,*
+🎵 *Now someone please bring snacks and peace!* 🎵
+
+And with a gavel slam and a glittery pose, the judge leaned forward and whispered:
+
+“${catchphrase}.”
+
+🎭 *Curtain.*
+    `;
+  }
+
+  function formatStoryText(story) {
+    return "<p>" + story.trim().replace(/\n/g, "</p><p>") + "</p>";
+  }
+</script>
+
+</body>
+</html>
