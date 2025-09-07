@@ -61,11 +61,16 @@
   }
 
   .entry .date {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+      font-weight: 600;
     color: var(--subheader);
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
     font-style: italic;
   }
+
+    .entry p {
+  margin-bottom: 1.2rem;
+}
 
   ul {
     margin: 0.5rem 0 0 1.5rem;
@@ -73,20 +78,48 @@
   }
 
   ul li {
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.8rem;
+      line-height: 1.8;
   }
+
+    .entry ul li strong {
+  font-size: 1.05rem;
+  color: var(--header);
+}
 
   footer {
     margin-top: 3rem;
     font-size: 0.9rem;
+      line-height: 1.6;
     color: var(--subheader);
     text-align: center;
     font-style: italic;
   }
+
+    .top-button {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background-color: var(--entry-border);
+  color: white;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.top-button:hover {
+  transform: scale(1.1);
+  background-color: #d35400; /* Slightly darker orange */
+}
+
 </style>
 
 </head>
-<body>
+<body id="top">
   <p style="text-align: center; margin: 1.5rem 0;">
     <a href="https://iapetus-star.github.io/Iapetus-repo"
        style="display: inline-block;
@@ -341,6 +374,7 @@
     </ul>
   </div>
 
+  <br/><br/>
   <footer>
     Future plans:<br> Add a JavaScript array to serve up random fun facts daily (because why not).  <br>
     Set up that elusive backend server for NASA’s image. <br> 
@@ -349,10 +383,9 @@
     Stay tuned. Or don’t. I’m not your boss.
   </footer>
 
+  <a href="#top" class="top-button" title="Back to Top">⬆ Back to Top</a>
 </body>
 </html>
-
-
 
 
 
