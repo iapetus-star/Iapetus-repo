@@ -89,11 +89,6 @@
   opacity: 0;
 }
 
-.full-text.open {
-  max-height: 1000px; /* adjust as needed for longer content */
-  opacity: 1;
-}
-
 .read-more {
   background-color: transparent;
   color: var(--link-color);
@@ -618,27 +613,32 @@ animateStars();
     console.error(err);
   });
 
-    document.querySelectorAll('.read-more').forEach(button => {
-button.addEventListener('click', () => {
-  const section = button.closest('.section');
-  const fullText = section.querySelector('.full-text');
-  const isOpen = fullText.classList.contains('open');
+document.querySelectorAll('.read-more').forEach(button => {
+  button.addEventListener('click', () => {
+    const section = button.closest('.section');
+    const fullText = section.querySelector('.full-text');
+    const isOpen = fullText.classList.contains('open');
 
-  // Close all others
-  document.querySelectorAll('.full-text').forEach(ft => ft.classList.remove('open'));
-  document.querySelectorAll('.read-more').forEach(btn => btn.textContent = 'Read More');
-
-  // Toggle current one
-  if (!isOpen) {
-    fullText.classList.add('open');
-    button.textContent = 'Show Less';
-  } else {
-    button.textContent = 'Read More'; // reset if closing the same
-  }
-});
+    // Close all others
+    document.querySelectorAll('.full-text').forEach(ft => {
+      ft.classList.remove('open');
+      ft.style.maxHeight = null;
+      ft.style.opacity = 0;
     });
+    document.querySelectorAll('.read-more').forEach(btn => btn.textContent = 'Read More');
+
+    // Toggle current one
+    if (!isOpen) {
+      fullText.classList.add('open');
+      fullText.style.maxHeight = fullText.scrollHeight + "px";
+      fullText.style.opacity = 1;
+      button.textContent = 'Show Less';
+    }
+  });
+});
 
 </script>
 </body>
 </html>
+
 
