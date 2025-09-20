@@ -145,8 +145,8 @@
   transition: max-height 0.5s ease, opacity 0.3s ease;
   opacity: 0;
 }
-
-  .full-text.open {
+    
+.full-text.visible {
   opacity: 1;
   }
 
@@ -724,7 +724,7 @@ document.querySelectorAll('.read-more').forEach(button => {
     }
   });
 });
-*/
+
 
 document.querySelectorAll('.read-more').forEach(button => {
   button.addEventListener('click', () => {
@@ -751,12 +751,46 @@ document.querySelectorAll('.read-more').forEach(button => {
     }
   });
 });
+*/
+
+    document.querySelectorAll('.read-more').forEach(button => {
+  button.addEventListener('click', () => {
+    const contentId = button.getAttribute('aria-controls');
+    const content = document.getElementById(contentId);
+    const isOpen = content.classList.contains('visible');
+
+    // Close all
+    document.querySelectorAll('.full-text').forEach(section => {
+      section.classList.remove('visible');
+      section.setAttribute('aria-hidden', 'true');
+      section.style.maxHeight = null;
+      section.style.opacity = 0;
+    });
+
+    document.querySelectorAll('.read-more').forEach(btn => {
+      btn.textContent = 'Read More';
+      btn.setAttribute('aria-expanded', 'false');
+    });
+
+    // Open clicked one
+    if (!isOpen) {
+      content.classList.add('visible');
+      content.setAttribute('aria-hidden', 'false');
+      content.style.maxHeight = content.scrollHeight + "px";
+      content.style.opacity = 1;
+
+      button.textContent = 'Show Less';
+      button.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
 
 
     
 </script>
 </body>
 </html>
+
 
 
 
