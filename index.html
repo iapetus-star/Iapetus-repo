@@ -531,7 +531,7 @@ html {
   <p class="preview">
     I’m really into fiction, especially when it’s got a bit of sci-fi or fantasy mixed in.
   </p>
-  <div class="full-text" id="reading-full">
+  <div class="full-text" id="reading-full" hidden>
     <p>Artemis Fowl is one of my favorites — it’s smart and full of action, which makes it a great combo. I also love Percy Jackson & the Olympians because it brings myths to life in such a fun, easy way. And honestly, I’m hooked on pretty much all of Brandon Mull’s books. His stories are full of magic and epic adventures that keep me coming back for more. For me, reading isn’t just about passing time — it’s about escaping into different worlds and getting inspired.</p>
   </div>
   <button class="read-more" aria-expanded="false" aria-controls="reading-full">Read More</button>
@@ -542,7 +542,7 @@ html {
   <p class="preview">
     I’m fascinated by how the universe works — physics, astronomy, biology — it’s all connected.
   </p>
-  <div class="full-text" id="science-full">
+  <div class="full-text" id="science-full" hidden>
     <p>I don’t claim to know it all, but I like learning how things came to be, especially when it involves planets, stars, or life itself.</p>
 
 <div class="apod-box">
@@ -562,7 +562,7 @@ html {
   <p class="preview">
     I spend time coding — mostly web stuff right now.
   </p>
-  <div class="full-text" id="programming-full">
+  <div class="full-text" id="programming-full" hidden>
     <p>I like figuring out how to build things from scratch or automate stuff just to see if I can. It's fun when something finally works after you debug it for an hour.</p>
   </div>
   <button class="read-more" aria-expanded="false" aria-controls="programming-full">Read More</button>
@@ -573,7 +573,7 @@ html {
   <p class="preview">
     I like history in a way where I don’t spend all my time digging into every detail.
   </p>
-  <div class="full-text" id="history-full">
+  <div class="full-text" id="history-full" hidden>
     <p>Instead, I stumble upon something cool or interesting, and that’s when I dive deeper and do some research. For me, it’s about discovering those moments or stories that catch my attention, then exploring them just enough to satisfy my curiosity. I’m especially into empires — how they rise, fall, and everything in between — but I prefer to keep it fun and not get lost in endless facts.</p>
   </div>
   <button class="read-more" aria-expanded="false" aria-controls="history-full">Read More</button>
@@ -692,6 +692,7 @@ animateStars();
     console.error(err);
   });
 
+    /*
 document.querySelectorAll('.read-more').forEach(button => {
   button.addEventListener('click', () => {
     const fullTextId = button.getAttribute('aria-controls');
@@ -723,13 +724,38 @@ document.querySelectorAll('.read-more').forEach(button => {
     }
   });
 });
+*/
+
+document.querySelectorAll('.read-more').forEach(button => {
+  button.addEventListener('click', () => {
+    const contentId = button.getAttribute('aria-controls');
+    const content = document.getElementById(contentId);
+    const isOpen = !content.hidden;
+
+    // Close all content sections
+    document.querySelectorAll('.full-text').forEach(section => {
+      section.hidden = true;
+    });
+
+    // Reset all buttons
+    document.querySelectorAll('.read-more').forEach(btn => {
+      btn.textContent = 'Read More';
+      btn.setAttribute('aria-expanded', 'false');
+    });
+
+    // If the clicked one was closed, open it
+    if (!isOpen) {
+      content.hidden = false;
+      button.textContent = 'Show Less';
+      button.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
 
 
+    
 </script>
 </body>
 </html>
-
-
-
 
 
