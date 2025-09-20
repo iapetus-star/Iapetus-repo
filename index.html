@@ -58,6 +58,63 @@
       font-size: 1.2em;
     }
 
+#welcome-message {
+  max-width: 700px;
+  margin: 40px auto;
+  text-align: center;
+  opacity: 0;
+  animation: fadeIn 1.5s forwards;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#welcome-message h2 {
+  font-size: 2.2rem;
+  color: var(--text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 3px solid #ff6f61;
+  width: 0;
+  animation: typing 3s steps(25, end) forwards, blinkCaret 0.75s step-end infinite;
+  margin-bottom: 20px;
+}
+
+#welcome-message p {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: var(--text-color);
+  margin: 10px 0;
+}
+
+#welcome-message p:last-child {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 27ch; /* adjust to match the text length */
+  }
+}
+
+@keyframes blinkCaret {
+  0%, 100% {
+    border-color: transparent;
+  }
+  50% {
+    border-color: #ff6f61;
+  }
+}
+
+
     .toggle-mode {
       position: absolute;
       top: -15px;
@@ -168,6 +225,12 @@
       text-decoration: underline;
     }
 
+    #about-me h3 {
+  font-size: 1.3em;
+  margin-top: 30px;
+  color: var(--section-heading);
+}
+
     footer {
       text-align: center;
       margin-top: 60px;
@@ -240,7 +303,6 @@ html {
   border-radius: 5px;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-      box-shadow: 0 2px 6px var(--shadow-color);
   transition: opacity 0.3s;
   z-index: 1000;
 }
@@ -387,77 +449,31 @@ html {
   </header>
 
   <nav class="navbar" aria-label="Main navigation">
-  <ul>
-    <li><a href="#reading">Reading</a></li>
-    <li><a href="#science">Science & Space</a></li>
-    <li><a href="#programming">Programming</a></li>
-    <li><a href="#history">History</a></li>
-    <li><a href="#notebook">Notebook</a></li>
-    <li><a href="#projects">Projects</a></li>
-  </ul>
-</nav>
-
-<div class="section" id="reading">
-  <h2>Reading</h2>
-  <p class="preview">
-    I’m really into fiction, especially when it’s got a bit of sci-fi or fantasy mixed in.
-  </p>
-  <div class="full-text" hidden>
-    <p>Artemis Fowl is one of my favorites — it’s smart and full of action, which makes it a great combo. I also love Percy Jackson & the Olympians because it brings myths to life in such a fun, easy way. And honestly, I’m hooked on pretty much all of Brandon Mull’s books. His stories are full of magic and epic adventures that keep me coming back for more. For me, reading isn’t just about passing time — it’s about escaping into different worlds and getting inspired.</p>
-  </div>
-  <button class="read-more" aria-expanded="false" aria-controls="reading-full">Read More</button>
-</div>
-
-<div class="section" id="science">
-  <h2>Science & Space</h2>
-  <p class="preview">
-    I’m fascinated by how the universe works — physics, astronomy, biology — it’s all connected.
-  </p>
-  <div class="full-text" hidden>
-    <p>I don’t claim to know it all, but I like learning how things came to be, especially when it involves planets, stars, or life itself.</p>
-
-<div class="apod-box">
-  <strong>🌌 Astronomy Picture of the Day (from NASA)</strong>
-  <div id="apod-container" class="apod">
-  <p>Loading today's image from NASA...</p>
-</div>
-    <p class="apod-note">This content is provided by NASA and changes daily.</p>
-  </div>
-
-  </div>
-  <button class="read-more" aria-expanded="false" aria-controls="reading-full">Read More</button>
-  </div>
-
-<div class="section" id="programming">
-  <h2>Programming</h2>
-  <p class="preview">
-    I spend time coding — mostly web stuff right now.
-  </p>
-  <div class="full-text" hidden>
-    <p>I like figuring out how to build things from scratch or automate stuff just to see if I can. It's fun when something finally works after you debug it for an hour.</p>
-  </div>
-  <button class="read-more" aria-expanded="false" aria-controls="reading-full">Read More</button>
-</div>
-
-<div class="section" id="history">
-  <h2>History</h2>
-  <p class="preview">
-    I like history in a way where I don’t spend all my time digging into every detail.
-  </p>
-  <div class="full-text" hidden>
-    <p>Instead, I stumble upon something cool or interesting, and that’s when I dive deeper and do some research. For me, it’s about discovering those moments or stories that catch my attention, then exploring them just enough to satisfy my curiosity. I’m especially into empires — how they rise, fall, and everything in between — but I prefer to keep it fun and not get lost in endless facts.</p>
-  </div>
-  <button class="read-more" aria-expanded="false" aria-controls="reading-full">Read More</button>
-</div>
-
-  <div class="section">
-    <h2>Random Facts I Think Are Cool</h2>
     <ul>
-      <li>Octopuses have three hearts and blue blood.</li>
-      <li>The Voyager 1 spacecraft is over 15 billion miles from Earth and still sending signals.</li>
-      <li>Ancient Roman concrete gets stronger over time and can harden underwater.</li>
-      <li>Binary code (just 0s and 1s) powers almost everything in modern computing.</li>
-    </ul>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#notebook">Notebook</a></li>
+    <li><a href="#about-me">About Me</a></li>
+  </ul>
+  </nav>
+
+  <div class="section" id="welcome-message" aria-live="polite"> 
+  <h2>Hey There, Fellow Explorer!</h2>
+  <p>
+    Welcome to my little corner of the universe! 🚀 If you’re here to find mind-blowing facts, quirky projects, or just someone who’s equally obsessed with stars, code, and history — you’re in the right place.  
+  </p>
+  <p> 
+    Warning: Time spent here may cause sudden bursts of inspiration, random fact overload, and an uncontrollable urge to code or stare at the stars. Proceed at your own risk — you might regret leaving. Or not. Either way, welcome aboard!
+  </p>
+</div>
+
+  <div class="section" id="projects">
+    <h2>Projects</h2>
+    <p>Below are a few projects I feel comfortable sharing with others. I'll add more as I go.</p>
+    <div class="projects-list">
+      <a href="https://iapetus-star.github.io/Iapetus-repo/waterwave.html" target="_blank">Water-wave</a>
+      <a href="https://iapetus-star.github.io/Iapetus-repo/wouldYouRather.html" target="_blank">Would You Rather game...</a>
+      <a href="https://iapetus-star.github.io/Iapetus-repo/Madlibs.html" target="_blank">Visit The Madness of my Madlibs!</a>
+</div>
   </div>
   
 <section id="notebook">
@@ -492,19 +508,77 @@ html {
   </div>
 </section>
 
-  <div class="section" id="projects">
-    <h2>Projects</h2>
-    <p>Below are a few projects I feel comfortable sharing with others. I'll add more as I go.</p>
-    <div class="projects-list">
-      <a href="https://iapetus-star.github.io/Iapetus-repo/waterwave.html" target="_blank">Water-wave</a>
-      <a href="https://iapetus-star.github.io/Iapetus-repo/wouldYouRather.html" target="_blank">Would You Rather game...</a>
-      <a href="https://iapetus-star.github.io/Iapetus-repo/Madlibs.html" target="_blank">Visit The Madness of my Madlibs!</a>
-</div>
+  <div class="section">
+    <h2>Random Facts I Think Are Cool</h2>
+    <ul>
+      <li>Octopuses have three hearts and blue blood.</li>
+      <li>The Voyager 1 spacecraft is over 15 billion miles from Earth and still sending signals.</li>
+      <li>Ancient Roman concrete gets stronger over time and can harden underwater.</li>
+      <li>Binary code (just 0s and 1s) powers almost everything in modern computing.</li>
+    </ul>
   </div>
+
+  <section id="about-me" class="section">
+  <h2>About Me</h2>
+
+    
+    <div id="reading">
+  <h3>Reading</h3>
+  <p class="preview">
+    I’m really into fiction, especially when it’s got a bit of sci-fi or fantasy mixed in.
+  </p>
+  <div class="full-text" hidden>
+    <p>Artemis Fowl is one of my favorites — it’s smart and full of action, which makes it a great combo. I also love Percy Jackson & the Olympians because it brings myths to life in such a fun, easy way. And honestly, I’m hooked on pretty much all of Brandon Mull’s books. His stories are full of magic and epic adventures that keep me coming back for more. For me, reading isn’t just about passing time — it’s about escaping into different worlds and getting inspired.</p>
+  </div>
+  <button class="read-more" aria-expanded="false" aria-controls="reading-full">Read More</button>
+</div>
+
+<div id="science">
+  <h3>Science & Space</h3>
+  <p class="preview">
+    I’m fascinated by how the universe works — physics, astronomy, biology — it’s all connected.
+  </p>
+  <div class="full-text" id="science-full" hidden>
+    <p>I don’t claim to know it all, but I like learning how things came to be, especially when it involves planets, stars, or life itself.</p>
+
+<div class="apod-box">
+  <strong>🌌 Astronomy Picture of the Day (from NASA)</strong>
+  <div id="apod-container" class="apod">
+  <p>Loading today's image from NASA...</p>
+</div>
+    <p class="apod-note">This content is provided by NASA and changes daily.</p>
+  </div>
+
+  </div>
+  <button class="read-more" aria-expanded="false" aria-controls="science-full">Read More</button>
+  </div>
+
+<div id="programming">
+  <h3>Programming</h3>
+  <p class="preview">
+    I spend time coding — mostly web stuff right now.
+  </p>
+  <div class="full-text" id="programming-full" hidden>
+    <p>I like figuring out how to build things from scratch or automate stuff just to see if I can. It's fun when something finally works after you debug it for an hour.</p>
+  </div>
+  <button class="read-more" aria-expanded="false" aria-controls="programming-full">Read More</button>
+</div>
+
+<div id="history">
+  <h3>History</h3>
+  <p class="preview">
+    I like history in a way where I don’t spend all my time digging into every detail.
+  </p>
+  <div class="full-text" id="history-full" hidden>
+    <p>Instead, I stumble upon something cool or interesting, and that’s when I dive deeper and do some research. For me, it’s about discovering those moments or stories that catch my attention, then exploring them just enough to satisfy my curiosity. I’m especially into empires — how they rise, fall, and everything in between — but I prefer to keep it fun and not get lost in endless facts.</p>
+  </div>
+  <button class="read-more" aria-expanded="false" aria-controls="history-full">Read More</button>
+</div>
+    </section>
 
   <footer>
     <p>This site is a little side project. Just exploring stuff I enjoy.</p>
-    <p style="margin-top: 10px; font-size: 0.8em;">Last updated: September 1, 2025</p>
+    <p style="margin-top: 10px; font-size: 0.8em;">Last updated: September 20, 2025</p>
     <p><a href="https://iapetus-star.github.io/Iapetus-repo/change%20log.html" target="_blank">📜 View Changelog (where I log my legendary feats)</a></p>
   </footer>
   
@@ -614,31 +688,6 @@ animateStars();
     console.error(err);
   });
 
-/*
-document.querySelectorAll('.read-more').forEach(button => {
-  button.addEventListener('click', () => {
-    const section = button.closest('.section');
-    const fullText = section.querySelector('.full-text');
-    const isOpen = fullText.classList.contains('open');
-
-    // Close all others
-    document.querySelectorAll('.full-text').forEach(ft => {
-      ft.classList.remove('open');
-      ft.style.maxHeight = null;
-      ft.style.opacity = 0;
-    });
-    document.querySelectorAll('.read-more').forEach(btn => btn.textContent = 'Read More');
-
-    // Toggle current one
-    if (!isOpen) {
-      fullText.classList.add('open');
-      fullText.style.maxHeight = fullText.scrollHeight + "px";
-      fullText.style.opacity = 1;
-      button.textContent = 'Show Less';
-    }
-  });
-});
-*/
 
     document.querySelectorAll('.read-more').forEach(button => {
   button.addEventListener('click', () => {
@@ -681,6 +730,7 @@ document.querySelectorAll('.read-more').forEach(button => {
 </script>
 </body>
 </html>
+
 
 
 
