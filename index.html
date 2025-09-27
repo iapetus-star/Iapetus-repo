@@ -789,18 +789,37 @@ document.querySelectorAll('.read-more').forEach(button => {
 const toggleBtn = document.getElementById('menuToggle');
 const sidebar = document.getElementById('sidebar');
 
+function isMobileView() {
+  return window.innerWidth <= 768;
+}
+
+function updateAria() {
+  const isOpen = sidebar.classList.contains('open');
+
+  if (isMobileView()) {
+    sidebar.setAttribute('aria-hidden', !isOpen);
+    toggleBtn.setAttribute('aria-expanded', isOpen);
+  } else {
+    sidebar.removeAttribute('aria-hidden'); // Always accessible on desktop
+    toggleBtn.setAttribute('aria-expanded', false);
+  }
+}
+
 toggleBtn.addEventListener('click', () => {
-  const isOpen = sidebar.classList.toggle('open');
-
-  // Update ARIA attributes
-  toggleBtn.setAttribute('aria-expanded', isOpen);
-  sidebar.setAttribute('aria-hidden', !isOpen);
-
-  // control body layout on mobile
-  document.body.classList.toggle('sidebar-open', isOpen);
+  sidebar.classList.toggle('open');
+  document.body.classList.toggle('sidebar-open');
+  updateAria();
 });
+
+// Re-check on window resize (in case user resizes from mobile to desktop)
+window.addEventListener('resize', updateAria);
+
+// Initial check on load
+updateAria();
+
     
 </script>
 
 </body>
 </html>
+
