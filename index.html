@@ -65,7 +65,6 @@
   opacity: 0;
   animation: fadeIn 1.5s forwards;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  min-height: 230px; 
 }
 
 #welcome-message h2 {
@@ -154,9 +153,6 @@
   color: var(--accent-color);
 }
 
-.section-spacer {
-  height: 200px;
-}
 
     #notebook {
   padding: 2rem;
@@ -285,6 +281,7 @@
 
 html {
   scroll-behavior: smooth;
+    scroll-padding-top: 180px; /* Adjust this to match your header height */
 }
 
     #backToTop {
@@ -380,13 +377,6 @@ html {
     text-align: center;
   }
 
-  #welcome-message {
-    min-height: 260px; 
-  }
-
-  #projects, #notebook, #about-me {
-  scroll-margin-top: 240px; 
-}
 
   .section h2 {
     font-size: 1.3em;
@@ -481,7 +471,6 @@ html {
 </div>
   </div>
 
-  <div class="section-spacer" aria-hidden="true"></div>
 <section id="notebook">
   <h2>Notebook</h2>
 <p>The place where I do my thinking and random questions that I have done research on.</p>
@@ -523,8 +512,6 @@ html {
       <li>Binary code (just 0s and 1s) powers almost everything in modern computing.</li>
     </ul>
   </div>
-
-  <div class="section-spacer" aria-hidden="true"></div>
 
   <section id="about-me" class="section">
   <h2>About Me</h2>
@@ -794,6 +781,7 @@ document.querySelectorAll('.read-more').forEach(button => {
 </script>
 </body>
 </html>
+
 
 
 
