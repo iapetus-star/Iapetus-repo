@@ -785,6 +785,20 @@ document.querySelectorAll('.read-more').forEach(button => {
   });
 });
 
+
+//sidebar links
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', function(e) {
+    const targetId = this.getAttribute('href').substring(1);
+    const target = document.getElementById(targetId);
+    if (target) {
+      target.setAttribute('tabindex', '-1'); // Make it focusable
+      target.focus(); // Force screen reader to read
+    }
+  });
+});
+
+    
 // Sidebar toggle logic
 const toggleBtn = document.getElementById('menuToggle');
 const sidebar = document.getElementById('sidebar');
@@ -822,4 +836,5 @@ updateAria();
 
 </body>
 </html>
+
 
