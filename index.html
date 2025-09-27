@@ -787,11 +787,14 @@ document.querySelectorAll('.read-more').forEach(button => {
   });
 });
 
+const navbarHeight = document.querySelector('.navbar').offsetHeight;
+document.documentElement.style.scrollPaddingTop = navbarHeight + 'px';
 
     
 </script>
 </body>
 </html>
+
 
 
 
