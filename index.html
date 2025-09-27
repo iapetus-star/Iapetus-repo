@@ -60,6 +60,7 @@
     }
 
 #welcome-message {
+    min-height: 220px; /* Adjust to match your content */
   max-width: 700px;
   margin: 40px auto;
   text-align: center;
@@ -787,26 +788,25 @@ document.querySelectorAll('.read-more').forEach(button => {
   });
 });
 
-const navbarHeight = document.querySelector('.navbar').offsetHeight;
-document.documentElement.style.scrollPaddingTop = navbarHeight + 'px';
+window.addEventListener("load", () => {
+  const hash = window.location.hash;
+  if (hash) {
+    setTimeout(() => {
+      const target = document.querySelector(hash);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 1800); // delay to match animation duration
+  }
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  const navbarHeight = document.querySelector('.navbar').offsetHeight;
+  document.documentElement.style.scrollPaddingTop = navbarHeight + 'px';
+});
 
     
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
