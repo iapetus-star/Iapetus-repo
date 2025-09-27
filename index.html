@@ -442,6 +442,9 @@ html {
   </style>
 </head>
 <body>
+    
+  <div style="height: 2000px; visibility: hidden;" aria-hidden="true"></div>
+
   <!-- Sidebar Navigation -->
 <nav class="sidebar" aria-label="Main sidebar">
   <button class="sidebar-toggle" aria-label="Toggle Menu">☰</button>
@@ -794,11 +797,26 @@ toggleBtn.addEventListener('click', () => {
   document.body.classList.toggle('sidebar-open');
 });
 
+
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', function(e) {
+    const targetId = this.getAttribute('href').substring(1);
+    const target = document.getElementById(targetId);
+    if (target) {
+      target.setAttribute('tabindex', '-1'); // Make it focusable
+      target.focus(); // Force screen reader to read
+    }
+  });
+});
+
+
     
 </script>
+  
   <div style="height: 2000px; visibility: hidden;" aria-hidden="true"></div>
 
 </body>
 </html>
+
 
 
