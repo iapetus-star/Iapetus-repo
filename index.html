@@ -38,7 +38,8 @@
       padding: 40px;
       line-height: 1.6;
       transition: background 0.3s, color 0.3s;
-      padding-top: 60px; 
+      margin-left: 220px;
+      transition: margin-left 0.3s ease;
     }
 
     header {
@@ -234,64 +235,57 @@
   opacity: 0.5;
     }
 
-.navbar {
-  background-color: var(--bg-color);
-  padding: 10px 0;
+.sidebar {
   position: fixed;
   top: 0;
-  width: 100%;
-  z-index: 999;
-  text-align: center;
-    border-bottom: 1px solid var(--text-color);
-  opacity: 0.6;
-  margin-bottom: 30px;
-    transition: box-shadow 0.3s ease-in-out;
+  left: 0;
+  height: 100%;
+  width: 220px;
+  background-color: var(--bg-color);
+  border-right: 1px solid var(--text-color);
+  padding: 20px;
+  z-index: 1000;
+  transition: transform 0.3s ease;
 }
 
-.navbar ul {
+.sidebar-links {
   list-style: none;
   padding: 0;
-  margin: 0;
-  display: inline-flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  flex-direction: row;
-}
-    
-.navbar li {
-  margin: 0;
+  margin-top: 60px;
 }
 
-.navbar a {
-  color: var(--link-color);
+.sidebar-links li {
+  margin: 20px 0;
+}
+
+.sidebar-links a {
   text-decoration: none;
-  font-weight: 600;
+  font-weight: bold;
   font-size: 1rem;
+  color: var(--link-color);
   transition: color 0.3s;
 }
 
-.navbar a:hover {
+.sidebar-links a:hover {
   color: var(--accent-color);
 }
-    
-    .navbar.scrolled {
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); 
+
+.sidebar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--link-color);
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  cursor: pointer;
+  z-index: 1001;
 }
 
-    @media (prefers-color-scheme: dark) {
-  .navbar.scrolled {
-    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.08);
-  }
-}
 
 html {
   scroll-behavior: smooth;
-    scroll-padding-top: 100px; /* Adjust this to match your header height */
-}
-
-    [id] {
-  scroll-margin-top: 100px; /* Extra insurance */
 }
 
     #backToTop {
@@ -401,24 +395,6 @@ html {
     line-height: 1.6;
   }
 
-  .navbar {
-    padding: 10px 0;
-    margin-bottom: 20px;
-    opacity: 1;
-    border-bottom: 1px solid var(--text-color);
-  }
-
-  .navbar ul {
-    flex-direction: column;
-    gap: 12px;
-    align-items: center;
-  }
-
-  .navbar a {
-    font-size: 1rem;
-    padding: 8px 0;
-    display: block;
-  }
 
   #notebook .note-toggle {
     font-size: 1rem;
@@ -444,23 +420,43 @@ html {
   }
 }
 
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-toggle {
+    display: block;
+  }
+
+  body.sidebar-open {
+    margin-left: 0;
+  }
+}
+
+
   </style>
 </head>
 <body>
-  <header>
-    <canvas id="stars" aria-hidden="true"></canvas>
-
-
-    <h1>Welcome to My Universe</h1>
-    <p class="tagline"><span id="typed-text"></span><span class="cursor">|</span></p>
-        <nav class="navbar" aria-label="Main navigation">
-    <ul>
+  <!-- Sidebar Navigation -->
+<nav class="sidebar" aria-label="Main sidebar">
+  <button class="sidebar-toggle" aria-label="Toggle Menu">☰</button>
+  <ul class="sidebar-links">
     <li><a href="#projects">Projects</a></li>
     <li><a href="#notebook">Notebook</a></li>
     <li><a href="#about-me">About Me</a></li>
   </ul>
-  </nav>
+</nav>
 
+  <header>
+    <canvas id="stars" aria-hidden="true"></canvas>
+
+    <h1>Welcome to My Universe</h1>
+    <p class="tagline"><span id="typed-text"></span><span class="cursor">|</span></p>
   </header>
 
 
@@ -789,51 +785,17 @@ document.querySelectorAll('.read-more').forEach(button => {
   });
 });
 
-window.addEventListener("load", () => {
-  const hash = window.location.hash;
-  if (hash) {
-    setTimeout(() => {
-      const target = document.querySelector(hash);
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth" });
-      }
-    }, 1800); // delay to match animation duration
-  }
-});
+// Sidebar toggle logic
+const toggleBtn = document.querySelector('.sidebar-toggle');
+const sidebar = document.querySelector('.sidebar');
 
-window.addEventListener("DOMContentLoaded", () => {
-  const navbarHeight = document.querySelector('.navbar').offsetHeight;
-  document.documentElement.style.scrollPaddingTop = navbarHeight + 'px';
-});
-
-  // Smooth scroll override for anchor links in navbar
-document.querySelectorAll('.navbar a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    e.preventDefault();  // stop default anchor jump
-
-    const targetId = this.getAttribute('href').substring(1);  // remove '#'
-    const targetElem = document.getElementById(targetId);
-    if (!targetElem) {
-      console.warn("No element with ID:", targetId);
-      return;
-    }
-    const navbar = document.querySelector('.navbar');
-    const navHeight = navbar.offsetHeight;
-
-    // Compute target position: element top minus navbar height plus some margin
-    const targetPosition = targetElem.getBoundingClientRect().top + window.pageYOffset - navHeight - 10;
-
-    window.scrollTo({
-      top: targetPosition,
-      behavior: 'smooth'
-    });
-  });
+toggleBtn.addEventListener('click', () => {
+  sidebar.classList.toggle('open');
+  document.body.classList.toggle('sidebar-open');
 });
 
     
 </script>
 </body>
 </html>
-
-
 
