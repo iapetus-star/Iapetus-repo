@@ -423,10 +423,14 @@ html {
 @media (max-width: 768px) {
   .sidebar {
     transform: translateX(-100%);
+    visibility: hidden;
+    pointer-events: none;
   }
 
   .sidebar.open {
     transform: translateX(0);
+    visibility: visible;
+    pointer-events: auto;
   }
 
   .sidebar-toggle {
@@ -836,5 +840,3 @@ updateAria();
 
 </body>
 </html>
-
-
