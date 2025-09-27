@@ -806,9 +806,34 @@ window.addEventListener("DOMContentLoaded", () => {
   document.documentElement.style.scrollPaddingTop = navbarHeight + 'px';
 });
 
+  // Smooth scroll override for anchor links in navbar
+document.querySelectorAll('.navbar a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();  // stop default anchor jump
+
+    const targetId = this.getAttribute('href').substring(1);  // remove '#'
+    const targetElem = document.getElementById(targetId);
+    if (!targetElem) {
+      console.warn("No element with ID:", targetId);
+      return;
+    }
+    const navbar = document.querySelector('.navbar');
+    const navHeight = navbar.offsetHeight;
+
+    // Compute target position: element top minus navbar height plus some margin
+    const targetPosition = targetElem.getBoundingClientRect().top + window.pageYOffset - navHeight - 10;
+
+    window.scrollTo({
+      top: targetPosition,
+      behavior: 'smooth'
+    });
+  });
+});
+
     
 </script>
 </body>
 </html>
+
 
 
