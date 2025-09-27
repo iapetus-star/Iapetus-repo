@@ -443,7 +443,7 @@ html {
 </head>
 <body>
   <!-- Sidebar Navigation -->
-<nav class="sidebar" aria-label="Main sidebar">
+<nav class="sidebar" id="sidebar" aria-hidden="true" aria-label="Main sidebar">
   <button class="sidebar-toggle" id="menuToggle" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle Menu">☰</button>
   <ul class="sidebar-links">
     <li><a href="#projects">Projects</a></li>
@@ -807,10 +807,21 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 });
 
 
+document.getElementById('menuToggle').addEventListener('click', function () {
+  const sidebar = document.getElementById('sidebar');
+  const isOpen = sidebar.classList.toggle('open');
+
+  // Update ARIA attribute
+  this.setAttribute('aria-expanded', isOpen);
+
+  //  hide content from screen readers when sidebar is closed
+  sidebar.setAttribute('aria-hidden', !isOpen);
+});
     
 </script>
 
 </body>
 </html>
+
 
 
