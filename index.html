@@ -444,7 +444,7 @@ html {
 <body>
   <!-- Sidebar Navigation -->
 <nav class="sidebar" aria-label="Main sidebar">
-  <button class="sidebar-toggle" aria-label="Toggle Menu">☰</button>
+  <button class="sidebar-toggle" id="menuToggle" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle Menu">☰</button>
   <ul class="sidebar-links">
     <li><a href="#projects">Projects</a></li>
     <li><a href="#notebook">Notebook</a></li>
@@ -807,12 +807,27 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 });
 
 
+//js for mobol menu button expanding
+  const menuToggle = document.getElementById("menuToggle");
+const sidebar = document.getElementById("sidebar");
+
+function isMobileView() {
+  return window.innerWidth <= 768;
+}
+
+menuToggle.addEventListener("click", () => {
+  const isOpen = sidebar.classList.toggle("open");
+
+  // Only update ARIA if in mobile view
+  if (isMobileView()) {
+    sidebar.setAttribute("aria-hidden", !isOpen);
+    menuToggle.setAttribute("aria-expanded", isOpen);
+  }
+});
+
     
 </script>
 
 </body>
 </html>
-
-
-
 
