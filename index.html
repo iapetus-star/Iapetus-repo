@@ -807,27 +807,10 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 });
 
 
-//js for mobol menu button expanding
-  const menuToggle = document.getElementById("menuToggle");
-const sidebar = document.getElementById("sidebar");
-
-function isMobileView() {
-  return window.innerWidth <= 768;
-}
-
-menuToggle.addEventListener("click", () => {
-  const isOpen = sidebar.classList.toggle("open");
-
-  // Only update ARIA if in mobile view
-  if (isMobileView()) {
-    sidebar.setAttribute("aria-hidden", !isOpen);
-    menuToggle.setAttribute("aria-expanded", isOpen);
-  }
-});
-
     
 </script>
 
 </body>
 </html>
+
 
