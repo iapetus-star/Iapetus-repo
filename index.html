@@ -786,43 +786,21 @@ document.querySelectorAll('.read-more').forEach(button => {
 });
 
 // Sidebar toggle logic
-const toggleBtn = document.querySelector('.sidebar-toggle');
-const sidebar = document.querySelector('.sidebar');
+const toggleBtn = document.getElementById('menuToggle');
+const sidebar = document.getElementById('sidebar');
 
 toggleBtn.addEventListener('click', () => {
-  sidebar.classList.toggle('open');
-  document.body.classList.toggle('sidebar-open');
-});
-
-
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-  link.addEventListener('click', function(e) {
-    const targetId = this.getAttribute('href').substring(1);
-    const target = document.getElementById(targetId);
-    if (target) {
-      target.setAttribute('tabindex', '-1'); // Make it focusable
-      target.focus(); // Force screen reader to read
-    }
-  });
-});
-
-
-document.getElementById('menuToggle').addEventListener('click', function () {
-  const sidebar = document.getElementById('sidebar');
   const isOpen = sidebar.classList.toggle('open');
 
-  // Update ARIA attribute
-  this.setAttribute('aria-expanded', isOpen);
-
-  //  hide content from screen readers when sidebar is closed
+  // Update ARIA attributes
+  toggleBtn.setAttribute('aria-expanded', isOpen);
   sidebar.setAttribute('aria-hidden', !isOpen);
+
+  // control body layout on mobile
+  document.body.classList.toggle('sidebar-open', isOpen);
 });
     
 </script>
 
 </body>
 </html>
-
-
-
-
