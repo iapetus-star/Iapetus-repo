@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Emoji Adventure Story</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    .explanation {
+      background-color: #e8f4f8;
+      border-left: 5px solid #3498db;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+    }
+
+    .emoji-story {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      font-size: 1.8rem;
+      line-height: 2.5rem;
+      text-align: center;
+      background: #fff;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    .button-container {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    button {
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    .text-story {
+      display: none;
+      margin-top: 2rem;
+      background: #fff;
+      border-radius: 8px;
+      padding: 1.5rem;
+      line-height: 1.7rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    @media screen and (max-width: 600px) {
+      .emoji-story {
+        font-size: 1.5rem;
+        line-height: 2.2rem;
+      }
+
+      .text-story {
+        font-size: 0.95rem;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌲 The Emoji Adventure 🌞</h1>
+    <div class="explanation">
+      This is a fun and creative story told first through emojis! Use your imagination to interpret the symbols. When you're ready, click the button below to reveal the full written version of the story.
+    </div>
+
+    <div class="emoji-story">
+      👧🌞🏞️🌻<br>
+      👧🎒➡️🏕️⛺<br>
+      🦉🌲🌙✨<br>
+      👧😴💭🌠<br>
+      🐺🌳👀<br>
+      👧😱🏃‍♀️💨<br>
+      🌕🐺🎶🦴<br>
+      👧🧭🔦🔊<br>
+      🔥🌲🔥⚡<br>
+      🐾➡️🏞️🚶‍♀️<br>
+      🏞️🌄🌼<br>
+      👧🍎🥖💧<br>
+      🐦🎶🌅<br>
+      👧👫👦🐶<br>
+      🌳🌸🦋🌿<br>
+      🏞️🚣‍♀️🌊🐟<br>
+      👧🐟🎣😀<br>
+      🌧️☔🌈😊<br>
+      🔥🔥🌙⭐<br>
+      👧📖🔥🕯️<br>
+      👧💤💭🏰🦄<br>
+      🌞⏰👧🏃‍♀️➡️🏫<br>
+      👧📚✏️📝<br>
+      👩‍🏫👏🙂<br>
+      🏫🏡🌳🌞<br>
+      👧👩‍👧‍👦🎉🎈🎁<br>
+      🎂🍰🎊🎉<br>
+      👧🎥🍿📺<br>
+      🌌🌟💫🌙<br>
+      👧🛏️😴💤
+    </div>
+
+    <div class="button-container">
+      <button onclick="document.getElementById('textStory').style.display='block'; this.style.display='none';">
+        📖 Show Full Story
+      </button>
+    </div>
+
+    <div class="text-story" id="textStory">
+      <p>
+        A young girl woke up on a bright sunny day, excited to go on a nature adventure. She packed her backpack and headed to a nearby campsite, eager to explore the woods.
+      </p>
+      <p>
+        That night, under the glowing moon and twinkling stars, she heard an owl hooting. As she fell asleep in her tent, she dreamed of shooting stars.
+      </p>
+      <p>
+        Suddenly, she noticed a wolf watching her from the trees. Scared, she ran through the forest, the full moon lighting her way. The wolf howled, its haunting song echoing through the night.
+      </p>
+      <p>
+        With a flashlight and a compass, she followed the wolf’s tracks deeper into the woods. A storm threatened, with lightning sparking a small fire in the forest.
+      </p>
+      <p>
+        Carefully, she tracked the animal’s footprints, navigating through hills and meadows. The next morning, she rested by a clearing, eating apples and bread while birds sang.
+      </p>
+      <p>
+        She met new friends by the trees, a boy, a girl, and their dog. Together, they admired the flowers, butterflies, and lush greenery around them.
+      </p>
+      <p>
+        Later, they went rowing on a peaceful lake, catching fish for lunch. Even when rain came, a bright rainbow lifted their spirits.
+      </p>
+      <p>
+        That night, around a campfire, she read stories by candlelight before drifting off to sleep, dreaming of castles and unicorns.
+      </p>
+      <p>
+        When the sun rose, it was time to return to school. She ran eagerly to her classroom, where her teacher praised her for her adventure journal.
+      </p>
+      <p>
+        After school, she returned home, playing happily with her younger siblings. They celebrated with a party full of cake, balloons, and laughter.
+      </p>
+      <p>
+        That evening, the girl enjoyed a cozy movie night, watching stars twinkle outside her window before falling asleep, ready for her next adventure.
+      </p>
+    </div>
+  </div>
+</body>
+</html>
