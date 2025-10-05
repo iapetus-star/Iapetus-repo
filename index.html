@@ -210,16 +210,41 @@
       color: var(--text-color);
     }
 
-    .projects-list a {
-      display: block;
-      margin: 8px 0;
-      color: var(--link-color);
-      text-decoration: none;
-    }
+    .project {
+  margin-bottom: 25px;
+  padding: 15px 20px;
+  border-left: 4px solid var(--accent-color);
+  background-color: rgba(0, 0, 0, 0.03);
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
 
-    .projects-list a:hover {
-      text-decoration: underline;
-    }
+.project:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.project h3 {
+  margin-top: 0;
+  margin-bottom: 5px;
+  font-size: 1.2em;
+  color: var(--link-color);
+}
+
+.project h3 a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.project h3 a:hover {
+  color: var(--accent-color);
+}
+
+.project p {
+  margin: 0;
+  font-size: 1em;
+  opacity: 0.9;
+}
+
 
     #about-me h3 {
   font-size: 1.3em;
@@ -475,15 +500,45 @@ html {
   </p>
 </div>
 
-  <div class="section" id="projects">
-    <h2>Projects</h2>
-    <p>Below are a few projects I feel comfortable sharing with others. I'll add more as I go.</p>
-    <div class="projects-list">
-      <a href="https://iapetus-star.github.io/Iapetus-repo/waterwave.html" target="_blank">Water-wave</a>
-      <a href="https://iapetus-star.github.io/Iapetus-repo/wouldYouRather.html" target="_blank">Would You Rather game...</a>
-      <a href="https://iapetus-star.github.io/Iapetus-repo/Madlibs.html" target="_blank">Visit The Madness of my Madlibs!</a>
-</div>
+<div class="section" id="projects">
+  <h2>Projects</h2>
+  <p>These are fragments of digital thought scattered into the void. Some shaped with intention, others born from late-night impulses and half-finished dreams.</p>
+  <p>Each project carries a whisper of curiosity, confusion, or quiet obsession. Some may serve a purpose. Others simply exist, because not everything needs a reason.</p>
+  <p>Take what resonates, leave what doesn’t.</p>
+  <p>Will more appear? Undoubtedly. Whether they illuminate or bewilder is a mystery I no longer try to solve. I just follow the thread and let the code become whatever it wants to be.</p>
+
+  
+  <div class="projects-list">
+
+    <div class="project">
+      <h3><a href="https://iapetus-star.github.io/Iapetus-repo/waterwave.html" target="_blank">Water-wave</a></h3>
+      <p>A chaotic little auto-clicker game where you smash hydrogen and oxygen into glorious H₂O. It’s science, but barely. Expect rapid clicking, molecule mayhem, and absolutely no lab safety protocols.</p> 
+      <p>There’s no end in sight (yet). Right now, the game can expand infinitely if you’ve got the time and the fingers to keep going. It's very much a work in progress.</p> 
+      <p>I’ve got a ton of wild ideas brewing for the future, but they’re all tangled up in my head at the moment. This isn’t the final version. Far from it. I’ll circle back when the ideas settle and the time’s right.</p> 
+      <p>Until then, enjoy the chemical chaos!</p> 
+    </div>
+
+    <div class="project">
+      <h3><a href="https://iapetus-star.github.io/Iapetus-repo/wouldYouRather.html" target="_blank">Would You Rather Game</a></h3>
+      <p>A random question generator that throws two possibly cursed options at you and you have to pick one. Fun? Torture? Maybe a little bit of both.</p>
+      <p>This simple “Would You Rather” game is pretty much done and dusted. I’ve packed it with an array of 200 questions that’ll make you laugh, cringe, or seriously think twice.</p>
+      <p>It’s super easy to add more questions whenever inspiration strikes. Down the line, I’m thinking of sorting them into categories so you can pick what kind of weirdness you’re in the mood for.</p>
+    </div>
+
+    <div class="project">
+      <h3><a href="https://iapetus-star.github.io/Iapetus-repo/Madlibs.html" target="_blank">Madlibs Madness</a></h3>
+      <p>Fill in the blanks and unleash your inner word wizard to create delightfully weird and wonderfully wild stories. Classic Madlibs with my own quirky twist.</p>
+      <p>This project is my pride and joy. Right now, you’ve got 15 fully loaded Madlibs to play with endlessly, but I’m just getting started. My ultimate goal? Over 100 hilarious, absurd, and totally unique Madlibs for you to enjoy.</p>
+      <p>Keep coming back! I have zero plans to ever “finish” this because I write new ones whenever inspiration hits. Get ready for endless laughs, nonsense, and creative chaos.</p>
+    </div>
+
+    <div class="project">
+      <h3><a href="https://iapetus-star.github.io/Iapetus-repo" target="_blank">Home to the Experimental Projects</a></h3>
+      <p>Some projects start as jokes, accidents, or late-night “what if” ideas. Others come from pure curiosity or the need to make something weird, just for fun. They’re messy, small, and sometimes surprisingly fun. Who knows, a few might grow into something big enough to earn a spot on the main page.</p>
+    </div>
+
   </div>
+</div>
 
 <section id="notebook">
   <h2>Notebook</h2>
@@ -491,30 +546,100 @@ html {
   <div class="note">
     <button class="note-toggle">Could you simulate a galaxy using only basic physics and Python?</button>
     <div class="note-content">
-      Probably not a full galaxy with billions of stars — but a simplified version? Definitely. You could simulate gravitational attraction between a few hundred stars or particles, using Newton’s laws. Libraries like Pygame or even Matplotlib can visualize it. The real challenge is performance — once you have thousands of objects, you need smarter algorithms (like Barnes-Hut) to keep it running smoothly. Still, it’s a fun way to learn physics and optimization.
+      <p>Simulating an entire galaxy with billions of stars using only basic physics and Python is not practical due to the sheer number of stars and the complexity of their interactions. However, you <em>can</em> create a simplified simulation of a galaxy by modeling a smaller number of stars-say, a few hundred or a few thousand-and applying Newton’s laws of gravity to simulate their motion.</p>
+      <p>In such a simulation, each star would attract every other star according to Newton’s law of universal gravitation. By calculating these forces and updating the positions and velocities of stars over time using numerical methods, you can observe interesting dynamics like star clusters or spiral patterns forming.</p>
+      <p>Python libraries like Matplotlib or Pygame can help you visualize the stars moving in real time or as an animation. The main challenge is computational performance: calculating gravitational forces between every pair of stars scales as the square of the number of stars, which quickly becomes very slow as you increase the number of objects.</p>
+      <p>To handle larger numbers efficiently, more advanced algorithms like the Barnes-Hut method approximate distant forces to reduce computation time, but these are more complex to implement.</p>
+      <p>In summary, while you can’t realistically simulate a full galaxy with all its stars using only basic physics and Python on a typical computer, creating a simplified, smaller-scale galaxy simulation is definitely possible and a fantastic way to learn about physics and programming!</p>
     </div>
   </div>
 
   <div class="note">
     <button class="note-toggle">Could you program a spacecraft to generate and follow its own mission plan?</button>
     <div class="note-content">
-      In theory, yes — with the right onboard AI and sensors, a spacecraft could dynamically generate its own mission plan based on goals and environmental input. You’d need modules for navigation, prioritization, diagnostics, and fallback behaviors. Think of it like a space version of a self-driving car. The hard part is making it safe and reliable, especially without real-time communication with Earth. 
+      <p>Yes, it is theoretically possible for a spacecraft to program itself to generate and follow its own mission plan. With advanced onboard artificial intelligence (AI) and a suite of sensors, a spacecraft can assess its environment, interpret mission objectives, and dynamically create or adjust plans in response to changing conditions.</p>
+      <p>To achieve this, the spacecraft would require several key systems: navigation to understand its position and trajectory, prioritization to decide which tasks or goals are most important at any time, diagnostics to monitor its own health and detect problems, and fallback behaviors to handle unexpected situations safely.</p>
+      <p>This concept is somewhat similar to how self-driving cars operate on Earth, making autonomous decisions based on sensor data without direct human control.</p>
+      <p>However, the biggest challenges lie in ensuring the system is extremely safe and reliable, especially since spacecraft often operate far from Earth with limited or delayed communication, making real-time human intervention impossible.</p>
     </div>
   </div>
 
   <div class="note">
     <button class="note-toggle">What would a coding language look like if it was built only for space missions?</button>
     <div class="note-content">
-      It would probably be dead simple, highly fault-tolerant, and ultra-conservative. No dynamic memory allocation. No garbage collection. Every function tightly defined, and performance predictable down to the clock cycle. 
+      <p>A programming language designed specifically for space missions would prioritize simplicity, reliability, and predictability above all else. It would likely be very minimalistic, avoiding complex features that could introduce bugs or unpredictable behavior.</p>
+      <p>Such a language would be highly fault-tolerant, with mechanisms to handle errors gracefully without crashing the system. Dynamic memory allocation and garbage collection would almost certainly be avoided because they can cause unpredictable pauses or memory leaks, something unacceptable in critical real-time space systems.</p>
+      <p>Every function and operation would be explicitly defined with clear, deterministic behavior, ensuring that performance and timing can be predicted precisely, often down to individual clock cycles. This predictability is vital for systems that need to run continuously and safely for long durations without human intervention.</p>
+      <p>In summary, this language would focus on safety, efficiency, and absolute control over system resources, often resembling low-level languages like Ada or MISRA-compliant subsets of C, which are commonly used in aerospace applications today.</p>
     </div>
   </div>
 
   <div class="note">
     <button class="note-toggle">Can you simulate a black hole’s gravity with 2D code and basic math?</button>
     <div class="note-content">
-      You actually can — not with full general relativity, but with Newtonian gravity or approximations of spacetime curvature. For example, you can model how light or particles bend near a massive object using a simple "force field" analogy. Or use a gradient map to bend virtual space around a center. It won’t be perfectly accurate, but it’ll look convincing — and you can build cool visualizations that mimic lensing and orbit decay.
+      <p>Yes, you can simulate a black hole’s gravity using 2D code and basic math, although it won’t capture the full complexity of general relativity. Instead, you can use simpler models based on Newtonian gravity or approximate the effects of spacetime curvature.</p>
+      <p>For example, you might treat the black hole as a point mass exerting a gravitational force that affects the motion of nearby particles or light rays. Another approach is to use a “force field” analogy where the space around the black hole is represented by a gradient map that bends or distorts virtual space toward the center.</p>
+      <p>While these methods don’t replicate the exact physics of a black hole, they can produce visually convincing effects such as gravitational lensing-where light bends around the massive object-and orbital decay of particles spiraling inward.</p>
+      <p>These simplified simulations are a great way to explore black hole behavior and create striking visualizations using relatively simple math and programming.</p>
     </div>
   </div>
+
+  <div class="note">
+    <button class="note-toggle">How do quantum computers differ fundamentally from classical computers, and what are their practical limitations today?</button>
+    <div class="note-content">
+    Research on this question is not complete yet. Please check back later.
+    </div>
+  </div>
+
+  <div class="note">
+    <button class="note-toggle">What causes the mysterious phenomenon of dark energy accelerating the expansion of the universe?</button>
+    <div class="note-content">
+    Research on this question is not complete yet. Please check back later.
+    </div>
+  </div>
+
+  <div class="note">
+    <button class="note-toggle">How do autonomous vehicles detect and respond to unpredictable situations in real time?</button>
+    <div class="note-content">
+    Research on this question is not complete yet. Please check back later.
+    </div>
+  </div>
+
+  <div class="note">
+    <button class="note-toggle">What are the challenges and solutions for storing and transmitting quantum information?</button>
+    <div class="note-content">
+    Research on this question is not complete yet. Please check back later.
+    </div>
+  </div>
+
+  <div class="note">
+    <button class="note-toggle">What are the main technical hurdles in building scalable fusion reactors for energy?</button>
+    <div class="note-content">
+    Research on this question is not complete yet. Please check back later.
+    </div>
+  </div>
+
+  <div class="note">
+    <button class="note-toggle">How do we use satellites to monitor and predict natural disasters like hurricanes or wildfires?</button>
+    <div class="note-content">
+    Research on this question is not complete yet. Please check back later.
+    </div>
+  </div>
+
+  <div class="note">
+    <button class="note-toggle">How do different programming paradigms affect the development and maintenance of large software systems?</button>
+    <div class="note-content">
+    Research on this question is not complete yet. Please check back later.
+    </div>
+  </div>
+
+  <div class="note">
+    <button class="note-toggle">How do we simulate complex chemical reactions on classical and quantum computers?</button>
+    <div class="note-content">
+    Research on this question is not complete yet. Please check back later.
+    </div>
+  </div>
+
 </section>
 
   <div class="section">
@@ -841,4 +966,5 @@ updateAria();
 
 </body>
 </html>
+
 
