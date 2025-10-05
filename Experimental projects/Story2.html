@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Emoji Space Adventure</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    .explanation {
+      background-color: #eef6fb;
+      border-left: 5px solid #1abc9c;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+    }
+
+    .emoji-story {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      font-size: 1.8rem;
+      line-height: 2.5rem;
+      text-align: center;
+      background: #fff;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    .button-container {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    button {
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      background-color: #1abc9c;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #16a085;
+    }
+
+    .text-story {
+      display: none;
+      margin-top: 2rem;
+      background: #fff;
+      border-radius: 8px;
+      padding: 1.5rem;
+      line-height: 1.7rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    @media screen and (max-width: 600px) {
+      .emoji-story {
+        font-size: 1.5rem;
+        line-height: 2.2rem;
+      }
+
+      .text-story {
+        font-size: 0.95rem;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌌 The Emoji Space Mission 🚀</h1>
+    <div class="explanation">
+      This is the second in a pair of emoji-based stories! It's a galactic tale of aliens, teamwork, and space battles, told entirely through emojis first. Click the button below to reveal the full written version.
+    </div>
+
+    <div class="emoji-story">
+      🚀🌌✨👩‍🚀<br>
+      🪐🔭🌠🌟<br>
+      👩‍🚀📡🛰️👽<br>
+      👽🛸👾👩‍🚀<br>
+      👽🤝👩‍🚀🌍<br>
+      🪐🛸🛠️⚙️<br>
+      🌑🌕🌍🌞<br>
+      👩‍🚀🛰️💥🛠️<br>
+      🪐🌪️🛸🚀<br>
+      🛸🚨🌌🛸<br>
+      👩‍🚀⚔️👾🛸<br>
+      💫🌠🚀🌍<br>
+      👽🛸🌟🛠️<br>
+      🌌👩‍🚀🎯🔭<br>
+      🌍👩‍🚀🏆🎉<br>
+      🛸👩‍🚀🌠🌌<br>
+      🚀🌙🌞👩‍🚀<br>
+      🌟🌍🪐✨🌌
+    </div>
+
+    <div class="button-container">
+      <button onclick="document.getElementById('textStory').style.display='block'; this.style.display='none';">
+        📖 Show Full Story
+      </button>
+    </div>
+
+    <div class="text-story" id="textStory">
+      <p>
+        A brave astronaut launched into the vast, sparkling cosmos aboard her rocket ship. She gazed through her telescope at distant planets, stars, and shooting comets.
+      </p>
+      <p>
+        Suddenly, her satellite detected a strange signal, an encounter with alien life! A friendly extraterrestrial spaceship appeared, and she met an alien being. Despite their differences, they shook hands in a moment of peaceful first contact.
+      </p>
+      <p>
+        Together, they explored nearby planets and worked to repair a damaged spaceship using advanced tools and technology. The dark moon, bright Earth, and glowing sun formed a breathtaking cosmic backdrop.
+      </p>
+      <p>
+        During a critical mission, the astronaut’s satellite was hit by a sudden cosmic blast, but she managed to fix it swiftly. However, a powerful space storm struck, forcing both ships to maneuver rapidly through the chaos.
+      </p>
+      <p>
+        An alarm blared as they spotted enemy alien invaders approaching. The astronaut bravely battled the hostile aliens in a fierce space skirmish, defending her ship and their mission.
+      </p>
+      <p>
+        After the conflict, she set her sights on a new star and successfully completed her mission, returning triumphant to Earth. The friendly aliens repaired their ship, ready for new journeys.
+      </p>
+      <p>
+        The astronaut celebrated her victory, honored with accolades for her courage and teamwork. Together, human and alien prepared to explore the farthest reaches of the galaxy.
+      </p>
+      <p>
+        As her rocket soared past the moon, sun, and stars, she dreamed of countless new adventures awaiting among the infinite wonders of space.
+      </p>
+    </div>
+  </div>
+</body>
+</html>
