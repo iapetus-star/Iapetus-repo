@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Experimental Projects</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #1a1f2b;
+      --text: #f4f1de;
+      --link: #ff6f91;
+      --border: #ffcb77;
+      --accent: #32ff7e;
+    }
+
+    @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1624;
+      --text: #e6e1dc;
+      --link: #f72585;
+      --border: #a02145;
+      --accent: #32ff7e; 
+    }
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 1.5rem;
+      line-height: 1.6;
+      word-wrap: break-word;
+    }
+
+    .floating-back-link {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      bottom: auto;
+      left: auto;
+      background-color: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 0 10px rgba(50, 255, 126, 0.4);
+      transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+      z-index: 1000;
+    }
+
+    .floating-back-link:hover {
+      background-color: #27db6a;
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(50, 255, 126, 0.6);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 1.8rem;
+    }
+
+    .project {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.5rem;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    .project h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .project a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    .project a:hover {
+      text-decoration: underline;
+      color: #ff4d6d;
+      text-shadow: 0 0 5px #ff6f91;
+    }
+
+    .project:hover {
+      border-color: var(--accent);
+      background-color: rgba(50, 255, 126, 0.05);
+    }
+
+    button {
+      background: var(--accent);
+      border: none;
+      color: var(--bg);
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      box-shadow: 0 0 0 rgba(50, 255, 126, 0);
+    }
+
+    button:hover {
+      background: #27db6a; 
+      box-shadow: 0 0 10px rgba(50, 255, 126, 0.5), 0 0 20px rgba(50, 255, 126, 0.3);
+    }
+
+    footer {
+      color: rgba(244, 241, 222, 0.7); 
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 0.9rem; 
+    }
+
+    /* Optional max width for larger screens */
+    @media (min-width: 768px) {
+      body {
+        max-width: 1000px;
+        margin: auto;
+        padding: 2rem;
+      }
+    }
+
+    /* Tighter layout for small screens */
+    @media (max-width: 600px) {
+      body {
+        padding: 1.2rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .project {
+        padding: 0.9rem 1rem;
+      }
+
+      .project h2 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="https://yourmainsite.com" class="floating-back-link" rel="noopener noreferrer">← Back to Main Site</a>
+<main>
+  <h1>Experimental Projects</h1>
+    <p>Welcome to the chaotic kitchen of my curiosity, where half-baked ideas rise, fall, and occasionally catch fire in spectacular fashion. This is the sacred ground where rules go to die, and logic is politely asked to wait outside. Expect strange creatures, questionable code, and the occasional stroke of accidental genius. I can’t promise consistency, coherence, or even safety, but I can promise it’ll be interesting. Proceed with curiosity, caution, and maybe a helmet.</p>
+
+  <div class="project">
+    <h2><a href="https://iapetus-star.github.io/Iapetus-repo/Experimental%20projects/Story1.html" target="_blank" rel="noopener noreferrer">Emoji Story</a></h2>
+      A wizard’s magical experiment goes horribly wrong when a monster accidentally gets summoned... through the toilet. Told first in chaotic emojis, then unlocked into a full-blown absurd tale of spells, plumbing nightmares, and general mayhem. Brace yourself for the splash zone.
+  </div>
+
+  <div class="project">
+    <h2><a href="https://iapetus-star.github.io/Iapetus-repo/Experimental%20projects/Story2.html" target="_blank" rel="noopener noreferrer">Second Emoji Story</a></h2>
+      An epic emoji odyssey featuring a woman exploring the vastness of space, meeting aliens, and boldly going where no emoji has gone before. Includes existential space snacks. I spent way too long figuring out if 👽💃 counts as first contact, don’t judge me.
+  </div>
+
+  <!-- Add more project blocks as needed -->
+</main>
+  <footer>
+    <p>No developers were harmed during the making of these experiments. Except maybe one, emotionally, spiritually, and possibly via CSS.</p>
+    <p>If this page explodes, it’s probably on purpose. Or not. Hard to say. It depends on which branch of the multiverse you're in.</p>
+    <p>Certified 100% untested, questionably functional, and possibly haunted. Side effects may include spontaneous inspiration, mild confusion, or sudden urges to refactor your life.</p>
+    <p>Don’t trust anything below this line. Seriously. This is the internet’s basement. The lights flicker. Weird code lives here. And yet… you scrolled all the way down. That says more about you than it does about me.</p>
+    <p>You’ve reached the end. There’s no secret. No treasure. Just vibes. Refresh for a different outcome. Or don’t. I’m not your browser.</p>
+  </footer>
+
+
+</body>
+</html>
