@@ -708,13 +708,17 @@ html {
     </section>
 </main>
 
-  <footer role="contentinfo" aria-label="Footer">
+  <footer aria-label="Footer">
     <p>This site is a little side project. Just exploring stuff I enjoy.</p>
     <p style="margin-top: 10px; font-size: 0.8em;">Last updated: October 5, 2025</p>
     <p><a href="https://iapetus-star.github.io/Iapetus-repo/change%20log.html" target="_blank" rel="noopener noreferrer">📜 View Changelog (where I log my legendary feats)</a></p>
   </footer>
   
-  <button id="backToTop" title="Back to Top" aria-label="Back to top">↑ Top</button>
+  <button id="backToTop" title="Back to Top" aria-label="Back to top">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+    <path d="M8 12a.5.5 0 0 0 .5-.5V4.707l3.147 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 4.707V11.5A.5.5 0 0 0 8 12z"/>
+    </svg>
+↑ Top</button>
 
   <script>
     
@@ -730,7 +734,7 @@ const backToTopButton = document.getElementById("backToTop");
 const navbar = document.querySelector('.navbar');
     
 window.addEventListener("scroll", () => {
-  if (window.scrollY > 300) {
+  if (window.scrollY > 250) {
     backToTopButton.style.display = "block";
   } else {
     backToTopButton.style.display = "none";
@@ -964,6 +968,7 @@ updateAria();
 
 </body>
 </html>
+
 
 
 
