@@ -21,6 +21,7 @@
       height: 100vh;
       text-align: center;
       margin: 0;
+      padding: 20px;
     }
     h1 {
       font-size: 4em;
@@ -29,6 +30,7 @@
     p {
       font-size: 1.2em;
       margin-top: 20px;
+      max-width: 600px;
     }
     a {
       margin-top: 30px;
@@ -39,11 +41,123 @@
     a:hover {
       text-decoration: underline;
     }
+
+    input, button {
+      margin-top: 30px;
+      padding: 10px;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+    }
+
+    input {
+      width: 250px;
+      margin-right: 10px;
+    }
+
+    button {
+      background-color: var(--accent-color);
+      color: #111;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0099cc;
+    }
+
+    .response {
+      margin-top: 30px;
+      font-style: italic;
+      color: #a0ffa0;
+      max-width: 600px;
+    }
   </style>
 </head>
 <body>
   <h1>404</h1>
   <p>You’ve entered a void in the universe. This page doesn’t exist... yet.</p>
-  <a href="index.html">Return to Home</a>
+
+    <p>Welcome, my child, to the Temple of Lost URLs.</p>
+    <p>You have strayed from the sacred path of valid pages.</p>
+    <p>Confess what you were looking for, and the Overlords shall judge you.</p>
+
+  <div>
+    <input id="confession" type="text" placeholder="I was looking for..." />
+    <button onclick="confess()">Confess</button>
+  </div>
+
+  <div class="response" id="response"></div>
+
+  <a href="index.html" rel="noopener noreferrer">Return to Home</a>
+
+  <script>
+    const responses = [
+      "You sought knowledge, but found an expired coupon for ham.",
+      "Your intentions were pure. Your execution? Like a penguin trying to do algebra.",
+      "Your soul is 42% snacks, 58% regrets.",
+      "You wanted answers. You got this website instead. Oops.",
+      "This page was banished for crimes against HTML.",
+      "You must now duel a goose to proceed.",
+      "Congratulations. You’ve unlocked absolutely nothing.",
+      "You searched for meaning. All we have is this sock.",
+      "The link ascended. It left no forwarding address.",
+      "This page didn’t disappear. It just didn’t like you.",
+      "Access denied. Not for security — just vibes.",
+      "That page owes us money. We don’t talk to it anymore.",
+      "Your request is under review by a council of wizards.",
+      "You’ve achieved nothing. But beautifully.",
+      "The universe saw your request and said: 'lol no.'",
+      "That page ran away to join the circus.",
+      "All we found was dust, echoes, and an empty sandwich wrapper.",
+      "The page self-destructed to protect its secrets.",
+      "You have been redirected to the Department of Obsolete Desires.",
+      "404 souls have wandered here before you. None returned.",
+      "This page self-destructed out of embarrassment.",
+      "You summoned something... but it was just Dave from accounting. He’s useless.",
+      "There is no page. There never was. You are the glitch.",
+      "The page you sought now lives in witness protection.",
+      "Sorry. That page legally changed its name and left the country.",
+      "Your confession has been reviewed. Our decision: LOL.",
+      "This page was last seen running into the woods screaming.",
+      "We gave your request to the pigeons. They ate it.",
+      "404: Your expectations were too high.",
+      "You found the secret portal to nowhere. Congrats.",
+      "That page got hired by Google. It moved on.",
+      "You were looking for content. We offer only chaos.",
+      "The page was last seen in 2017. It was a different time."
+      "You triggered a side quest. Objective: lower your expectations."
+    ];
+
+  function confess() {
+    const input = document.getElementById('confession').value.trim();
+    const outputDiv = document.getElementById('response');
+    
+    const chosenResponse = responses[Math.floor(Math.random() * responses.length)];
+    const intro = input
+      ? `You sought "${input}", but... `
+      : `You said nothing... and somehow, that was still wrong. `;
+
+    const fullMessage = intro + chosenResponse;
+
+    // Clear previous response
+    outputDiv.innerHTML = '';
+    
+    // "thinking..." effect
+    outputDiv.innerHTML = "<em>The Overlords are thinking...</em>";
+
+    setTimeout(() => {
+      outputDiv.innerHTML = '';
+      typeText(fullMessage, outputDiv, 0);
+    }, 5000); // Delay before typing starts
+  }
+
+  function typeText(text, element, i) {
+    if (i < text.length) {
+      element.innerHTML += text.charAt(i);
+      setTimeout(() => typeText(text, element, i + 1), 25); // Typing speed (ms per character)
+    }
+  }
+
+  </script>
 </body>
 </html>
