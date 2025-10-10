@@ -4,14 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>My MadLibs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
+    /* Base reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     :root {
-      --bg-light: #f9f9f9;
-      --bg-dark: #121212;
-      --text-light: #121212;
-      --text-dark: #f9f9f9;
-      --accent: #ff6f61;
-      --font-stack: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      --bg-light: #fff7e6;
+      --bg-dark: #1e1a24;
+      --text-light: #333333;
+      --text-dark: #fefefe;
+      --accent-light: #ff69b4;
+      --accent-dark: #ffb347;
+      --card-light: #ffffff;
+      --card-hover-light: #ffe0f0;
+      --card-dark: #2a2333;
+      --card-hover-dark: #3a2f4f;
+      --font-stack: 'Comic Neue', system-ui, sans-serif;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -20,7 +33,13 @@
         color: var(--text-dark);
       }
       a {
-        color: #ffa08c;
+        color: var(--accent-dark);
+      }
+      li {
+        background-color: var(--card-dark);
+      }
+      li:hover {
+        background-color: var(--card-hover-dark);
       }
     }
 
@@ -30,14 +49,19 @@
         color: var(--text-light);
       }
       a {
-        color: var(--accent);
+        color: var(--accent-light);
+      }
+      li {
+        background-color: var(--card-light);
+      }
+      li:hover {
+        background-color: var(--card-hover-light);
       }
     }
 
     body {
       font-family: var(--font-stack);
-      margin: 0;
-      padding: 2rem;
+      padding: 2rem 1rem;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -45,85 +69,127 @@
       transition: background-color 0.3s, color 0.3s;
     }
 
+    main {
+      max-width: 800px;
+      width: 100%;
+    }
+
     h1 {
       font-size: 3rem;
       margin-bottom: 1rem;
-    }
-    
-    p {
-      max-width: 600px;
       text-align: center;
-      margin-bottom: 2rem;
+    }
+
+    p {
+      max-width: 700px;
+      margin: 0 auto 2rem;
       font-size: 1.1rem;
       line-height: 1.6;
+      text-align: center;
     }
 
     ul {
       list-style: none;
       padding: 0;
-      margin: 0;
+      margin: 2rem auto;
+      display: grid;
+      gap: 1rem;
+      max-width: 700px;
     }
 
     li {
-      margin: 0.5rem 0;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      transition: background-color 0.3s;
     }
 
     a {
       text-decoration: none;
       font-weight: bold;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
+      display: block;
+      transition: color 0.3s;
     }
 
-    a:hover {
+    a:hover,
+    a:focus {
       text-decoration: underline;
+      outline: 2px dashed currentColor;
+      outline-offset: 4px;
+    }
+
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: gray;
+      text-align: center;
+      line-height: 1.6;
+      max-width: 600px;
+    }
+
+    footer div:last-child {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: #bbb;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+      a {
+        font-size: 1.1rem;
+      }
     }
   </style>
 </head>
+
 <body>
-  <h1>📝 My MadLibs</h1>
-  <p>
-  Welcome to my glorious collection of MadLibs, chaotic masterpieces born from a brain powered by caffeine, snacks, and just enough grammar to be dangerous. These MadLibs are my chaotic love letters to language, laughter, and the beautiful art of not taking yourself too seriously. Will they change your life? Unlikely. Will they make you giggle-snort through your nose like a startled duck? I truly hope so. 
-  <br><br>
-  I may not be the world's greatest writer (yet), but I believe in sharing joy — even if it’s wrapped in weird grammar and questionable plot twists. 
-  <br><br>
-  P.S. Don’t come after me for whatever your eyeballs are about to witness. You have been warned. Lovingly. With sprinkles.
-</p>
+  <main>
+    <h1>📝 My MadLibs</h1>
+    <p>Welcome to my glorious collection of MadLibs, chaotic masterpieces born from a brain powered by caffeine, snacks, and just enough grammar to be dangerous. These MadLibs are my chaotic love letters to language, laughter, and the beautiful art of not taking yourself too seriously. <br><br>
+    Will they change your life? Unlikely. Will they make you giggle-snort through your nose like a startled duck? I truly hope so. <br><br>
+    P.S. Don’t come after me for whatever your eyeballs are about to witness. You have been warned. Lovingly. With sprinkles.</p>
 
-  <ul>
-    <li><a href="Madlibs/Madlib1.html">MadLib #1: The great  Adventure</a></li>
-    <li><a href="Madlibs/Madlib2.html">MadLib #2: Space Journey</a></li>
-     <li><a href="Madlibs/Madlib3.html">MadLib #3: Chaotic Adventure</a></li>
-       <li><a href="Madlibs/Madlib4.html">MadLib #4: Silly School Day</a></li>
-<li><a href="Madlibs/Madlib5.html">MadLib #5: Math Mayhem</a></li>
-<li><a href="Madlibs/Madlib6.html">MadLib #6: How to Travel Around the World in a Bathtub</a></li>
-<li><a href="Madlibs/Madlib7.html">MadLib #7: A Very Unusual Job Interview</a></li>
-<li><a href="Madlibs/Madlib8.html">MadLib #8: Dragon-Slaying for Beginners</a></li>
-<li><a href="Madlibs/Madlib9.html">MadLib #9: The Internet Breaks </a></li>
-<li><a href="Madlibs/Madlib10.html">MadLib #10: The Great Squirrel Uprising </a></li>
-<li><a href="Madlibs/Madlib11.html">MadLib #11: Weirdest Vacation Ever </a></li>
-<li><a href="Madlibs/Madlib12.html">MadLib #12: Tourist Guide to a Paradise </a></li>
-<li><a href="Madlibs/Madlib13.html">MadLib #13: Victorian Tea Party Gossip </a></li>
-<li><a href="Madlibs/Madlib14.html">MadLib #14: Courtroom Drama </a></li>
-<li><a href="Madlibs/Madlib15.html">MadLib #15: The Trial That Sang Itself </a></li>
+    <ul>
+      <li><a href="Madlibs/Madlib1.html" rel="noopener noreferrer">MadLib #1: The Great Adventure</a></li>
+      <li><a href="Madlibs/Madlib2.html" rel="noopener noreferrer">MadLib #2: Space Journey</a></li>
+      <li><a href="Madlibs/Madlib3.html" rel="noopener noreferrer">MadLib #3: Chaotic Adventure</a></li>
+      <li><a href="Madlibs/Madlib4.html" rel="noopener noreferrer">MadLib #4: Silly School Day</a></li>
+      <li><a href="Madlibs/Madlib5.html" rel="noopener noreferrer">MadLib #5: Math Mayhem</a></li>
+      <li><a href="Madlibs/Madlib6.html" rel="noopener noreferrer">MadLib #6: How to Travel Around the World in a Bathtub</a></li>
+      <li><a href="Madlibs/Madlib7.html" rel="noopener noreferrer">MadLib #7: A Very Unusual Job Interview</a></li>
+      <li><a href="Madlibs/Madlib8.html" rel="noopener noreferrer">MadLib #8: Dragon-Slaying for Beginners</a></li>
+      <li><a href="Madlibs/Madlib9.html" rel="noopener noreferrer">MadLib #9: The Internet Breaks</a></li>
+      <li><a href="Madlibs/Madlib10.html" rel="noopener noreferrer">MadLib #10: The Great Squirrel Uprising</a></li>
+      <li><a href="Madlibs/Madlib11.html" rel="noopener noreferrer">MadLib #11: Weirdest Vacation Ever</a></li>
+      <li><a href="Madlibs/Madlib12.html" rel="noopener noreferrer">MadLib #12: Tourist Guide to a Paradise</a></li>
+      <li><a href="Madlibs/Madlib13.html" rel="noopener noreferrer">MadLib #13: Victorian Tea Party Gossip</a></li>
+      <li><a href="Madlibs/Madlib14.html" rel="noopener noreferrer">MadLib #14: Courtroom Drama</a></li>
+      <li><a href="Madlibs/Madlib15.html" rel="noopener noreferrer">MadLib #15: The Trial That Sang Itself</a></li
 
-    <!-- 
+      <!-- 
 <li><a href="Madlib16.html">MadLib #16:  </a></li>
 <li><a href="Madlib17.html">MadLib #17:  </a></li>
 <li><a href="Madlib18.html">MadLib #18:  </a></li>
 <li><a href="Madlib19.html">MadLib #19:  </a></li>
 <li><a href="Madlib20.html">MadLib #20:  </a></li>
-    -->
+      -->
 
-    <!-- Add more links here -->
-  </ul>
-  <footer style="margin-top: 3rem; font-size: 0.9rem; color: gray; text-align: center; line-height: 1.6; max-width: 600px; margin-left: auto; margin-right: auto;">
-  <div>Made with ☕️, snacks, and a dash of madness. Thanks for stopping by — come back anytime for more silly stories!</div>
-  <div>Feeling inspired? Grab a pen, create your own madness, and keep the madness alive! 🚀</div>
-  <div>No raccoons were harmed in the making of these MadLibs. Proceed with laughter and caution.</div>
-  <div style="margin-top: 1rem; font-size: 0.8rem; color: #bbb;">
-      &copy; 2025 All rights reserved. I don’t give anyone the right to copy my work—even if the internet crashes, aliens invade, or the robots take over.
-  </div>
-</footer>
+      <!-- Add more links here -->
 
+    </ul>
+  </main>
+
+  <footer>
+    <div>Made with ☕️, snacks, and a dash of madness. Thanks for stopping by. Come back anytime for more silly stories!</div>
+    <div>Feeling inspired? Grab a pen, create your own madness, and keep the madness alive! 🚀</div>
+    <div>No raccoons were harmed in the making of these MadLibs. Proceed with laughter and caution.</div>
+    <div>&copy; 2025 All rights reserved. I don’t give anyone the right to copy my work—even if the internet crashes, aliens invade, or the robots take over.</div>
+  </footer>
 </body>
 </html>
