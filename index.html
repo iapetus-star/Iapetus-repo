@@ -20,6 +20,10 @@
 }
 
 @media (prefers-color-scheme: dark) {
+    #announcement-banner {
+    background-color: rgba(0, 212, 255, 0.1);
+  }
+
   :root {
     --bg-color: #121417;
         --star-bg: #0a0c0f;         
@@ -116,6 +120,58 @@
   50% {
     border-color: #ff6f61;
   }
+}
+
+#announcement-banner {
+  background-color: rgba(0, 119, 204, 0.1);
+  border-left: 4px solid var(--accent-color);
+  padding: 1rem 1.25rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text-color);
+  max-width: 800px;
+  margin: 20px auto;
+  display: none;
+  border-radius: 6px;
+  line-height: 1.6;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  transition: background-color 0.3s ease, color 0.3s ease, opacity 0.5s ease, transform 0.5s ease;
+  position: relative;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#announcement-banner.fade-out {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+#announcement-banner a {
+  color: var(--link-color);
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+#announcement-banner a:hover {
+  color: var(--accent-color);
+}
+
+#announcement-banner button.dismiss-button {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: var(--link-color);
+  font-size: 1rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+#announcement-banner button.dismiss-button:hover {
+  opacity: 1;
+  color: var(--accent-color);
 }
 
 
@@ -371,7 +427,7 @@ html {
   display: inline-block;
   color: var(--accent-color);
   animation: blink 0.7s infinite;
-  font-weight: bold;
+    font-weight: bold;
 }
 
 @keyframes blink {
@@ -404,6 +460,29 @@ html {
   p.tagline {
     font-size: 1em;
     text-align: center;
+  }
+
+
+  #announcement-banner {
+    font-size: 0.9rem;
+    padding: 0.85rem 1rem 0.85rem 0.85rem;
+    margin: 16px auto;
+    border-left-width: 3px;
+    border-radius: 4px;
+    line-height: 1.5;
+    position: relative;
+  }
+
+  #announcement-banner a {
+    display: inline-block;
+    margin-top: 4px;
+  }
+
+  #announcement-banner .dismiss-button {
+    top: 6px;
+    right: 8px;
+    font-size: 1.2rem;
+    padding: 0;
   }
 
 
@@ -467,6 +546,18 @@ html {
   }
 }
 
+@media (max-width: 480px) {
+  #announcement-banner .banner-message {
+    display: block;
+    margin-right: 0;
+  }
+
+  #announcement-banner a {
+    display: block;
+    margin-top: 6px;
+  }
+}
+
 
   </style>
 </head>
@@ -481,6 +572,11 @@ html {
     <li><a href="#about-me">About Me</a></li>
   </ul>
 </nav>
+
+  <div id="announcement-banner" role="alert" aria-live="assertive">
+
+  <!-- JS will populate this -->
+</div>
 
   <main>
   <header>
@@ -965,12 +1061,58 @@ updateAria();
 
     
 </script>
+<script>
+  fetch('/changelog.html')
+    .then(response => response.text())
+    .then(html => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+
+      const firstEntry = doc.querySelector('.entry');
+      const dateHeading = firstEntry ? firstEntry.querySelector('h2') : null;
+
+      // Check if firstEntry or dateHeading is missing
+      if (!firstEntry || !dateHeading) {
+        const banner = document.getElementById('announcement-banner');
+        banner.style.display = 'none';
+        return; // Exit early if changelog content is missing
+      }
+
+      const latestDate = dateHeading.textContent.trim();
+
+      // Check if localStorage is available before using it
+      if (typeof localStorage !== 'undefined') {
+        const storedDismissedDate = localStorage.getItem('dismissedChangelogDate');
+
+        // Only show the banner if the changelog date hasn't been dismissed before
+        if (storedDismissedDate !== latestDate) {
+          const banner = document.getElementById('announcement-banner');
+          banner.innerHTML = `
+            ✨ Site updated on ${latestDate} <a href="/changelog.html" rel="noopener noreferrer">See what's new!</a>
+            <button class="dismiss-button" aria-label="Dismiss announcement" title="Dismiss">&times;</button>
+          `;
+          banner.style.display = 'block';
+
+          const dismissBtn = banner.querySelector('.dismiss-button');
+          dismissBtn.addEventListener('click', () => {
+            banner.classList.add('fade-out');
+
+            // Wait for the fade-out to finish
+            setTimeout(() => {
+              localStorage.setItem('dismissedChangelogDate', latestDate);
+              banner.style.display = 'none';
+              banner.classList.remove('fade-out');
+            }, 500); // duration matches the CSS transition
+          });
+        }
+      }
+    })
+    .catch(error => {
+      console.error('Could not load changelog:', error);
+    });
+</script>
+
 
 </body>
 </html>
-
-
-
-
-
 
