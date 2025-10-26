@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Monster Mash Party Invitation</title>
+  <style>
+    body {
+      background-color: #0d0033;
+      font-family: 'Poppins', sans-serif;
+      color: #f2f2f2;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      background-image: radial-gradient(circle at 30% 10%, #250050, #000000 80%);
+    }
+    .container {
+      background-color: #1a0033;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 850px;
+      width: 100%;
+      box-shadow: 0 0 30px rgba(136, 0, 255, 0.4);
+      border: 2px solid #6600cc;
+    }
+    h1 {
+      text-align: center;
+      color: #c69aff;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 15px #9933ff;
+      font-family: 'Creepster', cursive;
+      letter-spacing: 2px;
+    }
+    p.instructions {
+      text-align: center;
+      font-size: 1rem;
+      color: #ccc;
+      margin-bottom: 2rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input[type="text"] {
+      padding: 0.7rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #6600cc;
+      background-color: #29004d;
+      color: #e6ccff;
+    }
+    input[type="text"]::placeholder {
+      color: #8e68c6;
+    }
+    button {
+      margin-top: 1.5rem;
+      background-color: #9933ff;
+      color: #fff;
+      padding: 0.75rem;
+      border: none;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    button:hover {
+      background-color: #b366ff;
+      color: #000;
+      box-shadow: 0 0 15px #c69aff;
+    }
+    .story {
+      background-color: #20004d;
+      border-left: 6px solid #9933ff;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 8px;
+      white-space: pre-line;
+      display: none;
+      color: #f5e6ff;
+      line-height: 1.7;
+    }
+    #tryAgainBtn {
+      display: none;
+      margin-top: 1.5rem;
+      background-color: #3d0066;
+      color: #d9b3ff;
+      border: 1px solid #9933ff;
+    }
+    #tryAgainBtn:hover {
+      background-color: #9933ff;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Monster Mash Party Invitation</h1>
+  
+  <form id="madLibForm">
+    <p class="instructions">Fill in the blanks and get your spooky-funky party invite!</p>
+    
+    <input type="text" name="name" placeholder="Your name" required />
+    <input type="text" name="monsterType" placeholder="A type of monster" required />
+    <input type="text" name="verb1" placeholder="A dance move (e.g., twerk, moonwalk)" required />
+    <input type="text" name="place" placeholder="A creepy place" required />
+    <input type="text" name="food" placeholder="A weird food" required />
+    <input type="text" name="drink" placeholder="A spooky drink" required />
+    <input type="text" name="adjective1" placeholder="An adjective (e.g., slimy, glittery)" required />
+    <input type="text" name="sound" placeholder="A silly sound" required />
+    <input type="text" name="celebrity" placeholder="A celebrity" required />
+    <input type="text" name="number" placeholder="A number" required />
+    <input type="text" name="object" placeholder="A random object" required />
+
+    <button type="submit">Generate My Invitation</button>
+  </form>
+
+  <div id="story" class="story"></div>
+  <button id="tryAgainBtn">Try Again</button>
+</div>
+
+<script>
+  const form = document.getElementById('madLibForm');
+  const storyDiv = document.getElementById('story');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const values = Object.fromEntries(new FormData(form).entries());
+    form.style.display = 'none';
+    const rawStory = generateStory(values);
+    const formattedStory = formatStoryText(rawStory);
+    storyDiv.innerHTML = formattedStory;
+    storyDiv.style.display = 'block';
+    tryAgainBtn.style.display = 'block';
+  });
+
+  tryAgainBtn.addEventListener('click', () => {
+    form.reset();
+    form.style.display = 'flex';
+    storyDiv.style.display = 'none';
+    tryAgainBtn.style.display = 'none';
+  });
+
+  function generateStory(values) {
+    const { name, monsterType, verb1, place, food, drink, adjective1, sound, celebrity, number, object } = values;
+
+    return `
+🎃💀👻  MONSTER MASH PARTY INVITE  👻💀🎃
+
+Hey ${name}! You’re officially invited to the **Annual ${monsterType} Monster Mash Extravaganza!**  
+It’s the party so wild, even the ghosts had to sign waivers.
+
+📍 Location: The haunted ${place} (you’ll know you’re there when you hear the ${sound})  
+🕒 Time: When the moon turns ${adjective1} and the bats start doing jazz hands.  
+👻 Dress Code: Come as your scariest self—or just as ${celebrity}, whichever’s uglier!
+
+We’ve got:  
+🍗 Unlimited ${food} buffet (made fresh from... uh, don’t ask).  
+🍹 Bottomless ${drink} fountains.  
+🎶 A dance floor where skeletons ${verb1} until their bones pop loose.  
+💀 A raffle for a limited-edition ${object} signed by a real ghoul.
+
+At midnight, we’ll summon ${number} mischievous spirits to DJ the afterparty!  
+(Last year they played “Monster Mash” on repeat for six hours straight.)
+
+So grab your coffin, your appetite, and your best ${monsterType} growl—  
+and join us for a night of laughter, terror, and questionable hygiene!
+
+P.S. Please RSVP... before the full moon does it for you. 🌕
+    `;
+  }
+
+  function formatStoryText(story) {
+    return "<p>" + story.trim().replace(/\n/g, "</p><p>") + "</p>";
+  }
+</script>
+
+</body>
+</html>
