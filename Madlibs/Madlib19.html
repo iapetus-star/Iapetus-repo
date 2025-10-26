@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Substitute Teacher from the Underworld</title>
+  <style>
+    body {
+      background-color: #1a0000;
+      font-family: 'Comic Sans MS', 'Poppins', sans-serif;
+      color: #ffebee;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      background-image: radial-gradient(circle at 30% 10%, #300000, #000 90%);
+    }
+    .container {
+      background-color: #220000;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0 0 30px rgba(255, 50, 50, 0.5);
+      border: 2px solid #660000;
+    }
+    h1 {
+      text-align: center;
+      color: #ff4444;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 20px #ff0000;
+      font-family: 'Creepster', cursive;
+      letter-spacing: 2px;
+    }
+    p.instructions {
+      text-align: center;
+      font-size: 1rem;
+      color: #ffb3b3;
+      margin-bottom: 2rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input[type="text"] {
+      padding: 0.7rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #660000;
+      background-color: #400000;
+      color: #ffcccc;
+    }
+    input[type="text"]::placeholder {
+      color: #a87070;
+    }
+    button {
+      margin-top: 1.5rem;
+      background-color: #ff0000;
+      color: #fff;
+      padding: 0.75rem;
+      border: none;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    button:hover {
+      background-color: #ff3333;
+      color: #000;
+      box-shadow: 0 0 15px #ff6666;
+    }
+    .story {
+      background-color: #2b0000;
+      border-left: 6px solid #ff0000;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 8px;
+      white-space: pre-line;
+      display: none;
+      color: #ffe6e6;
+      line-height: 1.7;
+    }
+    #tryAgainBtn {
+      display: none;
+      margin-top: 1.5rem;
+      background-color: #330000;
+      color: #ffcccc;
+      border: 1px solid #ff0000;
+    }
+    #tryAgainBtn:hover {
+      background-color: #ff0000;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>The Substitute Teacher from the Underworld</h1>
+  
+  <form id="madLibForm">
+    <p class="instructions">Fill in the blanks below and meet the most chaotic educator in history.</p>
+    
+    <input type="text" name="name" placeholder="Your name" required />
+    <input type="text" name="schoolName" placeholder="The name of your school" required />
+    <input type="text" name="subject" placeholder="A school subject" required />
+    <input type="text" name="adjective1" placeholder="An adjective (e.g., fiery, chaotic)" required />
+    <input type="text" name="creature" placeholder="A mythical creature" required />
+    <input type="text" name="food" placeholder="A food item" required />
+    <input type="text" name="sound" placeholder="A strange sound" required />
+    <input type="text" name="adjective2" placeholder="Another adjective" required />
+    <input type="text" name="verb1" placeholder="A verb (e.g., scream, juggle)" required />
+    <input type="text" name="object" placeholder="An object" required />
+    <input type="text" name="bodyPart" placeholder="A body part" required />
+    <input type="text" name="emotion" placeholder="An emotion" required />
+    <input type="text" name="celebrity" placeholder="A celebrity" required />
+    <input type="text" name="place" placeholder="A random place" required />
+    <input type="text" name="verb2" placeholder="Another verb" required />
+    <input type="text" name="adjective3" placeholder="Another adjective" required />
+    <input type="text" name="animal" placeholder="An animal" required />
+    <input type="text" name="number" placeholder="A number" required />
+
+    <button type="submit">Summon the Substitute</button>
+  </form>
+
+  <div id="story" class="story"></div>
+  <button id="tryAgainBtn">Try Again</button>
+</div>
+
+<script>
+  const form = document.getElementById('madLibForm');
+  const storyDiv = document.getElementById('story');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const values = Object.fromEntries(new FormData(form).entries());
+    form.style.display = 'none';
+    const rawStory = generateStory(values);
+    const formattedStory = formatStoryText(rawStory);
+    storyDiv.innerHTML = formattedStory;
+    storyDiv.style.display = 'block';
+    tryAgainBtn.style.display = 'block';
+  });
+
+  tryAgainBtn.addEventListener('click', () => {
+    form.reset();
+    form.style.display = 'flex';
+    storyDiv.style.display = 'none';
+    tryAgainBtn.style.display = 'none';
+  });
+
+  function generateStory(values) {
+    const { name, schoolName, subject, adjective1, creature, food, sound, adjective2, verb1, object, bodyPart, emotion, celebrity, place, verb2, adjective3, animal, number } = values;
+
+    return `
+📚🔥 WELCOME TO DETENTION… FOREVER 🔥📚
+
+It was a ${adjective1} Monday morning at ${schoolName}, and everyone knew something was off. The sky was purple, the lockers were whispering, and Principal ${celebrity} was sobbing into a ${food}.
+
+Then the announcement came:
+“Attention students! Your regular teacher is... unavailable. Please welcome your substitute... **Mr. ${creature.toUpperCase()}!**”
+
+The doors burst open with a ${sound}, and out stomped a seven-foot-tall ${creature} wearing a tie made of screaming souls and holding a ${object} that was *definitely still smoking.*
+
+“Good morning, mortals,” he growled. “Today’s lesson is ${subject}... and survival.”
+
+${name} tried to ${verb1} quietly behind their desk, but Mr. ${creature}’s ${bodyPart} rotated 180 degrees.  
+“You there,” he said, “answer this question: What is ${number} times eternal doom?”
+
+Nobody knew. So he erased the board with his tongue and summoned a chalk demon that spat ${food} across the ceiling.
+
+Then he smiled—an ${adjective2}, toothy grin—and clapped his claws. “Pop quiz time! First one to ${verb2} gets an ‘A’... everyone else gets sent to *the Under-Detention.*”
+
+The room exploded into chaos. Desks caught fire. The class hamster transformed into a ${adjective3} ${animal} and started breakdancing on the floor.  
+The PA system screamed ${sound.toUpperCase()} nonstop while ${celebrity} ran past the windows on fire yelling, “NOT AGAIN!”
+
+By lunchtime, ${schoolName} was technically a different dimension. The cafeteria served lava instead of soup, and the vending machines demanded souls instead of quarters. Mr. ${creature} handed out report cards written in blood and glitter.
+
+Still, by the end of the day, everyone kind of... respected him. He made ${subject} weirdly fun.  
+${name} even learned how to open a portal to ${place} just by sneezing.
+
+As the bell rang, Mr. ${creature} vanished in a puff of brimstone, leaving only his ${object} behind—and a sticky note that read:
+
+> “Great work today, class. Remember: eternal torment builds character.”
+
+The next morning, everything was back to normal... except for the faint smell of ${food} and the fact that ${schoolName} now occasionally *levitates.*
+
+And when the PA crackled that Friday afternoon, every student froze.  
+A voice hissed through the speakers:
+
+> “Hello, class... I’m back for a pop quiz.”
+
+And from the hallway came the ${sound.toUpperCase()}... again.
+
+THE END (?) 👹📖💀
+    `;
+  }
+
+  function formatStoryText(story) {
+    return "<p>" + story.trim().replace(/\n/g, "</p><p>") + "</p>";
+  }
+</script>
+
+</body>
+</html>
