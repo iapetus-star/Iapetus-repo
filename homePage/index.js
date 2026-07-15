@@ -240,9 +240,6 @@ window.addEventListener('resize', updateAria);
 // Initial check on load
 updateAria();
 
-    
-</script>
-<script>
   fetch('https://iapetus-star.github.io/Iapetus-repo/changelog.html')
     .then(response => response.text())
     .then(html => {
