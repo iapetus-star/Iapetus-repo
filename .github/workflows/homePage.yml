@@ -1,4 +1,4 @@
-name: Deploy homepage folder to GitHub Pages
+name: Deploy portfolio to GitHub Pages
 
 on:
   push:
@@ -23,10 +23,31 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload homepage folder
+      - name: Assemble site
+        run: |
+          mkdir site
+
+          # Copy the contents of your homepage folder to the website root
+          cp -r homePage/. site/
+
+          # Copy every other top-level folder except homePage and .github
+          for dir in */; do
+            case "$dir" in
+              homePage/|.github/)
+                ;;
+              *)
+                cp -r "$dir" site/
+                ;;
+            esac
+          done
+
+          # Copy top-level HTML files (e.g. changelog.html)
+          cp *.html site/ 2>/dev/null || true
+
+      - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './homePage'
+          path: "./site"
 
       - name: Deploy
         uses: actions/deploy-pages@v4
