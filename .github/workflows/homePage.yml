@@ -25,6 +25,7 @@ jobs:
 
       - name: Assemble site
         run: |
+          rm -rf site
           mkdir site
 
           # Copy the contents of your homepage folder to the website root
@@ -33,7 +34,7 @@ jobs:
           # Copy every other top-level folder except homePage and .github
           for dir in */; do
             case "$dir" in
-              homePage/|.github/)
+              homePage/|.github/|site/|node_modules/|dist/|build/)
                 ;;
               *)
                 cp -r "$dir" site/
