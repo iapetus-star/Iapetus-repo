@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accessible Mole Mash</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #f4f4f4;
+  }
+
+#startScreen {
+  margin-top: 100px;
+}
+
+#startScreen select,
+#startScreen button {
+  font-size: 18px;
+  padding: 10px;
+}
+
+  h1 {
+    margin-bottom: 10px;
+  }
+
+  .controls {
+    margin-bottom: 15px;
+  }
+
+  button, select {
+    padding: 8px 12px;
+    margin: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  button:focus, select:focus {
+    outline: 3px solid #0078d7;
+  }
+
+  .stats {
+    margin: 10px 0;
+    font-size: 18px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 120px);
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .hole {
+    width: 120px;
+    height: 120px;
+    background: url('hole.png') center/cover no-repeat;
+    position: relative;
+  }
+
+  .mole {
+    width: 100%;
+    height: 100%;
+    background: url('mole.png') center/contain no-repeat;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+  }
+
+  .hole.active .mole {
+    display: block;
+  }
+
+  .hole:focus {
+    outline: 3px solid orange;
+  }
+</style>
+</head>
+
+<body>
+<div id="startScreen">
+  <h1>Mole Mash 🐹</h1>
+
+  <label for="startSpeed">Choose Speed:</label>
+  <select id="startSpeed">
+    <option value="2200">Slow</option>
+    <option value="800" selected>Medium</option>
+    <option value="400">Fast</option>
+  </select>
+
+  <br><br>
+  <button id="startBtn">Start Game</button>
+</div>
+
+<div id="gameScreen" style="display:none;">
+<h1>Mole Mash</h1>
+
+<div class="controls">
+  <button id="resetBtn">Reset Game</button>
+</div>
+
+<div class="stats">
+  Score: <span id="score">0</span> |
+  Hits: <span id="hits">0</span> |
+  Misses: <span id="misses">0</span>
+</div>
+
+<div id="announcer" aria-live="assertive" style="position:absolute; left:-9999px;"></div>
+
+<div class="grid" role="grid" aria-label="Mole game grid">
+  <!-- 9 holes -->
+  <div class="hole" tabindex="0"><div class="mole"></div></div>
+  <div class="hole" tabindex="0"><div class="mole"></div></div>
+  <div class="hole" tabindex="0"><div class="mole"></div></div>
+  <div class="hole" tabindex="0"><div class="mole"></div></div>
+  <div class="hole" tabindex="0"><div class="mole"></div></div>
+  <div class="hole" tabindex="0"><div class="mole"></div></div>
+  <div class="hole" tabindex="0"><div class="mole"></div></div>
+  <div class="hole" tabindex="0"><div class="mole"></div></div>
+  <div class="hole" tabindex="0"><div class="mole"></div></div>
+</div>
+</div>
+
+<script>
+const announcer = document.getElementById("announcer");
+const scoreEl = document.getElementById("score");
+const hitsEl = document.getElementById("hits");
+const missesEl = document.getElementById("misses");
+const resetBtn = document.getElementById("resetBtn");
+
+let score = 0;
+let hits = 0;
+let misses = 0;
+let currentKey = null;
+let timer = null;
+
+
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+
+const startScreen = document.getElementById("startScreen");
+const gameScreen = document.getElementById("gameScreen");
+const startBtn = document.getElementById("startBtn");
+const startSpeed = document.getElementById("startSpeed");
+
+let gameSpeed = 800; // default
+const holes = document.querySelectorAll(".hole");
+
+function showMole() {
+  // clear previous mole
+  holes.forEach(h => h.classList.remove("active"));
+
+  if (currentKey !== null) {
+    misses++;
+    announce("Missed!");
+    updateStats();
+  }
+
+  currentKey = randomLetter();
+
+  // pick random hole
+  const randomHole = holes[Math.floor(Math.random() * holes.length)];
+  randomHole.classList.add("active");
+
+  announce(`Mole! Press ${currentKey}`);
+
+  timer = setTimeout(showMole, gameSpeed);
+}
+
+startBtn.addEventListener("click", () => {
+  gameSpeed = parseInt(startSpeed.value);
+
+  startScreen.style.display = "none";
+  gameScreen.style.display = "block";
+
+  document.body.focus(); // or focus first hole
+
+  resetGame(); // start fresh
+});
+
+function randomLetter() {
+  return letters[Math.floor(Math.random() * letters.length)];
+}
+
+function announce(message) {
+  announcer.textContent = "";
+  setTimeout(() => {
+    announcer.textContent = message;
+  }, 50);
+}
+
+function handleKey(e) {
+  if (!currentKey) return;
+
+  const pressed = e.key.toUpperCase();
+
+  if (pressed === currentKey) {
+    score++;
+    hits++;
+    announce(`Hit! ${currentKey}`);
+  } else {
+    misses++;
+    announce(`Wrong key. Expected ${currentKey}`);
+  }
+
+  currentKey = null;
+  updateStats();
+}
+
+function updateStats() {
+  scoreEl.textContent = score;
+  hitsEl.textContent = hits;
+  missesEl.textContent = misses;
+}
+
+function resetGame() {
+  score = 0;
+  hits = 0;
+  misses = 0;
+  currentKey = null;
+
+  updateStats();
+
+  clearTimeout(timer);
+  announce("Game reset");
+  showMole();
+}
+
+document.addEventListener("keydown", handleKey);
+resetBtn.addEventListener("click", resetGame);
+
+</script>
+</body>
+</html>

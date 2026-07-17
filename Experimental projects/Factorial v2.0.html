@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+<!--AP Computer Science Principles - Create Performance Task
+Program: Factorial Calculator
+
+This program was developed by the student submitting this task.
+All code was written by the student as part of the AP CSP Create Task.-->
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Factorial Calculator</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  width: 350px;
+  color: white;
+}
+
+.instructions {
+  background: rgba(255, 255, 255, 0.25);
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  line-height: 1.4;
+  border-left: 4px solid white;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  background: white;
+  color: #333;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.clear-btn {
+  background: #ff6b6b;
+  color: white;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+li {
+  background: white;
+  color: black;
+  padding: 8px;
+  margin-bottom: 6px;
+  border-radius: 6px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Factorial Calculator</h1>
+
+  <div class="instructions">
+    <strong>Welcome to the Factorial Calculator!</strong><br>
+    Use this tool to calculate factorials. Type the number you want the factorial for, then press 
+    <b>Enter</b> or click the <b>Calculate</b> button. Your answers will appear in a list so you can 
+    keep track of multiple calculations. Click a result in the list to see the steps.
+  </div>
+
+  <input type="text" id="numberInput" placeholder="Enter a non-negative number">
+  <button onclick="handleCalculation()">Calculate</button>
+  <p id="counter">Total Calculations: 0</p>
+
+  <ul id="historyList"></ul>
+
+  <button class="clear-btn" onclick="clearHistory()">Clear History</button>
+
+</div>
+
+<script>
+
+// DATA ABSTRACTION (List)
+let calculationHistory = [];
+
+/*
+STUDENT-DEVELOPED PROCEDURE
+Includes:
+- Parameter (number)
+- Parameter (storeResult)
+- Sequencing
+- Selection
+- Iteration
+*/
+function calculateFactorial(number, storeResult) {
+
+  let result = 1;
+  let steps = "";
+
+ // SELECTION
+  if (number < 0 || isNaN(number)) {
+    return null;
+  }
+
+ // ITERATION
+  for (let i = number; i >= 1; i--) {
+    result *= i;
+    steps += i;
+      if (i > 1) {
+        steps += " × ";
+      }
+  }
+
+  steps += " = " + result;
+
+ // LIST USED TO MANAGE COMPLEXITY
+  if (storeResult === true) {
+    calculationHistory.push({
+      input: number,
+      output: result,
+      explanation: steps
+    });
+  }
+
+  return result;
+}
+
+// Handles UI interaction
+function handleCalculation() {
+
+  let inputValue = parseInt(document.getElementById("numberInput").value);
+
+  let result = calculateFactorial(inputValue, true);
+
+  if (result === null) {
+    alert("Please enter a valid non-negative number.");
+    return;
+  }
+
+  displayHistory();
+
+  document.getElementById("numberInput").value = "";
+}
+
+// Displays data from list
+function displayHistory() {
+
+  let historyList = document.getElementById("historyList");
+  historyList.innerHTML = "";
+
+ // ITERATION over the history list to display past calculations
+  for (let i = 0; i < calculationHistory.length; i++) {
+    let item = document.createElement("li");
+    item.textContent = calculationHistory[i].input + "! = " + calculationHistory[i].output;
+
+ // Toggle on click
+    item.addEventListener("click", function() {
+      if (item.textContent.includes("×")) {
+        item.textContent = calculationHistory[i].input + "! = " + calculationHistory[i].output;
+      } else {
+        item.textContent = calculationHistory[i].explanation;
+      }
+
+    });
+
+    historyList.appendChild(item);
+  }
+
+  document.getElementById("counter").textContent = "Total Calculations: " + calculationHistory.length;
+}
+
+function clearHistory() {
+  calculationHistory = [];
+  displayHistory();
+}
+
+document.getElementById("numberInput")
+  .addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+      handleCalculation();
+    }
+  });
+</script>
+
+</body>
+</html>

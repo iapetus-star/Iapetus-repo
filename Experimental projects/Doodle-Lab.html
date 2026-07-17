@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Doodle Lab</title>
+  <style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  margin: 10px;
+}
+
+#toolbar {
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 8px 12px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+canvas {
+  border: 2px solid #333;
+  background: white;
+  cursor: crosshair;
+}
+  </style>
+</head>
+<body>
+
+  <h1>Doodle Lab</h1>
+
+  <div id="toolbar">
+<button onclick="clearCanvas()">Clear</button>
+  </div>
+
+  <canvas id="canvas" width="600" height="400"></canvas>
+
+  <script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+let drawing = false;
+
+canvas.addEventListener("mousedown", () => {
+  drawing = true;
+  ctx.beginPath();
+});
+
+canvas.addEventListener("mouseup", () => {
+  drawing = false;
+});
+
+canvas.addEventListener("mouseleave", () => {
+  drawing = false;
+});
+
+canvas.addEventListener("mousemove", draw);
+
+function draw(e) {
+  if (!drawing) return;
+
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  ctx.lineWidth = 3;
+  ctx.lineCap = "round";
+  ctx.strokeStyle = "#000";
+
+  ctx.lineTo(x, y);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+}
+
+function clearCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,346 @@
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grade Calculator</title>
+  <style>
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(to right, #dfe9f3, #ffffff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  color: #333;
+}
+
+.screen {
+  display: none;
+  background: #f9f9f9;
+  padding: 2em;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 340px;
+}
+
+.screen.active {
+  display: block;
+}
+
+h1, h2, h3 {
+  text-align: center;
+  color: #006d77;
+}
+
+input, select, button {
+  width: 100%;
+  padding: 0.6em;
+  margin-top: 0.4em;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1em;
+}
+
+button {
+  background-color: #83c5be;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #006d77;
+}
+
+#result {
+  margin-top: 1em;
+  font-weight: bold;
+  color: #005f73;
+}
+
+/* Assignment table */
+#assignment-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1em;
+}
+
+#assignment-table th, #assignment-table td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: center;
+}
+
+#progress-container {
+  margin-top: 1em;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  position: relative;
+  height: 20px;
+  width: 100%;
+}
+
+#progress-bar {
+  height: 100%;
+  border-radius: 10px;
+  width: 0;
+  transition: width 0.5s ease-in-out, background-color 0.5s;
+}
+
+#progress-label {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.9em;
+  color: #005f73;
+  font-weight: bold;
+  text-align: center;
+}
+
+  </style>
+
+</head>
+<body>
+  <!-- LOGIN SCREEN -->
+  <div id="login-screen" class="screen active">
+    <h1>Welcome to GradeCalc</h1>
+    <form id="login-form">
+      <label for="username">Name:</label>
+      <input type="text" id="username" required pattern="[A-Za-z.-' ]+" />
+
+      <label for="school">School:</label>
+      <input type="text" id="school" required pattern="[A-Za-z.-' ]+" />
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" required />
+
+      <button type="submit">Log In</button>
+    </form>
+  </div>
+
+  <!-- MAIN SCREEN -->
+  <div id="main-screen" class="screen">
+    <header>
+      <h2 id="welcome-text"></h2>
+    </header>
+
+    <div class="calculator">
+      <h3>Class Info</h3>
+      <label>Class Name: <input type="text" id="class-name"></label>
+      <label>Current Grade (%): <input type="number" id="current-grade"></label>
+      <label>Max Grade Possible (%): <input type="number" id="max-grade"></label>
+
+      <h3>Weight Categories</h3>
+      <div id="weights-container">
+        <div class="weight-row">
+          <input type="text" placeholder="Category (e.g. Exams)">
+          <input type="number" placeholder="Weight %" min="0" max="100">
+        </div>
+      </div>
+      <button id="add-weight">+ Add Category</button>
+
+      <h3>Add Assignment</h3>
+      <label>Assignment Type:
+        <select id="assignment-type">
+          <option value="Exam">Exam</option>
+          <option value="Classwork">Classwork</option>
+          <option value="Final">Final</option>
+          <option value="Other">Other</option>
+        </select>
+      </label>
+      <label>Points Earned: <input type="number" id="points-earned"></label>
+      <label>Total Points: <input type="number" id="points-total"></label>
+
+      <button id="calculate">Add Assignment</button>
+
+      <div id="result"></div>
+    </div>
+  </div>
+
+  <script>
+
+const loginForm = document.getElementById('login-form');
+const loginScreen = document.getElementById('login-screen');
+const mainScreen = document.getElementById('main-screen');
+const welcomeText = document.getElementById('welcome-text');
+const addWeightBtn = document.getElementById('add-weight');
+const weightsContainer = document.getElementById('weights-container');
+const calcBtn = document.getElementById('calculate');
+const result = document.getElementById('result');
+
+let user = {};
+let assignments = []; // store multiple assignments
+
+// LOGIN HANDLER
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const username = document.getElementById('username').value.trim();
+  const school = document.getElementById('school').value.trim();
+
+  if (!username || !school) {
+    alert("Please fill in all fields properly.");
+    return;
+  }
+
+  user = { username, school };
+  welcomeText.textContent = `Welcome, ${username} from ${school}!`;
+
+  loginScreen.classList.remove('active');
+  mainScreen.classList.add('active');
+
+  // create progress bar immediately
+  createProgressBar();
+});
+
+// ADD WEIGHT CATEGORY
+addWeightBtn.addEventListener('click', () => {
+  const row = document.createElement('div');
+  row.className = 'weight-row';
+  row.innerHTML = `
+    <input type="text" placeholder="Category (e.g. Homework)">
+    <input type="number" placeholder="Weight %" min="0" max="100">
+  `;
+  weightsContainer.appendChild(row);
+});
+
+// CALCULATE / ADD ASSIGNMENT
+calcBtn.addEventListener('click', () => {
+  const currentGrade = parseFloat(document.getElementById('current-grade').value);
+  const maxGrade = parseFloat(document.getElementById('max-grade').value);
+  const pointsEarned = parseFloat(document.getElementById('points-earned').value);
+  const pointsTotal = parseFloat(document.getElementById('points-total').value);
+  const assignmentType = document.getElementById('assignment-type').value;
+  const className = document.getElementById('class-name').value.trim();
+
+  if (isNaN(currentGrade) || isNaN(pointsEarned) || isNaN(pointsTotal)) {
+    result.textContent = "Please fill in all required fields.";
+    return;
+  }
+
+  // Get weights
+  const weightRows = document.querySelectorAll('.weight-row');
+  let totalWeight = 0;
+  let weights = {};
+
+  weightRows.forEach(row => {
+    const [nameInput, weightInput] = row.querySelectorAll('input');
+    const cat = nameInput.value.trim();
+    const w = parseFloat(weightInput.value);
+    if (cat && !isNaN(w)) {
+      weights[cat.toLowerCase()] = w;
+      totalWeight += w;
+    }
+  });
+
+  if (totalWeight !== 100) {
+    result.textContent = "Your weights must total 100%.";
+    return;
+  }
+
+  // Store assignment
+  assignments.push({
+    className,
+    assignmentType,
+    pointsEarned,
+    pointsTotal
+  });
+
+  // Recalculate grades
+  let totalGrade = 0;
+  assignments.forEach(a => {
+    const categoryWeight = weights[a.assignmentType.toLowerCase()] || 0;
+    const earnedPercent = (a.pointsEarned / a.pointsTotal) * 100;
+    totalGrade += earnedPercent * (categoryWeight / 100);
+  });
+
+  const avgGrade = totalGrade.toFixed(2);
+  result.textContent = `Your current average is ${avgGrade}%.`;
+
+  // update UI elements
+  updateProgressBar(avgGrade);
+  renderAssignmentsTable();
+});
+
+// RENDER ASSIGNMENT TABLE (only if 4+ assignments)
+function renderAssignmentsTable() {
+  let table = document.getElementById('assignment-table');
+
+  // remove table if fewer than 4 assignments
+  if (assignments.length < 4) {
+    if (table) table.remove();
+    return;
+  }
+
+  if (!table) {
+    table = document.createElement('table');
+    table.id = 'assignment-table';
+    table.innerHTML = `
+      <tr>
+        <th>#</th>
+        <th>Class</th>
+        <th>Type</th>
+        <th>Points Earned</th>
+        <th>Total Points</th>
+        <th>Percent</th>
+      </tr>`;
+    result.after(table);
+  }
+
+  // Clear old rows except header
+  table.querySelectorAll('tr:not(:first-child)').forEach(tr => tr.remove());
+
+  assignments.forEach((a, i) => {
+    const row = document.createElement('tr');
+    const percent = ((a.pointsEarned / a.pointsTotal) * 100).toFixed(2);
+    row.innerHTML = `
+      <td>${i + 1}</td>
+      <td>${a.className || 'N/A'}</td>
+      <td>${a.assignmentType}</td>
+      <td>${a.pointsEarned}</td>
+      <td>${a.pointsTotal}</td>
+      <td>${percent}%</td>`;
+    table.appendChild(row);
+  });
+}
+
+// CREATE PROGRESS BAR 
+function createProgressBar() {
+  if (document.getElementById('progress-container')) return;
+
+  const barContainer = document.createElement('div');
+  barContainer.id = 'progress-container';
+  barContainer.innerHTML = `
+    <div id="progress-bar"></div>
+    <span id="progress-label">Overall Progress: 0%</span>
+  `;
+  result.after(barContainer);
+}
+
+// UPDATE PROGRESS BAR COLOR + WIDTH
+function updateProgressBar(avgGrade) {
+  const bar = document.getElementById('progress-bar');
+  const label = document.getElementById('progress-label');
+  if (!bar || !label) return;
+
+  const grade = parseFloat(avgGrade);
+  bar.style.width = `${grade}%`;
+  label.textContent = `Overall Progress: ${grade}%`;
+
+  // Change bar color based on grade
+  if (grade >= 85) {
+    bar.style.backgroundColor = '#2a9d8f'; // green
+  } else if (grade >= 70) {
+    bar.style.backgroundColor = '#f4a261'; // orange
+  } else {
+    bar.style.backgroundColor = '#e63946'; // red
+  }
+}
+
+
+  </script>
+</body>
+</html>
