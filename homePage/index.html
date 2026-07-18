@@ -80,59 +80,213 @@
 
 <section id="notebook">
   <h2>Notebook</h2>
-<p>The place where I do my thinking and random questions that I have done research on.</p>
+<p>This is basically my collection of rabbit holes. Whenever a random question pops into my head, I spend some time reading about it and write down what I learned. I'm definitely not an expert on everything here, so think of these as research notes rather than definitive answers. If I learn something new later, I'll probably come back and update them.</p>
   <div class="note">
     <button class="note-toggle">Could you simulate a galaxy using only basic physics and Python?</button>
     <div class="note-content">
-      <p>Simulating an entire galaxy with billions of stars using only basic physics and Python is not practical due to the sheer number of stars and the complexity of their interactions. However, you <em>can</em> create a simplified simulation of a galaxy by modeling a smaller number of stars-say, a few hundred or a few thousand-and applying Newton’s laws of gravity to simulate their motion.</p>
-      <p>In such a simulation, each star would attract every other star according to Newton’s law of universal gravitation. By calculating these forces and updating the positions and velocities of stars over time using numerical methods, you can observe interesting dynamics like star clusters or spiral patterns forming.</p>
-      <p>Python libraries like Matplotlib or Pygame can help you visualize the stars moving in real time or as an animation. The main challenge is computational performance: calculating gravitational forces between every pair of stars scales as the square of the number of stars, which quickly becomes very slow as you increase the number of objects.</p>
-      <p>To handle larger numbers efficiently, more advanced algorithms like the Barnes-Hut method approximate distant forces to reduce computation time, but these are more complex to implement.</p>
-      <p>In summary, while you can’t realistically simulate a full galaxy with all its stars using only basic physics and Python on a typical computer, creating a simplified, smaller-scale galaxy simulation is definitely possible and a fantastic way to learn about physics and programming!</p>
+
+      <p>I ended up going down a rabbit hole with this question because it sounds impossible at first, but the answer is actually yes... sort of.</p>
+      <p>You obviously can't simulate the entire Milky Way on a normal computer. Our galaxy contains somewhere around 100-400 billion stars, and every one of those stars is constantly being pulled by gravity from everything else. If you tried to calculate every gravitational interaction between every star, your computer would be busy for an absurd amount of time.</p>
+      <p>What is possible is making a simplified galaxy.</p>
+      <p>Instead of billions of stars, you could simulate a few hundred or a few thousand particles. Each one represents a star (or sometimes an entire cluster of stars), and every frame the program calculates how gravity changes their velocity and position.</p>
+      <p>The basic equation isn't complicated. It comes straight from Newton's law of gravitation:</p>
+      <blockquote>Every object attracts every other object based on their masses and the distance between them.</blockquote>
+      <p>Once you repeatedly apply that equation over thousands of time steps, something interesting starts happening. Instead of random dots flying around, you begin seeing structures that actually resemble galaxies. Spiral arms, rotating disks, and small clusters can appear naturally from very simple rules.</p>
+      <p>The biggest limitation isn't physics-it's speed.</p>
+      <p>If you have 1,000 stars, each star has to calculate gravity from the other 999 stars. That means nearly one million calculations every frame. Increase that to 10,000 stars and the amount of work explodes.</p>
+      <p>That's why professional simulations don't calculate everything directly. They use clever shortcuts like the Barnes-Hut algorithm, which groups distant stars together so they can be treated like a single large object. The result looks almost the same while requiring far less computation.</p>
+      <p>Python is actually a nice language for experimenting with this kind of project. Libraries like Pygame or Matplotlib can display the simulation, while NumPy speeds up the math considerably. It won't compete with NASA supercomputers, but it's more than capable of producing some really impressive miniature galaxies.</p>
+      <p>So after reading about it, my conclusion is:</p>
+      <p>You probably won't simulate the Milky Way in Python. But you can absolutely build a convincing miniature galaxy and learn a lot about gravity, physics, and numerical simulations along the way.</p>
+
+      <div class="resources">
+        <h3>Want to read more?</h3>
+
+        <ul>
+          <li><a href="https://science.nasa.gov/universe/galaxies/" target="_blank" rel="noopener noreferrer">NASA - Galaxies</a></li>
+          <li><a href="https://www.cs.princeton.edu/courses/archive/fall21/cos126/assignments/nbody/" target="_blank" rel="noopener noreferrer">Princeton COS126 N-Body Assignment</a></li>
+          <li><a href="https://en.wikipedia.org/wiki/Barnes%E2%80%93Hut_simulation" target="_blank" rel="noopener noreferrer">Barnes-Hut Algorithm (Wikipedia)</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 
   <div class="note">
     <button class="note-toggle">Could you program a spacecraft to generate and follow its own mission plan?</button>
     <div class="note-content">
-      <p>Yes, it is theoretically possible for a spacecraft to program itself to generate and follow its own mission plan. With advanced onboard artificial intelligence (AI) and a suite of sensors, a spacecraft can assess its environment, interpret mission objectives, and dynamically create or adjust plans in response to changing conditions.</p>
-      <p>To achieve this, the spacecraft would require several key systems: navigation to understand its position and trajectory, prioritization to decide which tasks or goals are most important at any time, diagnostics to monitor its own health and detect problems, and fallback behaviors to handle unexpected situations safely.</p>
-      <p>This concept is somewhat similar to how self-driving cars operate on Earth, making autonomous decisions based on sensor data without direct human control.</p>
-      <p>However, the biggest challenges lie in ensuring the system is extremely safe and reliable, especially since spacecraft often operate far from Earth with limited or delayed communication, making real-time human intervention impossible.</p>
+      <p>I went into this one thinking the answer would either be a simple "yes" or "no." After digging around for a while, I realized it's actually somewhere in the middle.</p>
+      <p>Spacecraft already make a surprising number of decisions without anyone pressing buttons on Earth.</p>
+      <p>The biggest reason is distance. Radio signals travel at the speed of light, but space is so enormous that messages can take minutes or even hours to arrive. A signal to Mars, for example, can take anywhere from about <strong>3 to 22 minutes</strong> depending on where Earth and Mars are in their orbits. That means if something unexpected happens, engineers can't just grab a joystick and react immediately.</p>
+      <p>Because of this, spacecraft are already programmed to handle certain situations on their own.</p>
+      <p>If power starts running low, they can shut down non-essential systems. If they lose contact with Earth, they can switch into a "safe mode" that keeps the spacecraft alive while waiting for instructions. Some can even adjust their orientation to keep their solar panels facing the Sun or point antennas back toward Earth.</p>
+      <p>But that's not quite the same thing as generating their own mission plan.</p>
+      <p>A truly autonomous spacecraft would need to look at its surroundings, decide what was important, and figure out the best course of action without waiting for human input. Imagine a Mars rover spotting an unusual rock formation. Instead of waiting for scientists to tell it what to do, it could decide the rock is worth investigating, calculate whether it has enough battery power and time, collect samples, and then continue its journey.</p>
+      <p>That sounds like science fiction, but researchers are already working on technology that moves in that direction.</p>
+      <p>NASA has experimented with autonomous planning software that allows spacecraft to schedule activities, adjust to unexpected situations, and recover from certain problems without waiting for instructions from Earth. It's not replacing mission control, but it can handle routine decisions much faster than humans can.</p>
+      <p>The biggest challenge isn't building an AI that's smart enough. It's building one that's reliable enough.</p>
+      <blockquote>If a chatbot makes a mistake, someone gets a weird answer.<br>
+      If a spacecraft makes a mistake millions of miles from Earth, there may be no way to fix it.</blockquote>
+      <p>That's why space agencies are extremely cautious. Every autonomous system has to be tested over and over again because once a spacecraft launches, there's no pulling over for repairs.</p>
+      <p>One thing that surprised me is that engineers don't necessarily want spacecraft to think like humans. They want them to make predictable, well-tested decisions. Being clever is less important than being dependable.</p>
+      <p>So my conclusion is:</p>
+      <p>We're already seeing spacecraft become more independent every year, but they're still following boundaries set by human engineers. I think future missions, especially ones traveling much farther from Earth, will need even greater autonomy because eventually the communication delays become too long for people back home to manage every little decision.</p>
+
+      <div class="resources">
+        <h3>Want to read more?</h3>
+
+        <ul>
+          <li><a href="https://www.nasa.gov/" target="_blank" rel="noopener noreferrer">NASA - Autonomous Systems</a></li>
+          <li><a href="https://www.jpl.nasa.gov/" target="_blank" rel="noopener noreferrer">NASA Jet Propulsion Laboratory - Artificial Intelligence and Autonomy</a></li>
+          <li><a href="https://www.esa.int/" target="_blank" rel="noopener noreferrer">European Space Agency - Artificial Intelligence for Space</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 
   <div class="note">
     <button class="note-toggle">What would a coding language look like if it was built only for space missions?</button>
     <div class="note-content">
-      <p>A programming language designed specifically for space missions would prioritize simplicity, reliability, and predictability above all else. It would likely be very minimalistic, avoiding complex features that could introduce bugs or unpredictable behavior.</p>
-      <p>Such a language would be highly fault-tolerant, with mechanisms to handle errors gracefully without crashing the system. Dynamic memory allocation and garbage collection would almost certainly be avoided because they can cause unpredictable pauses or memory leaks, something unacceptable in critical real-time space systems.</p>
-      <p>Every function and operation would be explicitly defined with clear, deterministic behavior, ensuring that performance and timing can be predicted precisely, often down to individual clock cycles. This predictability is vital for systems that need to run continuously and safely for long durations without human intervention.</p>
-      <p>In summary, this language would focus on safety, efficiency, and absolute control over system resources, often resembling low-level languages like Ada or MISRA-compliant subsets of C, which are commonly used in aerospace applications today.</p>
+      <p>This question turned out to be a lot more interesting than I expected because it isn't really about creating a brand-new programming language. It's about asking what features would matter if your code had to survive years in space with no one around to fix it.</p>
+      <p>My first thought was that it would need to be incredibly fast.</p>
+      <p>After doing some reading, I realized speed isn't actually the top priority.</p>
+      <p>Reliability is.</p>
+      <p>Imagine you've spent ten years building a spacecraft. It launches perfectly, travels hundreds of millions of miles, and then a tiny software bug causes it to fail. There's no technician waiting nearby with a laptop. Whatever software is onboard has to keep working for years, sometimes even decades without crashing.</p>
+      <p>That changes how you design a programming language.</p>
+      <p>For starters, it would probably avoid anything unpredictable. Features like automatic memory management (also known as garbage collection) are really useful in everyday programming because they clean up unused memory for you. The downside is that they can happen at unpredictable moments, which isn't ideal if you're controlling something as important as a spacecraft.</p>
+      <p>Instead, the language would probably give programmers complete control over memory so nothing unexpected happens behind the scenes.</p>
+      <p>It would also be extremely strict about errors.</p>
+      <p>A lot of programming languages will happily compile code even if there are things that <em>might</em> become problems later. A space-focused language would likely refuse to compile until those issues were fixed. Catching mistakes before launch is much easier than trying to deal with them once your spacecraft is halfway to Jupiter.</p>
+      <p>Another thing I'd expect is predictable timing.</p>
+      <p>If a function normally takes one millisecond to run, engineers need confidence that it'll still take roughly one millisecond every single time. That's especially important when software is controlling engines, navigation systems, or scientific instruments.</p>
+      <p>While researching this, I discovered that we already have languages that share many of these ideas.</p>
+      <p><strong>Ada</strong> has been used in aerospace for decades because it's designed with safety and reliability in mind. An even stricter version called <strong>SPARK Ada</strong> can mathematically prove that certain kinds of programming errors simply can't happen. More recently, <strong>Rust</strong> has become popular because it prevents many common memory bugs while still giving programmers low-level control over the hardware.</p>
+      <p>One thing I found funny is that the software running a spacecraft probably isn't very exciting to look at. There's no flashy interface, no fancy animations, and no clever tricks. It's mostly just code that's expected to quietly do its job for years without drawing attention to itself.</p>
+      <p>And honestly, that's exactly what you'd want.</p>
+      <p>So after reading about it, the reality is:</p>
+      <p>If someone built a programming language specifically for space missions, it probably wouldn't be the fastest or the most feature-packed language ever made. Instead, it would focus on being safe, predictable, and incredibly reliable. In space, boring software is often the best software because boring software tends to keep working.</p>
+
+      <div class="resources">
+        <h3>Want to read more?</h3>
+
+        <ul>
+          <li><a href="https://swehb.nasa.gov/" target="_blank" rel="noopener noreferrer">NASA Software Engineering Handbook</a></li>
+          <li><a href="https://ada-lang.io/" target="_blank" rel="noopener noreferrer">Ada Programming Language</a></li>
+          <li><a href="https://rustfoundation.org/" target="_blank" rel="noopener noreferrer">Rust Foundation</a></li>
+          <li><a href="https://www.esa.int/" target="_blank" rel="noopener noreferrer">European Space Agency - Software Engineering</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 
   <div class="note">
     <button class="note-toggle">Can you simulate a black hole’s gravity with 2D code and basic math?</button>
     <div class="note-content">
-      <p>Yes, you can simulate a black hole’s gravity using 2D code and basic math, although it won’t capture the full complexity of general relativity. Instead, you can use simpler models based on Newtonian gravity or approximate the effects of spacetime curvature.</p>
-      <p>For example, you might treat the black hole as a point mass exerting a gravitational force that affects the motion of nearby particles or light rays. Another approach is to use a “force field” analogy where the space around the black hole is represented by a gradient map that bends or distorts virtual space toward the center.</p>
-      <p>While these methods don’t replicate the exact physics of a black hole, they can produce visually convincing effects such as gravitational lensing-where light bends around the massive object-and orbital decay of particles spiraling inward.</p>
-      <p>These simplified simulations are a great way to explore black hole behavior and create striking visualizations using relatively simple math and programming.</p>
+      <p>This question caught my attention because black holes seem like one of those things that should require insanely complicated physics to simulate. After looking into it, I found out that while you can't perfectly recreate one with simple math, you can get surprisingly close to the way they <em>look</em> and even some of the way they behave.</p>
+      <p>The biggest thing to remember is that black holes don't pull things in like giant cosmic vacuum cleaners. If our Sun were magically replaced with a black hole of the exact same mass (ignoring the obvious problem that we'd all freeze), Earth would actually keep orbiting it almost exactly the same way. Gravity depends on mass, not whether that mass is a star or a black hole.</p>
+      <p>Where things start getting weird is when you get close.</p>
+      <p>Black holes warp space and time themselves, which is something Newton's laws don't describe very well. To fully simulate that, you'd need Einstein's General Relativity, and that's where the math becomes much more complicated.</p>
+      <p>For a simple 2D simulation, though, you don't need all of that.</p>
+      <p>Most hobby projects treat the black hole like an extremely heavy object sitting in the middle of the screen. Every particle around it feels a gravitational pull based on its distance from the center. As the particles move, you update their position every frame, and suddenly you've got objects orbiting, spiraling inward, or slingshotting past depending on their speed.</p>
+      <p>One thing I found really interesting is that many of the dramatic black hole animations you see online aren't physically accurate simulations. They're visual approximations designed to capture the <em>effect</em> of a black hole rather than perfectly model the underlying physics.</p>
+      <p>Take gravitational lensing, for example.</p>
+      <p>Light passing near a black hole bends because space itself is curved. Simulating that accurately is incredibly difficult, but you can fake the effect by bending light rays or warping the image around the center of your screen. The result looks convincing even if the calculations are much simpler.</p>
+      <p>You can even create an event horizon by drawing a completely black circle in the middle of the screen. Once particles cross that boundary, you simply stop rendering them or remove them from the simulation. It's obviously not how real black holes work internally, but visually it gets the idea across.</p>
+      <p>Python is actually a pretty good language for experimenting with this. Libraries like <strong>Pygame</strong> make it easy to animate particles, while <strong>NumPy</strong> can speed up the calculations if you're simulating hundreds or thousands of objects.</p>
+      <p>So in summary:</p>
+      <p>You probably won't create a scientifically perfect black hole simulation with basic math, but you can absolutely build one that's fun, visually impressive, and surprisingly educational. It's one of those projects where simple code can still teach you a lot about gravity and orbital mechanics.</p>
+
+      <div class="resources">
+        <h3>Want to read more?</h3>
+
+        <ul>
+          <li><a href="https://science.nasa.gov/universe/black-holes/" target="_blank" rel="noopener noreferrer">NASA - Black Holes</a></li>
+          <li><a href="https://eventhorizontelescope.org/" target="_blank" rel="noopener noreferrer">Event Horizon Telescope</a></li>
+          <li><a href="https://www.einstein-online.info/" target="_blank" rel="noopener noreferrer">Einstein Online - Black Holes Explained</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 
   <div class="note">
     <button class="note-toggle">How do quantum computers differ fundamentally from classical computers, and what are their practical limitations today?</button>
     <div class="note-content">
-    Research on this question is not complete yet. Please check back later.
+      <p>Quantum computers are one of those topics that get thrown around a lot, and before I looked into them I honestly thought they were just incredibly fast computers.</p>
+      <p>Turns out... they're not.</p>
+      <p>A normal computer stores information using <strong>bits</strong>, which can only be either a <strong>0</strong> or a <strong>1</strong>.</p>
+      <p>Quantum computers use something called <strong>qubits</strong>. Unlike ordinary bits, qubits can exist in a mixture of both states at the same time thanks to a property called <strong>superposition</strong>.</p>
+      <p>That sounds almost impossible, and honestly it took me a while before it clicked.</p>
+      <p>A good way to think about it is this: if a normal bit is like a light switch that's either on or off, a qubit is more like a spinning coin. Until you measure it, it isn't simply heads or tails-it has properties of both.</p>
+      <p>Another strange feature is something called <strong>entanglement</strong>.</p>
+      <p>When two qubits become entangled, their states become linked together. Changing or measuring one affects how the pair behaves, even if they're separated by a large distance. Einstein famously called this "spooky action at a distance."</p>
+      <p>These two properties allow quantum computers to solve certain kinds of problems much more efficiently than classical computers.</p>
+      <p>That doesn't mean they'll replace your laptop.</p>
+      <p>In fact, they're actually terrible at most everyday tasks.</p>
+      <p>Browsing the internet, writing documents, watching videos, or playing games would all be slower and more complicated on a quantum computer.</p>
+      <p>Where they really shine is solving problems involving enormous numbers of possibilities.</p>
+      <p>Researchers hope they'll eventually help with things like:</p>
+
+      <ul>
+        <li>designing new medicines</li>
+        <li>discovering better materials</li>
+        <li>improving logistics and optimization</li>
+        <li>simulating molecules</li>
+        <li>breaking or strengthening encryption</li>
+      </ul>
+
+      <p>The catch is that today's quantum computers are still incredibly fragile.</p>
+      <p>Qubits are easily disturbed by tiny changes in temperature, vibrations, or electromagnetic interference. Even the smallest disturbance can introduce errors.</p>
+      <p>That's why many quantum computers operate at temperatures colder than outer space using massive refrigeration systems.</p>
+      <p>Another challenge is error correction.</p>
+      <p>One reliable "logical" qubit may actually require hundreds or even thousands of physical qubits working together to compensate for errors. That means a quantum computer with 1,000 physical qubits isn't nearly as powerful as the number suggests.</p>
+      <p>So after doing some digging, my conclusion is:</p>
+      <p>Quantum computers aren't faster versions of normal computers, they're specialized tools built for specialized problems. They're incredibly exciting, but we're still in the early days, and it'll probably be years before they become something people use regularly outside of research labs.</p>
+
+      <div class="resources">
+        <h3>Want to read more?</h3>
+
+        <ul>
+          <li><a href="https://www.ibm.com/quantum" target="_blank" rel="noopener noreferrer">IBM Quantum</a></li>
+          <li><a href="https://quantumai.google/" target="_blank" rel="noopener noreferrer">Google Quantum AI</a></li>
+          <li><a href="https://azure.microsoft.com/products/quantum" target="_blank" rel="noopener noreferrer">Microsoft Azure Quantum</a></li>
+          <li><a href="https://www.nature.com/collections/quantum" target="_blank" rel="noopener noreferrer">Nature - Quantum Computing Collection</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 
   <div class="note">
     <button class="note-toggle">What causes the mysterious phenomenon of dark energy accelerating the expansion of the universe?</button>
     <div class="note-content">
-    Research on this question is not complete yet. Please check back later.
+      <p>Out of all the questions I've researched so far, this one probably has the least satisfying answer-not because scientists haven't tried to solve it, but because nobody actually knows the full story yet.</p>
+      <p>That honestly surprised me. Dark energy gets mentioned all the time in documentaries and science articles, so I assumed researchers had at least a pretty good idea of what it was. Instead, it turns out to be one of the biggest unanswered questions in modern physics.</p>
+      <p>Here's what we do know.</p>
+      <p>For most of the 20th century, scientists understood that the universe was expanding. Galaxies were moving away from each other, and the general expectation was that gravity would slowly slow this expansion down over time. After all, gravity pulls things together, so it made sense that the universe's expansion should gradually lose momentum.</p>
+      <p>Then, in 1998, two independent teams studying distant Type Ia supernovae made a discovery that completely changed our understanding of the universe.</p>
+      <p>The expansion wasn't slowing down.</p>
+      <p>It was speeding up.</p>
+      <p>This was a huge surprise because it suggested that something was working against gravity on the largest scales of the universe. Whatever this effect was, it appeared to be causing space itself to expand faster and faster.</p>
+      <p>Scientists gave this unknown phenomenon a name: dark energy.</p>
+      <p>The name sounds like it refers to some mysterious substance floating through space, but that's not really what it means. Dark energy is simply the name we use for whatever is causing this accelerated expansion. It's a label for an effect we can measure, not an explanation of what is actually happening.</p>
+      <p>There are several ideas about what dark energy could be.</p>
+      <p>One possibility is the cosmological constant, an idea originally introduced by Albert Einstein when he was working on his equations of general relativity. Einstein later considered it a mistake after the idea of an expanding universe became accepted, famously calling it his "greatest blunder." However, modern observations suggest that his original idea may not have been as wrong as he thought.</p>
+      <p>Another possibility involves the nature of empty space itself. According to quantum mechanics, even a perfect vacuum is not truly empty. Tiny fluctuations can occur at the smallest scales, and some scientists have suggested that this underlying energy of space could somehow contribute to the accelerated expansion of the universe.</p>
+      <p>There is also the possibility that our understanding of gravity is incomplete. General relativity has been extremely successful at explaining how gravity works on the scale of planets, stars, and galaxies, but perhaps something about gravity changes when we look at distances spanning billions of light-years.</p>
+      <p>Right now, scientists are still trying to figure out which explanation is correct or whether the answer is something completely different.</p>
+      <p>One thing I found especially interesting while researching this is just how much of the universe is still unknown. Everything we can see directly-stars, planets, gas, dust, and even ourselves-only makes up around 5% of the universe. The rest appears to be mostly dark matter and dark energy, two things we know exist because of their effects, but cannot directly observe in the same way we observe ordinary matter.</p>
+      <p>So in conclusion:</p>
+      <p>Dark energy is not a mysterious substance that scientists have discovered and named. It's the opposite. It's a mystery that scientists have measured so carefully that they know something is there, even though they don't yet understand exactly what it is.</p>
+      <p>And honestly, I think that's one of the coolest parts of science. The more we learn about the universe, the more we realize how many enormous questions are still waiting for answers.</p>
+
+      <div class="resources">
+        <h3>Want to read more?</h3>
+
+        <ul>
+          <li><a href="https://science.nasa.gov/universe/dark-energy/" target="_blank" rel="noopener noreferrer">NASA - What is Dark Energy?</a></li>
+          <li><a href="https://www.esa.int/" target="_blank" rel="noopener noreferrer">ESA - Dark Energy</a></li>
+          <li><a href="https://www.nobelprize.org/prizes/physics/2011/popular-information/" target="_blank" rel="noopener noreferrer">Nobel Prize - The Discovery of the Accelerating Universe</a></li>
+          <li><a href="https://www.cfa.harvard.edu/" target="_blank" rel="noopener noreferrer">Harvard-Smithsonian Center for Astrophysics</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 
