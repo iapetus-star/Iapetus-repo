@@ -293,7 +293,46 @@
   <div class="note">
     <button class="note-toggle">How do autonomous vehicles detect and respond to unpredictable situations in real time?</button>
     <div class="note-content">
-    Research on this question is not complete yet. Please check back later.
+      <p>Before I started looking into this, I figured self-driving cars mostly relied on really good GPS. It turns out GPS is only a tiny piece of the puzzle.</p>
+      <p>A self-driving car is constantly asking itself questions like:</p>
+
+      <ul>
+        <li>Where am I?</li>
+        <li>What's around me?</li>
+        <li>Is anything moving?</li>
+        <li>Where is it likely to move next?</li>
+        <li>What's the safest thing to do?</li>
+      </ul>
+
+      <p>To answer those questions, the car combines information from several different sensors.</p>
+      <p>One of the most important is the camera. Modern autonomous vehicles often have multiple cameras pointed in every direction. These cameras are great at recognizing things like traffic lights, road signs, lane markings, pedestrians, and other vehicles.</p>
+      <p>Many cars also use radar. Unlike cameras, radar works well in rain, fog, and darkness. It measures how far away objects are and how quickly they're moving.</p>
+      <p>Some companies also use LiDAR, which fires thousands—or even millions—of laser pulses every second to build a detailed 3D map of the surrounding environment. It's incredibly accurate, although it's also one of the more expensive sensors.</p>
+      <p>What surprised me most is that none of these sensors are trusted on their own.</p>
+      <p>Instead, the computer combines all of them in a process called <strong>sensor fusion</strong>.</p>
+      <p>Imagine one camera thinks it sees a cyclist, but the radar doesn't detect anything there. Rather than immediately making a decision, the vehicle compares information from all of its sensors before deciding what's actually happening.</p>
+      <p>Once the car understands its surroundings, it still has another challenge.</p>
+      <p>It has to predict what everyone else is going to do.</p>
+      <p>That's surprisingly difficult.</p>
+      <p>A pedestrian standing on the sidewalk might stay where they are.</p>
+      <p>Or they might suddenly step into the road.</p>
+      <p>A parked car might remain parked.</p>
+      <p>Or its driver could suddenly pull out without warning.</p>
+      <p>The software is constantly estimating probabilities rather than assuming it knows exactly what will happen. That uncertainty is one of the biggest reasons autonomous driving is so difficult.</p>
+      <p>Humans do this instinctively without thinking about it. Computers have to be taught using enormous amounts of data collected from real roads. Even then, unusual situations can still confuse the system. Construction zones, unusual weather, emergency vehicles, or roads with faded lane markings can all make driving much more challenging.</p>
+      <p>One thing I found interesting is that autonomous vehicles don't simply react, they're constantly planning several seconds ahead. Every fraction of a second they're generating possible paths, evaluating which ones are safe, comfortable, and legal, and then choosing the best option.</p>
+      <p>So after reading about it, my conclusion is:</p>
+      <p>A self-driving car isn't just one clever AI making decisions. It's dozens of systems working together at the same time-seeing the world, predicting what might happen next, and constantly updating its plan. That's what makes autonomous driving such an impressive engineering challenge.</p>
+
+      <div class="resources">
+        <h3>Want to read more?</h3>
+
+        <ul>
+          <li><a href="https://waymo.com/" target="_blank" rel="noopener noreferrer">Waymo - How Self-Driving Technology Works</a></li>
+          <li><a href="https://www.nvidia.com/en-us/self-driving-cars/" target="_blank" rel="noopener noreferrer">NVIDIA - Autonomous Vehicles</a></li>
+          <li><a href="https://news.mit.edu/" target="_blank" rel="noopener noreferrer">MIT News - Autonomous Vehicles</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 
@@ -405,7 +444,7 @@
 
   <footer aria-label="Footer">
     <p>This site is a little side project. Just exploring stuff I enjoy.</p>
-    <p style="margin-top: 10px; font-size: 0.8em;">Last updated: July 17, 2026</p>
+    <p style="margin-top: 10px; font-size: 0.8em;">Last updated: July 18, 2026</p>
     <p><a href="https://iapetus-star.github.io/Iapetus-repo/changelog.html" target="_blank" rel="noopener noreferrer">📜 View Changelog (where I log my legendary feats)</a></p>
   </footer>
   
