@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Underwater City News Report</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      background: linear-gradient(135deg, #00c9ff, #005bea, #001f3f);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #f4fdff;
+      max-width: 850px;
+      width: 100%;
+      padding: 2rem;
+      border-radius: 20px;
+      border: 6px dashed #0077b6;
+      box-shadow: 0 12px 35px rgba(0,0,0,.3);
+    }
+
+    h1 {
+      text-align: center;
+      color: #003566;
+      font-size: 2.4rem;
+      margin-bottom: .5rem;
+    }
+
+    .instructions {
+      text-align: center;
+      color: #555;
+      margin-bottom: 2rem;
+      font-size: 1.05rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    input[type="text"] {
+      padding: .85rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 2px solid #48cae4;
+      background: white;
+      transition: .2s;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #0077b6;
+      box-shadow: 0 0 10px rgba(0,119,182,.4);
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: .9rem;
+      background: #0077b6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    button:hover {
+      background: #023e8a;
+      transform: scale(1.03);
+    }
+
+    .story {
+      display: none;
+      margin-top: 2rem;
+      padding: 1.8rem;
+      background: #e8faff;
+      border-left: 8px solid #48cae4;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      box-shadow: inset 0 0 10px rgba(0,0,0,.08);
+    }
+
+    #tryAgainBtn {
+      display: none;
+      width: 100%;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>🌊 Underwater City News Report 🐠</h1>
+
+  <form id="madLibForm">
+
+    <p class="instructions">
+      Fill in the details and report the strangest news story from beneath the waves!
+    </p>
+
+    <input type="text" name="reporter" placeholder="A Reporter's Funny Name" required>
+    <input type="text" name="city" placeholder="An Underwater City Name" required>
+    <input type="text" name="creature" placeholder="A Type of Sea Creature" required>
+    <input type="text" name="headline" placeholder="A Strange Headline or News Event" required>
+    <input type="text" name="object" placeholder="A Ridiculous Object Found Underwater" required>
+    <input type="text" name="rule" placeholder="A Silly Rule or Law" required>
+    <input type="text" name="job" placeholder="A Funny Job Title" required>
+    <input type="text" name="food" placeholder="A Weird Food or Drink" required>
+    <input type="text" name="sound" placeholder="A Dramatic Sound Effect" required>
+
+    <button type="submit">🎙️ Report the News!</button>
+
+  </form>
+
+  <div id="story" class="story"></div>
+
+  <button id="tryAgainBtn">🐚 Report Another Story</button>
+
+</div>
+
+
+<script>
+
+const form = document.getElementById("madLibForm");
+const storyDiv = document.getElementById("story");
+const tryAgainBtn = document.getElementById("tryAgainBtn");
+
+
+form.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const values = Object.fromEntries(new FormData(form).entries());
+
+    form.style.display = "none";
+
+    const rawStory = generateStory(values);
+
+    storyDiv.innerHTML = formatStoryText(rawStory);
+
+    storyDiv.style.display = "block";
+    tryAgainBtn.style.display = "block";
+
+});
+
+
+tryAgainBtn.addEventListener("click", ()=>{
+
+    form.reset();
+    form.style.display = "flex";
+    storyDiv.style.display = "none";
+    tryAgainBtn.style.display = "none";
+
+});
+
+
+function generateStory(values){
+
+const {
+    reporter,
+    city,
+    creature,
+    headline,
+    object,
+    rule,
+    job,
+    food,
+    sound
+} = values;
+
+
+return `
+
+Good evening, ocean explorers! I’m your underwater news reporter, ${reporter}, coming to you live from the bustling underwater city of ${city}.
+
+Today’s top story: a shocking event involving a giant ${creature} has taken over the city! Residents woke up this morning to discover that ${headline} had happened right in the middle of the coral district.
+
+Officials say the situation began when someone found a mysterious ${object} sitting on the mayor’s underwater throne. The city council is now considering a new law that would require all citizens to follow the rule: "Everyone must ${rule} before breakfast."
+
+In other news, local celebrity ${job} announced plans to open a restaurant serving the world-famous underwater special: ${food} with a side of seaweed fries.
+
+As we leave you tonight, the entire city is waiting to see what happens next. Stay tuned for more updates, and remember: if you hear the sound ${sound}, it’s probably just another normal day under the sea! 🌊🐠
+
+`;
+
+}
+
+
+function formatStoryText(story){
+    return "<p>" + story.trim().replace(/\n/g,"</p><p>") + "</p>";
+}
+
+</script>
+
+</body>
+</html>
