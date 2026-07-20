@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cooking Show Catastrophe</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      background: linear-gradient(135deg, #ff9966, #ff5e62, #ffd86f);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fffdf8;
+      max-width: 850px;
+      width: 100%;
+      padding: 2rem;
+      border-radius: 18px;
+      border: 6px dashed #d35400;
+      box-shadow: 0 12px 30px rgba(0,0,0,.25);
+    }
+
+    h1 {
+      text-align: center;
+      color: #b33900;
+      font-size: 2.3rem;
+      margin-bottom: .5rem;
+    }
+
+    .instructions {
+      text-align: center;
+      color: #666;
+      margin-bottom: 2rem;
+      font-size: 1.05rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    input[type="text"] {
+      padding: .8rem;
+      font-size: 1rem;
+      border: 2px solid #ffb347;
+      border-radius: 8px;
+      transition: .2s;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #ff5e62;
+      box-shadow: 0 0 10px rgba(255,94,98,.4);
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: .9rem;
+      background: #d35400;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    button:hover {
+      background: #e67e22;
+      transform: scale(1.03);
+    }
+
+    .story {
+      display: none;
+      margin-top: 2rem;
+      padding: 1.8rem;
+      background: #fff7ec;
+      border-left: 8px solid #ff5e62;
+      border-radius: 12px;
+      line-height: 1.8;
+      font-size: 1.1rem;
+      box-shadow: inset 0 0 10px rgba(0,0,0,.08);
+    }
+
+    #tryAgainBtn {
+      display: none;
+      width: 100%;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>🍳 Cooking Show Catastrophe</h1>
+
+  <form id="madLibForm">
+
+    <p class="instructions">
+      Fill in the ingredients... and prepare for complete kitchen chaos!
+    </p>
+
+    <input type="text" name="chef" placeholder="Chef's Name" required>
+<input type="text" name="adjective" placeholder="An Adjective" required>
+    <input type="text" name="food" placeholder="A Food" required>
+    <input type="text" name="verb" placeholder="A Verb" required>
+    <input type="text" name="animal" placeholder="An Animal" required>
+    <input type="text" name="appliance" placeholder="A Kitchen Appliance" required>
+    <input type="text" name="ingredient" placeholder="A Weird Ingredient" required>
+    <input type="text" name="number" placeholder="A Number" required>
+    <input type="text" name="bodyparts" placeholder="Body Part (plural)" required>
+    <input type="text" name="exclamation" placeholder="An Exclamation!" required>
+
+    <button type="submit">Start Cooking!</button>
+
+  </form>
+
+  <div id="story" class="story"></div>
+
+  <button id="tryAgainBtn">👨‍🍳 Cook Another Disaster</button>
+
+</div>
+
+<script>
+
+const form = document.getElementById("madLibForm");
+const storyDiv = document.getElementById("story");
+const tryAgainBtn = document.getElementById("tryAgainBtn");
+
+form.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const values = Object.fromEntries(new FormData(form).entries());
+
+    form.style.display = "none";
+
+    const rawStory = generateStory(values);
+    storyDiv.innerHTML = formatStoryText(rawStory);
+
+    storyDiv.style.display = "block";
+    tryAgainBtn.style.display = "block";
+
+});
+
+tryAgainBtn.addEventListener("click", ()=>{
+
+    form.reset();
+    form.style.display = "flex";
+    storyDiv.style.display = "none";
+    tryAgainBtn.style.display = "none";
+
+});
+
+function generateStory(values){
+
+const {
+    chef,
+    adjective,
+    food,
+    verb,
+    animal,
+    appliance,
+    ingredient,
+    number,
+    bodyparts,
+    exclamation
+} = values;
+
+return `
+
+"Welcome back to Kitchen Chaos! Today, Chef ${chef} will attempt to make the world's most ${adjective} ${food}."
+
+Everything started perfectly... until Chef ${chef} accidentally decided to ${verb} instead of reading the recipe.
+
+Suddenly, a ${animal} jumped onto the counter and pressed every button on the ${appliance}.
+
+The machine roared to life and sprayed ${ingredient} across the entire studio. The audience, the judges, and even the camera crew were completely covered.
+
+Thirty seconds later, the dish grew to ${number} times its original size and began wobbling toward the exit.
+
+The judges bravely took one bite. Their ${bodyparts} started twitching so dramatically that they accidentally gave the meal a standing ovation.
+
+Chef ${chef} threw both hands into the air and yelled, "${exclamation.toUpperCase()}!"
+
+The recipe was immediately banned... and then awarded "Most Memorable Meal of the Year." 🍳🏆
+
+`;
+
+}
+
+function formatStoryText(story){
+    return "<p>" + story.trim().replace(/\n/g,"</p><p>") + "</p>";
+}
+
+</script>
+
+</body>
+</html>
