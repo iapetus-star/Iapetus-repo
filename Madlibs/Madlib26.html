@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Babysitting a Baby Kraken</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      background: linear-gradient(135deg, #00c6ff, #0072ff, #003b73);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #f4fcff;
+      max-width: 850px;
+      width: 100%;
+      padding: 2rem;
+      border-radius: 20px;
+      border: 6px dashed #005f73;
+      box-shadow: 0 12px 35px rgba(0,0,0,.3);
+    }
+
+    h1 {
+      text-align: center;
+      color: #005f73;
+      font-size: 2.4rem;
+      margin-bottom: .5rem;
+    }
+
+    .instructions {
+      text-align: center;
+      color: #555;
+      margin-bottom: 2rem;
+      font-size: 1.05rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    input[type="text"] {
+      padding: .85rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 2px solid #00b4d8;
+      background: white;
+      transition: .2s;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #0077b6;
+      box-shadow: 0 0 10px rgba(0,119,182,.4);
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: .9rem;
+      background: #005f73;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    button:hover {
+      background: #0077b6;
+      transform: scale(1.03);
+    }
+
+    .story {
+      display: none;
+      margin-top: 2rem;
+      padding: 1.8rem;
+      background: #e8faff;
+      border-left: 8px solid #00b4d8;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      box-shadow: inset 0 0 10px rgba(0,0,0,.08);
+    }
+
+    #tryAgainBtn {
+      display: none;
+      width: 100%;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>Babysitting a Baby Kraken 🌊</h1>
+
+  <form id="madLibForm">
+
+    <p class="instructions">
+      Fill in the details and survive the world's strangest babysitting job!
+    </p>
+
+    <input type="text" name="name" placeholder="A Funny Name" required>
+    <input type="text" name="object" placeholder="A Small Object" required>
+    <input type="text" name="place" placeholder="A Ridiculous Place" required>
+    <input type="text" name="food" placeholder="A Weird Food" required>
+    <input type="text" name="sauce" placeholder="A Strange Topping/Sauce" required>
+    <input type="text" name="clothing" placeholder="A Clothing Item" required>
+    <input type="text" name="event" placeholder="An Event/Activity" required>
+    <input type="text" name="treasure" placeholder="A Treasure Item" required>
+
+    <button type="submit">🐙 Babysit the Kraken!</button>
+
+  </form>
+
+  <div id="story" class="story"></div>
+
+  <button id="tryAgainBtn">🌊 Babysit Another Kraken</button>
+
+</div>
+
+
+<script>
+
+const form = document.getElementById("madLibForm");
+const storyDiv = document.getElementById("story");
+const tryAgainBtn = document.getElementById("tryAgainBtn");
+
+
+form.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const values = Object.fromEntries(new FormData(form).entries());
+
+    form.style.display = "none";
+
+    const rawStory = generateStory(values);
+    storyDiv.innerHTML = formatStoryText(rawStory);
+
+    storyDiv.style.display = "block";
+    tryAgainBtn.style.display = "block";
+
+});
+
+
+tryAgainBtn.addEventListener("click", ()=>{
+
+    form.reset();
+    form.style.display = "flex";
+    storyDiv.style.display = "none";
+    tryAgainBtn.style.display = "none";
+
+});
+
+
+function generateStory(values){
+
+const {
+    name,
+    object,
+    place,
+    food,
+    sauce,
+    clothing,
+    event,
+    treasure
+} = values;
+
+
+return `
+
+Last Saturday, I agreed to babysit a baby kraken named ${name}. I thought it would be easy because the little guy was only the size of a ${object}, but I quickly learned that eight tentacles can cause eight times the trouble.
+
+First, the baby kraken tried to help me clean the house by using its tentacles to vacuum, mop, and accidentally launch my couch into the ${place}. Then it got hungry and demanded a snack of ${food} covered in extra ${sauce}.
+
+After lunch, we played a game of hide-and-seek. I found the kraken hiding inside the bathtub, wearing my ${clothing} and pretending to be the captain of a pirate ship. It shouted, "Ahoy!" so loudly that the neighbors thought a tiny ocean monster had started a ${event}.
+
+By the end of the night, the baby kraken was exhausted. It gave me a giant slimy hug, said "thank you," and left behind a mysterious gift: a treasure chest filled with ${treasure}.
+
+I may babysit the baby kraken again… but next time, I’m definitely charging extra for tentacle-related cleaning fees! 🐙🌊
+
+`;
+
+}
+
+
+function formatStoryText(story){
+    return "<p>" + story.trim().replace(/\n/g,"</p><p>") + "</p>";
+}
+
+</script>
+
+</body>
+</html>
