@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Robot Family Reunion</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: "Courier New", monospace;
+      background: linear-gradient(135deg, #222831, #393e46, #00adb5);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #f5f5f5;
+      max-width: 850px;
+      width: 100%;
+      padding: 2rem;
+      border-radius: 20px;
+      border: 6px solid #00adb5;
+      box-shadow: 0 0 25px rgba(0,255,255,.35);
+    }
+
+    h1 {
+      text-align: center;
+      color: #007f86;
+      font-size: 2.4rem;
+      margin-bottom: .5rem;
+      text-shadow: 2px 2px #ddd;
+    }
+
+    .instructions {
+      text-align: center;
+      color: #555;
+      margin-bottom: 2rem;
+      font-family: Arial, sans-serif;
+      font-size: 1.05rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    input[type="text"] {
+      padding: .85rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 2px solid #00adb5;
+      background: white;
+      transition: .2s;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #ff5722;
+      box-shadow: 0 0 12px rgba(255,87,34,.5);
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: .9rem;
+      background: #ff5722;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: .2s;
+      font-family: "Courier New", monospace;
+    }
+
+    button:hover {
+      background: #ff7043;
+      transform: scale(1.04);
+    }
+
+    .story {
+      display: none;
+      margin-top: 2rem;
+      padding: 1.8rem;
+      background: #e8ffff;
+      border-left: 8px solid #00adb5;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      box-shadow: inset 0 0 12px rgba(0,0,0,.1);
+      font-family: Arial, sans-serif;
+    }
+
+    #tryAgainBtn {
+      display: none;
+      width: 100%;
+      margin-top: 1.5rem;
+      background: #007f86;
+    }
+
+    #tryAgainBtn:hover {
+      background: #0097a7;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>🤖 Robot Family Reunion ⚡</h1>
+
+  <form id="madLibForm">
+
+    <p class="instructions">
+      Enter the robot data files and create the weirdest family reunion ever!
+    </p>
+
+    <input type="text" name="name" placeholder="A Robot Funny Name" required>
+    <input type="text" name="robot" placeholder="A Type of Robot or Machine" required>
+    <input type="text" name="food" placeholder="A Strange Thing a Robot Eats or Drinks" required>
+    <input type="text" name="habit" placeholder="A Silly Human Habit" required>
+    <input type="text" name="glitch" placeholder="A Funny Robot Malfunction or Glitch" required>
+    <input type="text" name="place" placeholder="A Place Where the Reunion Happens" required>
+    <input type="text" name="gift" placeholder="A Ridiculous Gift" required>
+
+    <button type="submit">🤖 Activate Reunion Mode!</button>
+
+  </form>
+
+
+  <div id="story" class="story"></div>
+
+
+  <button id="tryAgainBtn">🔋 Restart Robot Reunion</button>
+
+</div>
+
+
+<script>
+
+const form = document.getElementById("madLibForm");
+const storyDiv = document.getElementById("story");
+const tryAgainBtn = document.getElementById("tryAgainBtn");
+
+
+form.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const values = Object.fromEntries(new FormData(form).entries());
+
+    form.style.display = "none";
+
+    const rawStory = generateStory(values);
+
+    storyDiv.innerHTML = formatStoryText(rawStory);
+
+    storyDiv.style.display = "block";
+    tryAgainBtn.style.display = "block";
+
+});
+
+
+tryAgainBtn.addEventListener("click", ()=>{
+
+    form.reset();
+    form.style.display = "flex";
+    storyDiv.style.display = "none";
+    tryAgainBtn.style.display = "none";
+
+});
+
+
+function generateStory(values){
+
+const {
+    name,
+    robot,
+    food,
+    habit,
+    glitch,
+    place,
+    gift
+} = values;
+
+
+return `
+
+This weekend, the entire robot family gathered for the annual reunion hosted by the legendary robot ${name}. Robots traveled from all over the world, including a giant ${robot}, to celebrate their family connection.
+
+The reunion started with a huge feast featuring everyone’s favorite robot snack: ${food}. After eating, the robots decided to have fun by copying a human tradition: ${habit}. Unfortunately, things went wrong when one robot experienced a hilarious malfunction and started ${glitch}.
+
+The family finally settled down and enjoyed the reunion at the amazing location of ${place}. Before everyone left, the robots exchanged gifts, and one lucky robot received a totally unexpected present: ${gift}.
+
+Everyone agreed it was the best robot reunion ever. The batteries were charged, the memories were saved, and nobody accidentally deleted Grandma Robot’s favorite dance playlist… this year! 🤖🎵
+
+`;
+
+}
+
+
+function formatStoryText(story){
+    return "<p>" + story.trim().replace(/\n/g,"</p><p>") + "</p>";
+}
+
+</script>
+
+</body>
+</html>
