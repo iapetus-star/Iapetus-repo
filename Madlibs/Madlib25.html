@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Pet Is Running for Mayor</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      background: linear-gradient(135deg, #77dd77, #4caf50, #b8e986);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fffef5;
+      max-width: 850px;
+      width: 100%;
+      padding: 2rem;
+      border-radius: 18px;
+      border: 6px dashed #388e3c;
+      box-shadow: 0 12px 30px rgba(0,0,0,.25);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2e7d32;
+      font-size: 2.4rem;
+      margin-bottom: .5rem;
+    }
+
+    .instructions {
+      text-align: center;
+      color: #666;
+      margin-bottom: 2rem;
+      font-size: 1.05rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    input[type="text"] {
+      padding: .8rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 2px solid #81c784;
+      transition: .2s;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #388e3c;
+      box-shadow: 0 0 10px rgba(56,142,60,.35);
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: .9rem;
+      background: #388e3c;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    button:hover {
+      background: #2e7d32;
+      transform: scale(1.03);
+    }
+
+    .story {
+      display: none;
+      margin-top: 2rem;
+      padding: 1.8rem;
+      background: #f1fff1;
+      border-left: 8px solid #81c784;
+      border-radius: 12px;
+      line-height: 1.8;
+      font-size: 1.1rem;
+      box-shadow: inset 0 0 10px rgba(0,0,0,.08);
+    }
+
+    #tryAgainBtn {
+      display: none;
+      width: 100%;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>My Pet Is Running for Mayor 🗳️</h1>
+
+  <form id="madLibForm">
+
+    <p class="instructions">
+    Fill in the campaign details and discover your pet's political future!
+    </p>
+
+    <input type="text" name="pet" placeholder="Pet's Name" required>
+    <input type="text" name="animal" placeholder="Animal" required>
+    <input type="text" name="adjective" placeholder="An Adjective" required>
+    <input type="text" name="food" placeholder="A Food" required>
+    <input type="text" name="promise" placeholder="A Silly Campaign Promise" required>
+    <input type="text" name="verb" placeholder="A Verb" required>
+    <input type="text" name="number" placeholder="A Number" required>
+    <input type="text" name="exclamation" placeholder="An Exclamation!" required>
+
+    <button type="submit">🐶 Launch the Campaign!</button>
+
+  </form>
+
+  <div id="story" class="story"></div>
+
+  <button id="tryAgainBtn">🐾 Start Another Campaign</button>
+
+</div>
+
+<script>
+
+const form = document.getElementById("madLibForm");
+const storyDiv = document.getElementById("story");
+const tryAgainBtn = document.getElementById("tryAgainBtn");
+
+form.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const values = Object.fromEntries(new FormData(form).entries());
+
+    form.style.display = "none";
+
+    const rawStory = generateStory(values);
+    storyDiv.innerHTML = formatStoryText(rawStory);
+
+    storyDiv.style.display = "block";
+    tryAgainBtn.style.display = "block";
+
+});
+
+tryAgainBtn.addEventListener("click", ()=>{
+
+    form.reset();
+    form.style.display = "flex";
+    storyDiv.style.display = "none";
+    tryAgainBtn.style.display = "none";
+
+});
+
+
+function generateStory(values){
+
+const {
+    pet,
+    animal,
+    adjective,
+    food,
+    promise,
+    verb,
+    number,
+    exclamation
+} = values;
+
+
+return `
+
+Breaking news! The town has a brand-new mayoral candidate, and nobody can believe it.
+
+A ${adjective} ${animal} named ${pet} has officially announced a campaign to become mayor!
+
+During the first speech, ${pet} promised to make life better for everyone by giving every citizen unlimited ${food} and passing a law that says nobody has to do ${promise} ever again.
+
+The crowd went wild as the furry candidate began to ${verb} across the stage, showing off impressive leadership skills.
+
+By election day, ${pet} had collected ${number} votes, defeating every human candidate in the race.
+
+When asked how it felt to win, the new mayor simply shouted:
+
+"${exclamation.toUpperCase()}!"
+
+The town celebrated all night, and everyone agreed that having a pet in charge was either the best idea ever... or the fluffiest mistake in history. 🐾🏛️
+
+`;
+
+}
+
+
+function formatStoryText(story){
+    return "<p>" + story.trim().replace(/\n/g,"</p><p>") + "</p>";
+}
+
+</script>
+
+</body>
+</html>
