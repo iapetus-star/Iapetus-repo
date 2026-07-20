@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Supervillain Performance Review</title>
+  <style>
+    body {
+      background-color: #f1f1f1;
+      font-family: 'Georgia', serif;
+      color: #333;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 1rem;
+    }
+    p.instructions {
+      text-align: center;
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 2rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input[type="text"] {
+      padding: 0.6rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 1.5rem;
+      background-color: #333;
+      color: white;
+      padding: 0.75rem;
+      border: none;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #555;
+    }
+    .story {
+      background-color: #f9f9f9;
+      border-left: 5px solid #888;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 8px;
+      white-space: pre-line;
+      display: none;
+    }
+    #tryAgainBtn {
+      display: none;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Supervillain Performance Review</h1>
+
+  <form id="madLibForm">
+    <p class="instructions">
+      Help HR evaluate the most incompetent supervillain in history.
+    </p>
+
+    <input type="text" name="villain" placeholder="A villain name" required />
+    <input type="text" name="evilTitle" placeholder="An evil job title" required />
+    <input type="text" name="adjective" placeholder="An adjective" required />
+    <input type="text" name="weapon" placeholder="A ridiculous weapon" required />
+    <input type="text" name="hero" placeholder="A hero's name" required />
+    <input type="text" name="place" placeholder="A place" required />
+    <input type="text" name="object" placeholder="A random object" required />
+    <input type="text" name="verb" placeholder="A verb ending in -ing" required />
+    <input type="text" name="food" placeholder="A food" required />
+    <input type="text" name="sound" placeholder="A dramatic sound effect" required />
+
+    <button type="submit">Generate Review</button>
+  </form>
+
+  <div id="story" class="story"></div>
+  <button id="tryAgainBtn">Review Another Villain</button>
+</div>
+
+<script>
+const form = document.getElementById('madLibForm');
+const storyDiv = document.getElementById('story');
+const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const values = Object.fromEntries(new FormData(form).entries());
+
+  form.style.display = 'none';
+
+  const rawStory = generateStory(values);
+  storyDiv.innerHTML = formatStoryText(rawStory);
+  storyDiv.style.display = 'block';
+  tryAgainBtn.style.display = 'block';
+});
+
+tryAgainBtn.addEventListener('click', () => {
+  form.reset();
+  form.style.display = 'flex';
+  storyDiv.style.display = 'none';
+  tryAgainBtn.style.display = 'none';
+});
+
+function generateStory(values) {
+
+  const {
+    villain,
+    evilTitle,
+    adjective,
+    weapon,
+    hero,
+    place,
+    object,
+    verb,
+    food,
+    sound
+  } = values;
+
+  return `
+🦹 SUPERVILLAIN PERFORMANCE REVIEW
+
+Employee: ${villain}
+Position: ${evilTitle}
+
+Overall Rating: Needs More Evil™
+
+This quarter, ${villain} attempted to conquer ${place} using a ${adjective} ${weapon}. Unfortunately, the plan was immediately stopped when ${hero} distracted them by throwing a ${object}.
+
+Instead of continuing the battle, ${villain} spent 47 minutes ${verb}. Witnesses described the event as "deeply confusing."
+
+Additional concerns include:
+
+• Replaced the secret password with "password123."
+• Accidentally monologued to the wrong group of tourists.
+• Accepted a bribe consisting entirely of ${food}.
+• Laughed so hard they forgot to press the Doomsday Button.
+• Battle cry was simply "${sound.toUpperCase()}!" which frightened absolutely no one.
+
+Manager Comments:
+
+While ${villain} clearly has enthusiasm, future world domination efforts should involve fewer snack breaks and significantly more competence.
+
+Final Recommendation:
+❌ Denied promotion to Supreme Overlord.
+✅ Assigned mandatory Evil Leadership Training every Tuesday until morale improves.
+`;
+}
+
+function formatStoryText(story) {
+  return "<p>" + story.trim().replace(/\n/g, "</p><p>") + "</p>";
+}
+</script>
+
+</body>
+</html>
