@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Detective at the Cookie Crime Scene</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      background: linear-gradient(135deg,#f8d56b,#f5a623,#8b5a2b);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fffdf7;
+      max-width: 850px;
+      width: 100%;
+      padding: 2rem;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      border: 6px dashed #7b4b28;
+    }
+
+    h1 {
+      text-align: center;
+      color: #6b3f18;
+      margin-bottom: .5rem;
+      font-size: 2.3rem;
+    }
+
+    .instructions {
+      text-align: center;
+      color: #666;
+      margin-bottom: 2rem;
+      font-size: 1.05rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    input[type="text"] {
+      padding: .8rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 2px solid #d2b48c;
+      transition: .2s;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #f5a623;
+      box-shadow: 0 0 10px rgba(245,166,35,.5);
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: .9rem;
+      border: none;
+      border-radius: 8px;
+      background: #6b3f18;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    button:hover {
+      background: #8b5a2b;
+      transform: scale(1.03);
+    }
+
+    .story {
+      display: none;
+      margin-top: 2rem;
+      background: #fff8e8;
+      border-left: 8px solid #f5a623;
+      padding: 1.8rem;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      box-shadow: inset 0 0 10px rgba(0,0,0,.08);
+    }
+
+    .story strong {
+      color: #b33b00;
+    }
+
+    #tryAgainBtn {
+      display: none;
+      margin-top: 1.5rem;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>🍪🕵️ Detective at the Cookie Crime Scene</h1>
+
+  <form id="madLibForm">
+
+    <p class="instructions">
+      Fill in the clues to solve the world's most delicious mystery!
+    </p>
+
+    <input type="text" name="detective" placeholder="Detective's Name" required>
+    <input type="text" name="adjective" placeholder="An Adjective" required>
+    <input type="text" name="cookies" placeholder="Cookie Flavor (plural)" required>
+    <input type="text" name="sound" placeholder="A Silly Sound" required>
+    <input type="text" name="animal" placeholder="An Animal" required>
+    <input type="text" name="utensil" placeholder="A Kitchen Utensil" required>
+    <input type="text" name="verb" placeholder='Verb ending in "-ing"' required>
+    <input type="text" name="bodyparts" placeholder="Body Part (plural)" required>
+    <input type="text" name="liquid" placeholder="A Liquid" required>
+    <input type="text" name="exclamation" placeholder="An Exclamation!" required>
+
+    <button type="submit">Solve the Mystery!</button>
+
+  </form>
+
+  <div id="story" class="story"></div>
+
+  <button id="tryAgainBtn">🔍 Solve Another Mystery</button>
+
+</div>
+
+<script>
+
+const form = document.getElementById("madLibForm");
+const storyDiv = document.getElementById("story");
+const tryAgainBtn = document.getElementById("tryAgainBtn");
+
+form.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const values = Object.fromEntries(new FormData(form).entries());
+
+    form.style.display = "none";
+
+    const rawStory = generateStory(values);
+    storyDiv.innerHTML = formatStoryText(rawStory);
+
+    storyDiv.style.display = "block";
+    tryAgainBtn.style.display = "block";
+
+});
+
+tryAgainBtn.addEventListener("click", ()=>{
+
+    form.reset();
+    form.style.display = "flex";
+    storyDiv.style.display = "none";
+    tryAgainBtn.style.display = "none";
+
+});
+
+function generateStory(values){
+
+const {
+    detective,
+    adjective,
+    cookies,
+    sound,
+    animal,
+    utensil,
+    verb,
+    bodyparts,
+    liquid,
+    exclamation
+} = values;
+
+return `
+
+It was a ${adjective} morning when Detective ${detective} arrived at the Cookie Crime Scene. Every last ${cookies} cookie had vanished from the cookie jar!
+
+The only clue was a mysterious note that simply said, "${sound.toUpperCase()}!"
+
+Detective ${detective} questioned every suspect, including a suspicious ${animal} carrying a ${utensil}. "I was just ${verb}," the suspect insisted while nervously scratching its ${bodyparts}.
+
+After hours of brilliant detective work, the truth finally came out. The missing cookies had been hidden inside a giant barrel of ${liquid} all along!
+
+Everyone gasped.
+
+"${exclamation.toUpperCase()}!" shouted Detective ${detective}. "Case closed... although the cookies are probably a little soggy."
+
+To celebrate, everyone ate exactly one cookie anyway and immediately agreed it was the worst dessert in history. 🍪🕵️
+
+`;
+
+}
+
+function formatStoryText(story){
+    return "<p>" + story.trim().replace(/\n/g,"</p><p>") + "</p>";
+}
+
+</script>
+
+</body>
+</html>
