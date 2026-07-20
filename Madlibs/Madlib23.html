@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A Day as the President</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298, #ffffff);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #ffffff;
+      max-width: 850px;
+      width: 100%;
+      padding: 2rem;
+      border-radius: 18px;
+      border: 6px solid #caa84a;
+      box-shadow: 0 12px 30px rgba(0,0,0,.25);
+    }
+
+    h1 {
+      text-align: center;
+      color: #0b2c63;
+      font-size: 2.4rem;
+      margin-bottom: .5rem;
+    }
+
+    .instructions {
+      text-align: center;
+      color: #555;
+      margin-bottom: 2rem;
+      font-size: 1.05rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    input[type="text"] {
+      padding: .8rem;
+      border: 2px solid #caa84a;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: .2s;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #1e3c72;
+      box-shadow: 0 0 10px rgba(30,60,114,.35);
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: .9rem;
+      background: #0b2c63;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    button:hover {
+      background: #163f87;
+      transform: scale(1.03);
+    }
+
+    .story {
+      display: none;
+      margin-top: 2rem;
+      padding: 1.8rem;
+      background: #f8f9fc;
+      border-left: 8px solid #caa84a;
+      border-radius: 12px;
+      line-height: 1.8;
+      font-size: 1.1rem;
+      box-shadow: inset 0 0 8px rgba(0,0,0,.08);
+    }
+
+    #tryAgainBtn {
+      display: none;
+      margin-top: 1.5rem;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>🇺🇸 A Day as the President</h1>
+
+  <form id="madLibForm">
+
+    <p class="instructions">
+      Fill in the blanks and see what happens when YOU accidentally become President!
+    </p>
+
+    <input type="text" name="firstname" placeholder="First Name" required>
+    <input type="text" name="adjective" placeholder="An Adjective" required>
+    <input type="text" name="animal" placeholder="An Animal" required>
+    <input type="text" name="food" placeholder="Food (plural)" required>
+    <input type="text" name="verb" placeholder="A Verb" required>
+    <input type="text" name="place" placeholder="A Place" required>
+    <input type="text" name="celebrity" placeholder="A Celebrity" required>
+    <input type="text" name="number" placeholder="A Number" required>
+    <input type="text" name="invention" placeholder="A Silly Invention" required>
+    <input type="text" name="exclamation" placeholder="An Exclamation!" required>
+
+    <button type="submit">Take Office!</button>
+
+  </form>
+
+  <div id="story" class="story"></div>
+
+  <button id="tryAgainBtn">🦅 Run for President Again</button>
+
+</div>
+
+<script>
+
+const form = document.getElementById("madLibForm");
+const storyDiv = document.getElementById("story");
+const tryAgainBtn = document.getElementById("tryAgainBtn");
+
+form.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const values = Object.fromEntries(new FormData(form).entries());
+
+    form.style.display = "none";
+
+    const rawStory = generateStory(values);
+    storyDiv.innerHTML = formatStoryText(rawStory);
+
+    storyDiv.style.display = "block";
+    tryAgainBtn.style.display = "block";
+
+});
+
+tryAgainBtn.addEventListener("click", ()=>{
+
+    form.reset();
+    form.style.display = "flex";
+    storyDiv.style.display = "none";
+    tryAgainBtn.style.display = "none";
+
+});
+
+function generateStory(values){
+
+const {
+    firstname,
+    adjective,
+    animal,
+    food,
+    verb,
+    place,
+    celebrity,
+    number,
+    invention,
+    exclamation
+} = values;
+
+return `
+
+Congratulations! Due to a ${adjective} paperwork mix-up, ${firstname} has accidentally become President for the day.
+
+The very first executive order is to appoint a ${animal} as Vice President because "they look trustworthy."
+
+Next, ${firstname} declares that every citizen must eat ${food} every Tuesday. Scientists are confused. Farmers are even more confused.
+
+During an important international meeting, the President suddenly decides to ${verb} across the conference table to prove confidence. Somehow, it works.
+
+In the afternoon, the entire government relocates to ${place} because the view is better.
+
+Before sunset, ${celebrity} arrives to present the President with the nation's highest honor: a solid-gold ${invention}.
+
+The approval rating reaches ${number}%, although nobody can explain how that's mathematically possible.
+
+As the day ends, President ${firstname} waves proudly to the cheering crowd and shouts, "${exclamation.toUpperCase()}!"
+
+Historians still argue whether it was the greatest presidency ever... or just a very strange Tuesday. 🇺🇸
+
+`;
+
+}
+
+function formatStoryText(story){
+    return "<p>" + story.trim().replace(/\n/g,"</p><p>") + "</p>";
+}
+
+</script>
+
+</body>
+</html>
