@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Build Your Own Castle</title>
+
+<style>
+
+body {
+  background: #2b1d0e;
+  font-family: Georgia, serif;
+  color: #2b1d0e;
+  margin:0;
+  padding:2rem;
+  display:flex;
+  justify-content:center;
+  min-height:100vh;
+}
+
+.container {
+  background:#f7e7c6;
+  max-width:850px;
+  width:100%;
+  padding:2rem;
+  border-radius:15px;
+  border:8px solid #8b5a2b;
+  box-shadow:0 0 30px rgba(0,0,0,.5);
+}
+
+h1 {
+  text-align:center;
+  color:#5a3515;
+}
+
+.instructions {
+  text-align:center;
+  font-style:italic;
+  color:#76552e;
+}
+
+form {
+ display:flex;
+ flex-direction:column;
+ gap:1rem;
+}
+
+input {
+ padding:.75rem;
+ border-radius:8px;
+ border:2px solid #b18a4a;
+ background:#fff8e8;
+ font-size:1rem;
+}
+
+button {
+ margin-top:1rem;
+ padding:.8rem;
+ border:none;
+ border-radius:8px;
+ background:#8b5a2b;
+ color:white;
+ font-size:1.1rem;
+ font-weight:bold;
+ cursor:pointer;
+}
+
+button:hover {
+ background:#a87335;
+}
+
+.story {
+ display:none;
+ margin-top:2rem;
+ background:#fff8e8;
+ border-left:6px solid #8b5a2b;
+ padding:1.5rem;
+ border-radius:10px;
+ line-height:1.7;
+}
+
+.story p {
+ margin-bottom:1.2rem;
+}
+
+#tryAgainBtn {
+ display:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🏰 Build Your Own Castle ✨</h1>
+
+<form id="madLibForm">
+
+<p class="instructions">
+Complete the royal construction guide and create the strangest castle ever built!
+</p>
+
+<input name="title" placeholder="A royal title (Sir, Lady, Emperor...)" required>
+
+<input name="guardian" placeholder="A creature that could guard a castle" required>
+
+<input name="material" placeholder="A strange building material" required>
+
+<input name="magic" placeholder="A magical ability" required>
+
+<input name="command" placeholder="A royal command" required>
+
+<input name="food" placeholder="A fancy food" required>
+
+<input name="room" placeholder="A castle room that shouldn't exist" required>
+
+<input name="weapon" placeholder="A silly weapon" required>
+
+<input name="location" placeholder="A place where you wouldn't expect a castle" required>
+
+<button type="submit">
+👑 Begin Castle Construction
+</button>
+
+</form>
+
+<div id="story" class="story"></div>
+
+<button id="tryAgainBtn">
+Build Another Castle
+</button>
+
+</div>
+
+<script>
+
+const form=document.getElementById("madLibForm");
+const storyDiv=document.getElementById("story");
+const tryAgainBtn=document.getElementById("tryAgainBtn");
+
+form.addEventListener("submit",function(e){
+
+e.preventDefault();
+
+const values=Object.fromEntries(
+new FormData(form).entries()
+);
+
+
+form.style.display="none";
+
+
+storyDiv.innerHTML=formatStory(generateStory(values));
+
+storyDiv.style.display="block";
+
+tryAgainBtn.style.display="block";
+
+});
+
+tryAgainBtn.onclick=function(){
+
+form.reset();
+
+form.style.display="flex";
+
+storyDiv.style.display="none";
+
+tryAgainBtn.style.display="none";
+
+};
+
+
+function generateStory(v){
+
+return `
+
+THE OFFICIAL CASTLE CONSTRUCTION GUIDE
+
+Approved by the International Association of Extremely Fancy Buildings
+
+================================
+
+Congratulations!
+
+You have been selected as the newest royal castle architect.
+
+Your mission:
+
+Build the greatest castle ever created.
+
+The only problem?
+
+Nobody knows what a "normal" castle is anymore.
+
+
+
+STEP 1: CHOOSE YOUR ROYAL IDENTITY 👑
+
+
+From this day forward, you shall be known as:
+
+${v.title}
+
+
+This title must be announced every time you enter a room.
+
+If anyone refuses to bow...
+
+simply remind them that you own a castle.
+
+
+
+STEP 2: BUILD THE CASTLE WALLS 🧱
+
+
+Traditional castles use stone.
+
+Your castle uses something far more impressive:
+
+${v.material}
+
+
+Experts are unsure if it can stop an army.
+
+However, everyone agrees it looks extremely confusing.
+
+Visitors will say:
+
+"Wow!"
+
+Followed by:
+
+"How?"
+
+
+
+STEP 3: HIRE A CASTLE GUARDIAN 🐉
+
+
+Every castle needs protection.
+
+Your official guardian is:
+
+${v.guardian}
+
+
+Its duties include:
+
+- Guarding the entrance.
+- Scaring away villains.
+- Looking dramatic during storms.
+- Taking snack breaks constantly.
+
+
+Its first question is always:
+
+"Where is the food?"
+
+
+
+STEP 4: ADD MAGICAL FEATURES ✨
+
+
+Your castle's magical ability:
+
+${v.magic}
+
+
+The castle may fly.
+
+It may disappear.
+
+It may even turn visitors into professional dancers.
+
+Nobody knows.
+
+That is the magic.
+
+
+
+STEP 5: CREATE ROYAL LAWS 📜
+
+
+Your first official command:
+
+${v.command}
+
+
+This law will be carved into a giant golden sign above the entrance.
+
+Anyone who breaks it must explain themselves to the guardian.
+
+Good luck.
+
+
+
+STEP 6: STOCK THE ROYAL KITCHEN 🍽️
+
+
+The royal chefs prepared:
+
+${v.food}
+
+
+Nobody knows the recipe.
+
+Nobody knows the ingredients.
+
+The kitchen is slightly on fire.
+
+But everyone agrees:
+
+It smells expensive.
+
+
+
+STEP 7: DESIGN SECRET ROOMS 🚪
+
+
+The newest castle feature:
+
+The ${v.room}
+
+
+Nobody knows why it exists.
+
+Nobody knows what happens inside.
+
+The only warning on the door says:
+
+"DO NOT PRESS THE BUTTON."
+
+
+Naturally...
+
+everyone presses the button.
+
+
+
+STEP 8: DEFEND THE KINGDOM ⚔️
+
+
+An enemy approaches!
+
+Luckily, your ultimate defense is:
+
+${v.weapon}
+
+
+The enemy immediately surrenders.
+
+Not because they are afraid...
+
+but because they cannot stop laughing.
+
+
+
+STEP 9: REVEAL THE LOCATION 🗺️
+
+
+After months of construction, your castle is complete.
+
+Everyone expects it on a mountain.
+
+Or above the clouds.
+
+Or hidden in a magical forest.
+
+
+Instead, it appears in:
+
+${v.location}
+
+
+The crowd gasps.
+
+The architects faint.
+
+The historians rewrite every book.
+
+
+
+FINAL CASTLE INSPECTION REPORT 🏰
+
+
+Castle Status:
+
+AMAZING
+
+
+Structural Stability:
+
+QUESTIONABLE
+
+
+Royal Reputation:
+
+EXTREMELY FANCY
+
+
+Number of Confused Visitors:
+
+IMPOSSIBLE TO COUNT
+
+
+
+The kingdom officially declares this castle the greatest creation ever built.
+
+Mostly because nobody knows what else to do with a castle made from:
+
+${v.material}
+
+
+guarded by:
+
+${v.guardian}
+
+
+
+Congratulations,
+
+${v.title}.
+
+
+Your castle is complete.
+
+
+Remember:
+
+Never anger the guardian.
+
+Never enter the strange room.
+
+Always keep extra ${v.food} nearby.
+
+
+Royal construction complete. 👑
+
+`;
+
+}
+
+
+
+function formatStory(text){
+
+return "<p>"+text.trim()
+.replace(/\n\n/g,"</p><p>")
+.replace(/\n/g,"<br>")
++"</p>";
+
+}
+
+
+</script>
+
+
+</body>
+</html>
