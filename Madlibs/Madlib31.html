@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lost at Sea with a Penguin</title>
+
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      padding:40px;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      font-family:'Trebuchet MS', Arial, sans-serif;
+      background: linear-gradient(180deg,#89dcff 0%,#5db8f2 45%,#2b75bd 100%);
+    }
+
+    .container{
+      width:100%;
+      max-width:900px;
+      background:white;
+      border-radius:20px;
+      padding:40px;
+      box-shadow:0 18px 45px rgba(0,0,0,.25);
+    }
+
+    h1{
+      margin-top:0;
+      text-align:center;
+      color:#0d4c80;
+      font-size:2.6rem;
+    }
+
+    .instructions{
+      text-align:center;
+      color:#555;
+      font-size:1.1rem;
+      margin-bottom:30px;
+    }
+
+    form{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    input[type=text]{
+      padding:14px;
+      font-size:1rem;
+      border:2px solid #b8dcf3;
+      border-radius:10px;
+      transition:.25s;
+    }
+
+    input[type=text]:focus{
+      outline:none;
+      border-color:#1c82d6;
+      box-shadow:0 0 10px rgba(28,130,214,.35);
+    }
+
+    button{
+      margin-top:15px;
+      padding:16px;
+      border:none;
+      border-radius:10px;
+      background:#0d75c7;
+      color:white;
+      font-size:1.1rem;
+      font-weight:bold;
+      cursor:pointer;
+      transition:.25s;
+    }
+
+    button:hover{
+      background:#085d9e;
+      transform:translateY(-2px);
+    }
+
+    .story{
+      display:none;
+      margin-top:35px;
+      background:#fff8df;
+      border-left:8px solid #d6a12c;
+      border-radius:12px;
+      padding:30px;
+      line-height:1.8;
+      font-size:1.08rem;
+      white-space:pre-line;
+      box-shadow:0 10px 25px rgba(0,0,0,.15);
+    }
+
+    #tryAgainBtn{
+      display:none;
+      margin-top:25px;
+      background:#28a745;
+    }
+
+    #tryAgainBtn:hover{
+      background:#218838;
+    }
+
+    @media (max-width:700px){
+
+      body{
+        padding:20px;
+      }
+
+      .container{
+        padding:25px;
+      }
+
+      h1{
+        font-size:2rem;
+      }
+
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h1>🌊 Lost at Sea with a Penguin</h1>
+
+<form id="madLibForm">
+
+<p class="instructions">
+Fill in the blanks to discover the weirdest ocean adventure ever!
+</p>
+
+<input type="text" name="person" placeholder="Person's Name" required>
+
+<input type="text" name="adjective" placeholder="Adjective" required>
+
+<input type="text" name="animal" placeholder="Animal (not a penguin)" required>
+
+<input type="text" name="verb" placeholder='Verb ending in "-ing"' required>
+
+<input type="text" name="food" placeholder="Food" required>
+
+<input type="text" name="number" placeholder="Number" required>
+
+<input type="text" name="sound" placeholder='Silly Sound (Example: SPLORK!, BOING!)' required>
+
+<input type="text" name="bodyPart" placeholder="Body Part" required>
+
+<input type="text" name="place" placeholder="Place" required>
+
+<button type="submit">
+🌊 Create My Story
+</button>
+
+</form>
+
+<div id="story" class="story"></div>
+
+<button id="tryAgainBtn">
+🔄 Try Again
+</button>
+
+</div>
+
+<script>
+
+const form = document.getElementById("madLibForm");
+const storyDiv = document.getElementById("story");
+const tryAgainBtn = document.getElementById("tryAgainBtn");
+
+form.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const values = Object.fromEntries(new FormData(form).entries());
+
+    form.style.display = "none";
+
+    const story = generateStory(values);
+
+    storyDiv.innerHTML = formatStoryText(story);
+
+    storyDiv.style.display = "block";
+
+    tryAgainBtn.style.display = "block";
+
+});
+
+tryAgainBtn.addEventListener("click", function(){
+
+    form.reset();
+
+    form.style.display = "flex";
+
+    storyDiv.style.display = "none";
+
+    tryAgainBtn.style.display = "none";
+
+});
+
+function generateStory(values){
+
+const {
+person,
+adjective,
+animal,
+verb,
+food,
+number,
+sound,
+bodyPart,
+place
+}=values;
+
+return `
+
+One morning, ${person} woke up floating in the middle of the ocean on a ${adjective} inflatable pickle. Nobody had the slightest idea how they got there, but sitting beside them was a penguin wearing sunglasses and quietly eating a map.
+
+The penguin looked ${person} straight in the ${bodyPart} and said,
+
+"Well... this is awkward."
+
+Before ${person} could ask any questions, a giant ${animal} suddenly leaped out of the water and started ${verb} around the tiny raft like it was performing in a talent show.
+
+The penguin applauded politely while ${person} screamed loud enough to scare several confused seagulls.
+
+After drifting for ${number} hours, the only remaining food was a single piece of ${food}.
+
+They argued over who deserved the last bite, so the penguin challenged ${person} to a dance battle.
+
+${person} lost almost immediately because apparently penguins are incredible breakdancers.
+
+Just when things couldn't get any weirder, a mysterious fog surrounded the raft.
+
+Out of the mist came a pirate ship entirely crewed by squirrels wearing tuxedos.
+
+Their captain pointed a rubber chicken at everyone and shouted,
+
+"${sound.toUpperCase()}"
+
+Everyone froze.
+
+Nobody knew what it meant.
+
+The penguin nodded seriously and whispered,
+
+"That's squirrel for 'nice weather.'"
+
+The squirrels invited everyone aboard for an all-you-can-eat buffet featuring seaweed smoothies, fish-flavored cupcakes, and suspiciously crunchy ice cream.
+
+The penguin ate everything without blinking while ${person} quietly questioned every life decision that had led to this moment.
+
+Eventually, land appeared in the distance.
+
+As the ship sailed closer, everyone realized it wasn't a tropical island at all...
+
+It was ${place}.
+
+The locals welcomed the penguin by presenting it with the Golden Fish Trophy for "Most Dramatic Ocean Survivor."
+
+As for ${person}, they received a coupon for free socks and a certificate officially declaring they should probably never captain a boat again.
+
+To this day, whenever someone asks if ${person} has ever been lost at sea, the answer is always:
+
+"Never trust a penguin carrying a map... especially if it's wearing sunglasses."
+
+🐧🌊
+
+`;
+
+}
+
+function formatStoryText(story){
+
+    return "<p>" +
+    story.trim().replace(/\n\s*\n/g,"</p><p>") +
+    "</p>";
+
+}
+
+</script>
+
+</body>
+</html>
