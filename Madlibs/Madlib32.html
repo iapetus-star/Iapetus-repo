@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fairy Tale Emergency Hotline</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    padding:40px;
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+
+    font-family:'Trebuchet MS', Arial, sans-serif;
+
+    background: linear-gradient(180deg,#d9b8ff 0%,#b786ff 45%,#7d4fd9 100%);
+}
+
+.container{
+
+    width:100%;
+    max-width:950px;
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:40px;
+
+    box-shadow:0 18px 45px rgba(0,0,0,.25);
+
+}
+
+h1{
+
+    margin-top:0;
+
+    text-align:center;
+
+    color:#6a1fb4;
+
+    font-size:2.6rem;
+
+}
+
+.instructions{
+
+    text-align:center;
+
+    color:#555;
+
+    font-size:1.1rem;
+
+    margin-bottom:30px;
+
+}
+
+form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+
+}
+
+input[type=text]{
+
+    padding:14px;
+
+    font-size:1rem;
+
+    border:2px solid #d8c2ff;
+
+    border-radius:10px;
+
+    transition:.25s;
+
+}
+
+input[type=text]:focus{
+
+    outline:none;
+
+    border-color:#8b4de3;
+
+    box-shadow:0 0 10px rgba(139,77,227,.35);
+
+}
+
+button{
+
+    margin-top:15px;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#8b4de3;
+
+    color:white;
+
+    font-size:1.1rem;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+button:hover{
+
+    background:#7334cb;
+
+    transform:translateY(-2px);
+
+}
+
+.story{
+
+    display:none;
+
+    margin-top:35px;
+
+    background:#fff7e6;
+
+    border-left:8px solid #e0b84c;
+
+    border-radius:12px;
+
+    padding:30px;
+
+    line-height:1.8;
+
+    font-size:1.08rem;
+
+    white-space:pre-line;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+}
+
+#tryAgainBtn{
+
+    display:none;
+
+    margin-top:25px;
+
+    background:#2bb673;
+
+}
+
+#tryAgainBtn:hover{
+
+    background:#23945d;
+
+}
+
+@media(max-width:700px){
+
+body{
+padding:20px;
+}
+
+.container{
+padding:25px;
+}
+
+h1{
+font-size:2rem;
+}
+
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h1>Fairy Tale Emergency Hotline</h1>
+
+<form id="madLibForm">
+
+<p class="instructions">
+Fill in the blanks and answer emergency calls from the most chaotic fairy tale kingdom ever!
+</p>
+
+<input type="text" name="person" placeholder="Person's Name" required>
+
+<input type="text" name="adjective" placeholder="Adjective" required>
+
+<input type="text" name="object" placeholder="Random Object" required>
+
+<input type="text" name="verb" placeholder='Verb ending in "-ing"' required>
+
+<input type="text" name="food" placeholder="Food" required>
+
+<input type="text" name="exclamation" placeholder='Silly Exclamation (BANANA BISCUITS!, FLOOP!, etc.)' required>
+
+<input type="text" name="place" placeholder="Place" required>
+
+<button type="submit">
+✨ Answer the Hotline
+</button>
+
+</form>
+
+<div id="story" class="story"></div>
+
+<button id="tryAgainBtn">
+🔄 Try Another Emergency
+</button>
+
+</div>
+
+<script>
+
+const form=document.getElementById("madLibForm");
+const storyDiv=document.getElementById("story");
+const tryAgainBtn=document.getElementById("tryAgainBtn");
+
+form.addEventListener("submit",function(e){
+
+e.preventDefault();
+
+const values=Object.fromEntries(new FormData(form).entries());
+
+form.style.display="none";
+
+const story=generateStory(values);
+
+storyDiv.innerHTML=formatStoryText(story);
+
+storyDiv.style.display="block";
+
+tryAgainBtn.style.display="block";
+
+});
+
+tryAgainBtn.addEventListener("click",function(){
+
+form.reset();
+
+form.style.display="flex";
+
+storyDiv.style.display="none";
+
+tryAgainBtn.style.display="none";
+
+});
+
+function generateStory(values){
+
+const{
+person,
+adjective,
+object,
+verb,
+food,
+exclamation,
+place
+}=values;
+
+return `
+
+"RIIIIIIING!"
+
+"Thank you for calling the Fairy Tale Emergency Hotline, where magical disasters are only slightly our fault. My name is ${person}. How may I make your day significantly stranger?"
+
+The first caller was the Big Bad Wolf.
+
+"Help!" he cried. "The Three Little Pigs have upgraded their houses. One is made of titanium, one is made of reinforced concrete, and the third one is somehow made entirely out of expired coupons. I've been ${verb} for three hours and now I need a nap."
+
+"No problem," I said, checking page 847 of the Emergency Fairy Tale Handbook.
+
+"Have you tried apologizing?"
+
+"...Ew."
+
+Before I could respond, another phone started ringing.
+
+"Emergency Hotline."
+
+"This is Cinderella!" she shouted.
+
+"My fairy godmother accidentally turned my carriage into a giant ${object} instead of a pumpkin! The horses are confused, the prince is laughing, and my mice have unionized!"
+
+I scribbled some notes.
+
+"Okay... on a scale from one to ten, how magical is the disaster?"
+
+"Eleven."
+
+"Understandable."
+
+Another phone rang immediately.
+
+"This is Jack from Jack and the Beanstalk."
+
+"What seems to be the problem?"
+
+"The giant keeps ordering ${food} online, and the delivery dragons won't stop landing in my backyard."
+
+"That does sound inconvenient."
+
+"They've started asking to use my Wi-Fi."
+
+Before I could finish the paperwork, every phone in the building rang at once.
+
+Sleeping Beauty had slept through seventeen alarm clocks and accidentally missed three birthdays.
+
+Rapunzel got her hair tangled in a windmill.
+
+Three bears reported that Goldilocks had started leaving online reviews instead of porridge.
+
+One witch insisted someone had stolen her flying broom and replaced it with a scooter.
+
+Meanwhile, a knight called because his dragon refused to breathe fire and would only blow glitter.
+
+My supervisor slowly walked over, looked at the flashing phones, sighed, and handed me a giant instruction manual labeled:
+
+"PLEASE DON'T PANIC."
+
+Unfortunately...
+
+it immediately burst into glitter.
+
+Just then, the hotline's emergency alarm began flashing bright purple.
+
+The loudspeaker boomed:
+
+"LEVEL TEN FAIRY TALE EMERGENCY!"
+
+Everyone gasped.
+
+A messenger fairy burst through the window yelling,
+
+"${exclamation.toUpperCase()}"
+
+Silence filled the room.
+
+"What happened?" everyone asked.
+
+The fairy took a deep breath.
+
+"The Gingerbread Man... has discovered espresso."
+
+Within minutes he was running faster than sound itself, delivering motivational speeches to squirrels, racing unicorns, and accidentally creating tiny cookie-shaped tornadoes across the kingdom.
+
+Every prince, princess, wizard, dragon, troll, and talking frog immediately called the hotline at the same time.
+
+The phone system made a sad little "beep"...
+
+...then completely exploded into sparkles.
+
+The next morning, after fourteen magical meetings, eight emergency snack breaks, and one extremely judgmental unicorn, the kingdom finally returned to normal.
+
+Mostly.
+
+The Gingerbread Man agreed to switch to decaf.
+
+The wolf signed up for anger management.
+
+The giant canceled his dragon deliveries.
+
+And Cinderella decided that a giant ${object} actually made a pretty stylish carriage.
+
+As for me, I packed up my desk, walked out of the office, and accepted a much quieter job answering customer complaints at ${place}.
+
+To this day, whenever my phone rings, I stare at it for five full minutes...
+
+...just in case it's another fairy reporting that a dragon has accidentally married a toaster.
+
+🧚✨👑
+
+`;
+
+}
+
+function formatStoryText(story){
+
+return "<p>"+story.trim().replace(/\n\s*\n/g,"</p><p>")+"</p>";
+
+}
+
+</script>
+
+</body>
+</html>
