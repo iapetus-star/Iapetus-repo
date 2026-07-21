@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snow Day Survival Guide</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+
+    margin:0;
+    padding:40px;
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+
+    overflow-x:hidden;
+
+    font-family:"Trebuchet MS",Arial,sans-serif;
+    background: linear-gradient(180deg, #dff6ff 0%, #bfe9ff 45%, #7dbce8 100%);
+    position:relative;
+}
+
+body::before,
+body::after{
+    content:"";
+    position:fixed;
+    inset:-2000px;
+    pointer-events:none;
+    background-image:
+        radial-gradient(circle, rgba(255,255,255,.95) 2px, transparent 3px),
+        radial-gradient(circle, rgba(255,255,255,.8) 1.5px, transparent 2px),
+        radial-gradient(circle, rgba(255,255,255,.7) 3px, transparent 4px);
+    background-size: 180px 180px, 260px 260px, 340px 340px;
+    animation:snowFall 30s linear infinite;
+}
+
+body::after{
+    opacity:.55;
+    animation-duration:50s;
+}
+
+@keyframes snowFall{
+    from{
+        transform:translateY(-200px);
+    }
+
+    to{
+        transform:translateY(500px);
+    }
+
+}
+
+.container{
+    width:100%;
+    max-width:950px;
+    background:rgba(255,255,255,.68);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    border:1px solid rgba(255,255,255,.55);
+    border-radius:22px;
+    padding:40px;
+    box-shadow:
+        0 20px 45px rgba(0,0,0,.15);
+    position:relative;
+    z-index:2;
+}
+
+h1{
+    margin-top:0;
+    text-align:center;
+    font-size:2.7rem;
+    color:#1b6aa5;
+    text-shadow:
+        0 0 12px rgba(255,255,255,.9);
+}
+
+.instructions{
+    text-align:center;
+    color:#3d5870;
+    font-size:1.1rem;
+    margin-bottom:30px;
+}
+
+
+form{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+
+input{
+
+    padding:15px;
+
+    font-size:1rem;
+
+    border-radius:12px;
+
+    border:2px solid #d4eefb;
+
+    background:rgba(255,255,255,.88);
+
+    transition:.25s;
+
+}
+
+input:focus{
+
+    outline:none;
+
+    border-color:#5ba9dd;
+
+    box-shadow:
+        0 0 14px rgba(91,169,221,.4);
+
+}
+
+button{
+
+    margin-top:15px;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    color:white;
+
+    font-size:1.08rem;
+
+    font-weight:bold;
+
+    background:
+        linear-gradient(
+            180deg,
+            #69bff2,
+            #3d93d1
+        );
+
+    transition:.25s;
+
+}
+
+button:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 10px 20px rgba(61,147,209,.35);
+
+}
+
+.story{
+
+    display:none;
+
+    margin-top:35px;
+
+    padding:30px;
+
+    line-height:1.9;
+
+    font-size:1.08rem;
+
+    white-space:pre-line;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,.78);
+
+    backdrop-filter:blur(10px);
+
+    border-left:8px solid #7ec3eb;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.10);
+
+}
+
+#tryAgainBtn{
+
+    display:none;
+
+    margin-top:25px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #54c989,
+            #2f9e64
+        );
+
+}
+
+#tryAgainBtn:hover{
+
+    box-shadow:
+        0 10px 20px rgba(47,158,100,.35);
+
+}
+
+@media(max-width:700px){
+
+body{
+
+padding:20px;
+
+}
+
+.container{
+
+padding:25px;
+
+}
+
+h1{
+
+font-size:2rem;
+
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>❄️ Snow Day Survival Guide ☃️</h1>
+
+<form id="madLibForm">
+
+<p class="instructions">
+Fill in the blanks to create the most ridiculous snow day survival guide ever written!
+</p>
+
+<input type="text" name="profession" placeholder="A Weird Profession (Example: Dinosaur Dentist)" required>
+
+<input type="text" name="sound" placeholder='A Sound Effect (Example: "KABOOM!")' required>
+
+<input type="text" name="item" placeholder="Something You Should NEVER Bring in the Snow" required>
+
+<input type="text" name="power" placeholder="A Made-Up Superpower" required>
+
+<input type="text" name="celebrity" placeholder="A Celebrity" required>
+
+<input type="text" name="color" placeholder="A Color" required>
+
+<input type="text" name="rule" placeholder="A Ridiculous Rule" required>
+
+<button type="submit">
+❄️ Generate My Survival Guide
+</button>
+
+</form>
+
+<div id="story" class="story"></div>
+
+<button id="tryAgainBtn">
+🔄 Survive Another Snow Day
+</button>
+
+</div>
+
+<script>
+
+const form=document.getElementById("madLibForm");
+const storyDiv=document.getElementById("story");
+const tryAgainBtn=document.getElementById("tryAgainBtn");
+
+form.addEventListener("submit",function(e){
+
+e.preventDefault();
+
+const values=Object.fromEntries(new FormData(form).entries());
+
+form.style.display="none";
+
+const story=generateStory(values);
+
+storyDiv.innerHTML=formatStoryText(story);
+
+storyDiv.style.display="block";
+
+tryAgainBtn.style.display="block";
+
+});
+
+tryAgainBtn.addEventListener("click",function(){
+
+form.reset();
+
+form.style.display="flex";
+
+storyDiv.style.display="none";
+
+tryAgainBtn.style.display="none";
+
+});
+
+function generateStory(values){
+
+const{
+profession,
+sound,
+item,
+power,
+celebrity,
+color,
+rule
+}=values;
+
+return `
+
+Congratulations!
+
+If you're reading this, you've officially survived long enough to receive the Official Snow Day Survival Guide, written by the world-famous ${profession} Academy.
+
+Please read carefully.
+
+Ignoring these instructions may result in frostbite, confused squirrels, or accidentally becoming mayor of Antarctica.
+
+Rule #1: Never Panic.
+
+The moment you wake up and discover six feet of snow outside your window, remain calm.
+
+Do NOT immediately scream "${sound.toUpperCase()}" while diving into a pile of blankets.
+
+Statistics show that this solves absolutely nothing...
+
+...although it is pretty entertaining for your family.
+
+Rule #2: Pack Your Emergency Supplies.
+
+Every snow explorer should carry:
+
+• Three mittens (you'll lose one anyway).
+
+• Hot chocolate.
+
+• A flashlight.
+
+• A rubber duck for emotional support.
+
+• And absolutely NEVER bring ${item}.
+
+Nobody knows why.
+
+The guide simply says,
+
+"Trust us."
+
+Apparently someone ignored this rule back in 1997.
+
+We don't talk about the Incident.
+
+Rule #3: Beware of Snow Monsters.
+
+Scientists insist snow monsters aren't real.
+
+Scientists are also the same people who once spent three hours arguing whether cereal is soup.
+
+Coincidence?
+
+Exactly.
+
+If you encounter a suspiciously large snowman that slowly turns to look at you...
+
+...activate your secret ability:
+
+${power}.
+
+Experts aren't sure how this power helps.
+
+But it certainly looks impressive.
+
+Rule #4: Trust No One.
+
+Especially not ${celebrity}.
+
+Sure, they may look friendly.
+
+Sure, they may offer you a warm blanket and cookies.
+
+But that's exactly what someone trying to win an international snowball championship would do.
+
+Stay alert.
+
+Rule #5: Camouflage.
+
+If you're stranded outdoors, cover yourself in ${color} clothing.
+
+This may not actually help you blend in...
+
+...but you'll look fantastic in all the rescue photos.
+
+Fashion is important.
+
+Even during a blizzard.
+
+Rule #6: Follow the Sacred Snow Code.
+
+According to ancient winter legends, every snow day must obey one important law:
+
+"${rule}"
+
+Nobody remembers who invented this rule.
+
+Nobody understands why it exists.
+
+But every time someone breaks it...
+
+...someone else's snowman mysteriously loses its carrot nose.
+
+Science has no explanation.
+
+Neither does the carrot.
+
+After several hours of survival, you'll begin experiencing the classic Snow Day Symptoms:
+
+• Talking to your snow shovel.
+
+• Believing marshmallows count as vegetables.
+
+• Forgetting what day of the week it is.
+
+• Losing an epic snowball fight to a six-year-old.
+
+• Naming every icicle outside your house.
+
+These are completely normal.
+
+Probably.
+
+Finally, when the snow melts and civilization returns, you'll be asked one important question:
+
+"Did you survive the Snow Day?"
+
+Stand proudly.
+
+Adjust your imaginary winter cape.
+
+Look dramatically toward the horizon.
+
+And quietly whisper...
+
+"I followed the guide."
+
+Whether any of it actually worked...
+
+...is still being investigated.
+
+❄️☃️
+
+`;
+
+}
+
+function formatStoryText(story){
+
+return "<p>"+story.trim().replace(/\n\s*\n/g,"</p><p>")+"</p>";
+
+}
+
+</script>
+
+</body>
+</html>
