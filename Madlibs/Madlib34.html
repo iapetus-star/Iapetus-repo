@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ghost Hunters Field Report</title>
+
+<style>
+body {
+  background: #121212;
+  font-family: Georgia, serif;
+  color: #eee;
+  margin: 0;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.container {
+  background: #1e1e1e;
+  border: 2px solid #555;
+  border-radius: 15px;
+  padding: 2rem;
+  max-width: 850px;
+  width: 100%;
+  box-shadow: 0 0 30px rgba(150,150,255,.2);
+}
+
+h1 {
+  text-align: center;
+  color: #c9c8ff;
+}
+
+.instructions {
+  text-align: center;
+  color: #aaa;
+  margin-bottom: 2rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+input {
+  padding: .7rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #666;
+  background: #111;
+  color: white;
+}
+
+button {
+  margin-top: 1rem;
+  padding: .8rem;
+  background: #6b5cff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #857aff;
+}
+
+.story {
+  background: #111;
+  border-left: 5px solid #6b5cff;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  border-radius: 10px;
+  line-height: 1.7;
+  display:none;
+}
+
+.story p {
+  margin-bottom: 1.2rem;
+}
+
+#tryAgainBtn {
+  display:none;
+}
+</style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+<h1>Ghost Hunters' Field Report 🔦</h1>
+
+<form id="madLibForm">
+
+<p class="instructions">
+Fill out the investigation clues below. The ghosts are waiting...
+</p>
+
+<input name="smellyThing" placeholder="A smelly thing (old cheese, gym socks...)" required>
+
+<input name="emotion" placeholder="An emotion (terrified, confused...)" required>
+
+<input name="chore" placeholder="A household chore" required>
+
+<input name="fancyWord" placeholder="A fancy word (magnificent, extravagant...)" required>
+
+<input name="hat" placeholder="A type of hat" required>
+
+<input name="tinyThing" placeholder="Something tiny" required>
+
+<input name="genre" placeholder="A movie or TV genre" required>
+
+<input name="flavor" placeholder="A weird flavor" required>
+
+<input name="landmark" placeholder="A famous landmark" required>
+
+
+<button type="submit">
+Generate Classified Report
+</button>
+
+</form>
+
+
+<div id="story" class="story"></div>
+
+<button id="tryAgainBtn">
+Start New Investigation
+</button>
+
+</div>
+
+
+
+<script>
+
+const form = document.getElementById("madLibForm");
+const storyDiv = document.getElementById("story");
+const tryAgainBtn = document.getElementById("tryAgainBtn");
+
+
+form.addEventListener("submit", function(e){
+
+e.preventDefault();
+
+const values = Object.fromEntries(
+new FormData(form).entries()
+);
+
+form.style.display="none";
+
+storyDiv.innerHTML = formatStoryText(generateStory(values));
+
+storyDiv.style.display="block";
+
+tryAgainBtn.style.display="block";
+
+});
+
+
+
+tryAgainBtn.onclick = () => {
+
+form.reset();
+
+form.style.display="flex";
+
+storyDiv.style.display="none";
+
+tryAgainBtn.style.display="none";
+
+};
+
+
+
+function generateStory(v){
+
+return `
+
+CONFIDENTIAL PARANORMAL INVESTIGATION REPORT
+
+Case Number: #00013
+
+Lead Investigator's Note:
+
+If this report is found on the floor, return it immediately.
+
+If it returns itself...
+
+RUN.
+
+
+
+Our investigation began at exactly 11:59 PM after neighbors reported mysterious footsteps, creepy laughter, and someone singing every song completely wrong.
+
+The abandoned mansion appeared silent...
+
+until a horrible smell entered the hallway.
+
+Our equipment confirmed the haunting was caused by the unmistakable scent of ${v.smellyThing}.
+
+No normal ghost could create an aroma that powerful.
+
+
+
+One rookie investigator became ${v.emotion} and spent twenty minutes interviewing a coat rack.
+
+The coat rack provided no answers.
+
+Mostly because it was a coat rack.
+
+
+
+While exploring the attic, we discovered something unbelievable.
+
+Every ghost in the mansion was obsessed with doing ${v.chore}.
+
+One ghost folded invisible laundry.
+
+Another cleaned paintings that disappeared decades ago.
+
+A third vacuumed the ceiling while humming elevator music.
+
+Honestly...
+
+they were more productive than most humans.
+
+
+
+At 12:37 AM, we met the Head Ghost.
+
+It floated dramatically through a wall and bowed.
+
+"I am the ${v.fancyWord} Spirit of This Mansion."
+
+It apologized because one ghost accidentally frightened a pizza delivery driver.
+
+Apparently ghosts have manners.
+
+
+
+The Head Ghost wore a giant ${v.hat}.
+
+When asked why, it replied:
+
+"It completes the outfit."
+
+Fair enough.
+
+
+
+Suddenly, the Ghost Detection Device started flashing.
+
+Instead of finding a dangerous spirit...
+
+it discovered a tiny ${v.tinyThing} floating in the hallway.
+
+Nobody knew why it was there.
+
+The ghost simply said:
+
+"That's Gerald."
+
+Nobody asked questions.
+
+
+
+Later, every ghost gathered for movie night.
+
+We expected scary horror movies.
+
+Instead, they watched a ${v.genre} marathon.
+
+One ghost cried.
+
+One ghost spoiled the ending.
+
+One ghost complained about the popcorn.
+
+Very haunting behavior.
+
+
+
+At 2:15 AM, glowing green smoke filled the kitchen.
+
+The ghosts revealed their newest invention:
+
+Haunted Ice Cream.
+
+Today's flavor?
+
+${v.flavor}.
+
+One investigator tried it.
+
+The official report states:
+
+"Regret was immediate."
+
+
+
+Before sunrise, the ghosts thanked us and gave us tiny tombstone refrigerator magnets.
+
+Their dream vacation destination?
+
+${v.landmark}.
+
+Apparently ghosts enjoy sightseeing.
+
+
+
+FINAL INVESTIGATION SUMMARY
+
+Was the mansion haunted?
+
+Absolutely.
+
+Were the ghosts dangerous?
+
+Not really.
+
+Did they demand a five-star review?
+
+Yes.
+
+Will we return?
+
+Only if they promise never to serve ${v.flavor} ice cream again.
+
+
+CASE STATUS: SOLVED.
+
+RECOMMENDATION:
+
+Bring flashlights...
+
+and maybe air freshener.
+
+`;
+
+}
+
+
+
+function formatStoryText(text){
+
+return "<p>" + text.trim()
+.replace(/\n\n/g,"</p><p>")
+.replace(/\n/g,"<br>")
++"</p>";
+
+}
+
+</script>
+
+</body>
+</html>
