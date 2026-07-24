@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decision Maker</title>
+
+<style>
+body {
+  margin: 0;
+  background: #ffd86b;
+  font-family: "Comic Sans MS", sans-serif;
+}
+
+.screen {
+  display: none;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+h1, h2 {
+  color: #ff3c6d;
+  text-shadow: 2px 2px white;
+}
+
+p {
+  max-width: 600px;
+  margin: auto;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.mainBtn,
+.subBtn {
+  padding: 12px 20px;
+  border: none;
+  cursor: pointer;
+  background: #ff3c6d;
+  color: white;
+  font-size: 18px;
+  border-radius: 10px;
+  margin: 10px;
+  transition: .2s;
+}
+
+.mainBtn:hover,
+.subBtn:hover {
+  transform: scale(1.05);
+  opacity: .9;
+}
+
+.subBtn {
+  background:#6a5bff;
+}
+
+input.choiceInput {
+  padding:10px;
+  width:min(60%,400px);
+  margin:5px;
+  border:2px solid #ff3c6d;
+  border-radius:8px;
+  font-size:16px;
+}
+
+ul {
+  list-style:none;
+  padding:0;
+}
+
+ul li {
+  background:white;
+  margin:10px auto;
+  padding:12px;
+  width:min(60%,400px);
+  border-radius:8px;
+  font-size:20px;
+  transition:opacity .5s;
+}
+
+.fade {
+  opacity:0 !important;
+}
+
+#countdown {
+  height:90px;
+  font-size:55px;
+  font-weight:bold;
+  color:#ff3c6d;
+  text-shadow:3px 3px white;
+}
+
+.animateCountdown {
+  animation: pop .5s ease;
+}
+
+@keyframes pop {
+from {
+transform:scale(.5);
+opacity:0;
+}
+
+to {
+transform:scale(1);
+opacity:1;
+}
+}
+
+#finalChoice {
+  font-size:40px;
+  color:#6a5bff;
+  font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="app">
+<!-- START -->
+
+<div class="screen" id="startScreen">
+<h1>Decision Maker</h1>
+
+<button class="mainBtn" id="startBtn">Start</button>
+</div>
+
+<!-- EXPLAIN -->
+<div class="screen" id="explainScreen">
+<h2>How It Works</h2>
+
+<p>Enter between 2 and 10 choices.<br><br>
+Type one choice at a time.<br>
+Press "Add Choice" to add more.<br>
+Press "Make My Decision" to begin!<br><br>
+Every 3 seconds a choice disappears until only two remain...<br>
+Then the app chooses your winner!</p>
+<button class="mainBtn" id="goToMainBtn">Got it!</button>
+</div>
+
+<!-- MAIN -->
+<div class="screen" id="mainScreen">
+<h2>Your Choices</h2>
+
+<div id="choicesContainer">
+
+<input type="text" class="choiceInput" placeholder="Enter a choice">
+</div>
+
+<button class="subBtn" id="addChoiceBtn">Add Choice</button>
+<button class="mainBtn" id="startEliminationBtn">Make My Decision</button>
+
+</div>
+
+<!-- ELIMINATION -->
+<div class="screen" id="eliminationScreen">
+<h2>Eliminating Choices...</h2>
+<div id="countdown"></div>
+
+<ul id="eliminationList"></ul>
+
+</div>
+
+<!-- FINAL -->
+<div class="screen" id="finalScreen">
+<h2>Final Decision</h2>
+
+<p id="finalChoice"></p>
+
+<button class="mainBtn" id="restartBtn">Restart</button>
+</div>
+</div>
+
+<audio id="dramaticSound" src="https://www.orangefreesounds.com/wp-content/uploads/2021/07/Dramatic-hit-sound-effect.mp3" preload="auto"></audio>
+
+
+<script>
+const screens = {
+  start: document.getElementById("startScreen"),
+  explain: document.getElementById("explainScreen"),
+  main: document.getElementById("mainScreen"),
+  elimination: document.getElementById("eliminationScreen"),
+  final: document.getElementById("finalScreen")
+};
+
+const choicesContainer = document.getElementById("choicesContainer");
+const eliminationList = document.getElementById("eliminationList");
+const countdown = document.getElementById("countdown");
+const finalChoice = document.getElementById("finalChoice");
+const dramaticSound = document.getElementById("dramaticSound");
+
+const startButton = document.getElementById("startEliminationBtn");
+
+let eliminationTimer = null;
+let eliminationTimeout = null;
+
+function show(screen) {
+  Object.values(screens).forEach(s => s.style.display = "none");
+  screens[screen].style.display = "block";
+}
+
+show("start");
+
+document.getElementById("startBtn").onclick = () => show("explain");
+document.getElementById("goToMainBtn").onclick = () => show("main");
+
+document.getElementById("addChoiceBtn").onclick = () => {
+
+  const inputs = document.querySelectorAll(".choiceInput");
+
+  if (inputs.length >= 10) {
+  alert("Maximum of 10 choices allowed.");
+  return;
+  }
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.placeholder = "Enter a choice";
+  input.className = "choiceInput";
+
+  choicesContainer.appendChild(input);
+};
+
+startButton.onclick = () => {
+
+  let choices = Array.from(document.querySelectorAll(".choiceInput"))
+  .map(input => input.value.trim())
+  .filter(Boolean);
+
+  if (choices.length < 2) {
+  alert("Please enter at least 2 choices.");
+  return;
+  }
+
+  if (choices.length > 10) {
+  alert("Maximum of 10 choices.");
+  return;
+  }
+
+  if (new Set(choices).size !== choices.length) {
+  alert("Duplicate choices are not allowed.");
+  return;
+  }
+
+  startButton.disabled = true;
+  startButton.style.opacity = ".5";
+
+  startElimination(shuffle([...choices]));
+};
+
+function shuffle(array) {
+
+  for (let i = array.length - 1; i > 0; i--) {
+
+  const j = Math.floor(Math.random() * (i + 1));
+
+  [array[i], array[j]] = [array[j], array[i]];
+  }
+
+  return array;
+}
+
+function animateCountdown(text) {
+  countdown.textContent = text;
+  countdown.classList.remove("animateCountdown");
+  void countdown.offsetWidth;
+  countdown.classList.add("animateCountdown");
+}
+
+function startElimination(choices) {
+  clearInterval(eliminationTimer);
+  clearTimeout(eliminationTimeout);
+
+  show("elimination");
+
+  eliminationList.innerHTML = "";
+  countdown.textContent = "";
+
+  choices.forEach(choice => {
+
+  const li = document.createElement("li");
+  li.textContent = choice;
+
+  eliminationList.appendChild(li);
+  });
+
+  runRound();
+}
+
+function runRound() {
+
+  const items = eliminationList.querySelectorAll("li");
+
+  if (items.length <= 2) {
+
+  clearInterval(eliminationTimer);
+  eliminationTimer = null;
+
+  const remaining = Array.from(items).map(i => i.textContent);
+
+  const winner = remaining[Math.floor(Math.random() * remaining.length)];
+
+  finalChoice.textContent = winner;
+
+  dramaticSound.currentTime = 0;
+
+  dramaticSound.play().catch(() => {});
+
+  eliminationTimeout = setTimeout(() => {
+
+  startButton.disabled = false;
+  startButton.style.opacity = "1";
+
+  show("final");
+
+  }, 1500);
+
+  return;
+  }
+
+  let number = 3;
+
+animateCountdown(number);
+
+  eliminationTimer = setInterval(() => {
+  number--;
+
+  if (number > 0) {
+
+  animateCountdown(number);
+  } else {
+  clearInterval(eliminationTimer);
+
+  const choices = eliminationList.querySelectorAll("li");
+
+  const index = Math.floor(Math.random() * choices.length);
+
+  const eliminated = choices[index];
+
+  animateCountdown("ELIMINATED: " + eliminated.textContent);
+
+  eliminated.classList.add("fade");
+
+  eliminationTimeout = setTimeout(() => {
+
+  eliminated.remove();
+
+  countdown.textContent = "";
+
+  eliminationTimeout = setTimeout(() => {
+
+  runRound();
+  }, 800);
+
+  }, 700);
+  }
+
+  }, 1000);
+}
+
+document.getElementById("restartBtn").onclick = () => {
+
+  clearInterval(eliminationTimer);
+  clearTimeout(eliminationTimeout);
+  eliminationTimer = null;
+  eliminationTimeout = null;
+
+  choicesContainer.innerHTML = `
+  <input type="text" class="choiceInput"
+   placeholder="Enter a choice">
+  `;
+
+  eliminationList.innerHTML = "";
+  countdown.textContent = "";
+  finalChoice.textContent = "";
+
+  dramaticSound.pause();
+  dramaticSound.currentTime = 0;
+
+  startButton.disabled = false;
+  startButton.style.opacity = "1";
+
+  show("start");
+};
+
+</script>
+</body>
+</html>
