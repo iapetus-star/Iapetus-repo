@@ -55,9 +55,16 @@
 
   .entry h2 {
     margin: 0 0 0.3rem 0;
-    color: var(--entry-border);
+    color: var(--subheader);
     font-weight: 700;
     font-size: 1.3rem;
+  }
+
+  .entry h3 {
+    margin: 0 0 0.2rem 0;
+    color: var(--entry-border);
+    font-weight: 700;
+    font-size: 1.1rem;
   }
 
   .entry .date {
@@ -169,6 +176,211 @@ summary::-webkit-details-marker {
 
 
   
+<div class="entry">
+  <h2>July 23, 2026</h2>
+  <div class="date">The "I'm Still Alive" Update</div>
+
+<p>Yeah... this project kind of vanished for nine months. Before anyone starts thinking I abandoned it, let me defend myself for a second—it genuinely wasn't intentional. One thing turned into another, which turned into another, and before I knew it, every spare second of my life had been claimed by something else.</p>
+<p>It all started shortly after my last changelog, when my computer completely gave up on life. Not "running a little slow." Not "needs a restart." I mean completely dead. That thing wanted absolutely nothing to do with existing anymore.</p>
+<p>So I spent way longer than I wanted stuck on one of those lovely school-issued Chromebooks just trying to get homework done. And because life apparently enjoys comedy, GitHub was blocked on it.</p>
+<p>Fantastic.</p>
+<p>Eventually I got a new computer, but by then FBLA season had already started. I competed in two coding events this year. No medals, unfortunately, but I did become a State Championship Finalist in both events, which honestly isn't too bad considering there were around 3,500 students competing.</p>
+<p>At the same time, I was also preparing for Academic Decathlon... where I somehow walked away with four gold medals.</p>
+<p>So that definitely made up for the FBLA disappointment.</p>
+<p>Then came March through May.</p>
+
+<ul>
+    <li>ACT testing.</li>
+    <li>State testing.</li>
+    <li>AP testing.</li>
+    <li>Class finals.</li>
+    <li>Applications.</li>
+    <li>Forms.</li>
+    <li>More forms.</li>
+    <li>Even more forms.</li>
+</ul>
+
+<p>Needless to say... I was just a little busy.</p>
+<p>Then June rolled around, and I spent about a month and a half at an amazing summer college readiness program. Honestly, it was one of the best experiences I've had. We covered everything from FAFSA and scholarships to college applications, course planning, and generally how to survive college without accidentally living off instant noodles.</p>
+<p>The best part was that it was hosted on an actual university campus. We lived in dorms, walked to classes, explored campus, used student services, ate in the dining hall, and even visited several other universities around the state. It was basically a preview of college life, and I loved every minute of it.</p>
+<p>Well... almost every minute.</p>
+<p>The only downside was the public Wi-Fi. If you know anything about cybersecurity, you know the golden rule: don't type important passwords over public Wi-Fi if you can avoid it. My paranoid brain won that argument, so I barely logged into anything.</p>
+<p>Not that I had much time anyway. Weekdays were packed with classes, campus activities, games, and hanging out with friends. Saturdays were reserved for fun trips like movies, escape rooms, amusement parks, kayaking, and whatever adventure the staff had planned. Sundays were for cleaning dorms, grocery shopping, and pretending I wasn't already exhausted.</p>
+<p>Most evenings after dinner were spent writing my final speech for the program. And if I may brag for approximately three seconds...</p>
+<p>I absolutely nailed it.</p>
+<p>Anyways, I think that is a good enough background explanation. After all, you're here for what's new with the project, not my life ramblings, so let's get into it.</p>
+<p>Fair warning: if you thought my life story was long, the actual changelog is even longer. Get a snack or something. This might take a while.</p>
+
+<h3>🏠 Homepage Overhaul</h3>
+<p>This was by far the biggest project in this update.</p>
+<p>I completely rewrote the homepage stylesheet from the ground up. The old CSS had slowly turned into one of those "I'll clean it up later" situations... except "later" kept getting postponed for almost a year.</p>
+<p>The rewrite wasn't just about making things prettier-it was about making the code easier to maintain without having to play detective every time I wanted to change something.</p>
+
+<p>📱 Mobile Navigation Improvements</p>
+
+<ul>
+    <li>Fixed mobile sidebar opening behavior.</li>
+    <li>Improved slide animations and device compatibility.</li>
+    <li>Properly disabled interaction while the sidebar is hidden.</li>
+    <li>Desktop navigation now behaves independently from mobile.</li>
+    <li>Sidebar correctly restores itself when resizing between screen sizes.</li>
+    <li>Hamburger menu only appears where it actually belongs.</li>
+</ul>
+
+<p>Basically... the sidebar finally stopped fighting me.</p>
+
+<p>♿ Accessibility Improvements</p>
+
+<p>This update includes improvements like:</p>
+
+<ul>
+    <li>Better ARIA handling.</li>
+    <li>Improved keyboard navigation.</li>
+    <li>Smarter focus management.</li>
+    <li>Better screen reader support.</li>
+    <li>Reduced motion support for users who prefer fewer animations.</li>
+</ul>
+
+<p>Most people probably won't notice these changes. And honestly... that's kind of the goal. <br/> Accessibility works best when nobody has to think about it. </p>
+
+<p>📱 Responsive Improvements <br />The homepage should now behave much more consistently across different screen sizes.</p>
+
+<ul>
+    <li>Cleaner mobile layouts.</li>
+    <li>Better spacing.</li>
+    <li>Responsive typography using clamp().</li>
+    <li>Improved content padding.</li>
+    <li>Better separation between desktop and mobile styling.</li>
+</ul>
+
+<p>✨ Visual Improvements</p>
+
+<ul>
+    <li>Smoother animations.</li>
+    <li>Better hover effects.</li>
+    <li>Custom scrollbars.</li>
+    <li>Cleaner transitions.</li>
+    <li>More consistent styling across the site.</li>
+</ul>
+
+<p>They're small changes individually... <br />...but together they make everything feel much more polished.</p>
+
+<p>🌙 Dark Mode</p>
+
+<ul>
+    <li>Improved color variables.</li>
+    <li>Better contrast.</li>
+    <li>More readable APOD sections.</li>
+    <li>Cleaner theme organization.</li>
+</ul>
+
+<p>My eyeballs appreciate it.</p>
+
+<p>🛠️ Behind-the-Scenes Cleanup</p>
+
+<p>Probably the least exciting change... <br /> ...but one of the most important.</p>
+
+<p>The stylesheet is now organized into logical sections instead of becoming one giant wall of CSS.</p>
+<p>Everything is grouped into components, duplicate code has been removed, variables are centralized, and maintaining the homepage should be far easier going forward.</p>
+<p>Future me is very thankful.</p>
+
+<h3>💼 Portfolio Expansion</h3>
+
+<p>The Projects page received one of its biggest updates yet.</p>
+<p>I added a whole collection of new projects covering JavaScript, CSS art, animations, interactive applications, calculators, and small games.</p>
+
+<p>Some highlights include:</p>
+
+<ul>
+    <li>🎮 Ball Bounce Game</li>
+    <li>🔨 Accessible Mole Mash</li>
+    <li>✏️ Doodle Lab</li>
+    <li>🎡 Animated Ferris Wheel</li>
+    <li>🐧 CSS Penguin</li>
+    <li>🌆 CSS City Skyline</li>
+    <li>🧮 Factorial Calculator</li>
+    <li>📚 Grade Calculator</li>
+</ul>
+
+<p>Every project now has its own description with a little personality mixed in because reading fifty identical project summaries gets boring pretty quickly.</p>
+<p>Some projects also include extra notes explaining their background, assignment requirements, or why they exist.</p>
+<p>Overall, the portfolio does a much better job showing what I've actually been building over the past year.</p>
+
+<h3>📖 Notebook Improvements</h3>
+
+<p>The Notebook received a surprisingly large update.</p>
+<ul>
+    <li>Added answers to three more research topics.</li>
+    <li>Expanded answers throughout existing entries.</li>
+    <li>Added outside resources and references for every topic.</li>
+    <li>Improved citation formatting.</li>
+    <li>Better mobile readability.</li>
+    <li>Better desktop readability.</li>
+</ul>
+
+<p>I also fixed an accessibility issue where JAWS could occasionally announce unnecessary blank spaces between paragraphs.</p>
+<p>Small fix, big improvement.</p>
+
+<p>🎭 Mad Libs Got Bigger</p>
+
+<p>Because apparently 20 wasn't enough, I added 15 brand-new Mad Libs, bringing the total collection up to 35.</p>
+
+<p>At this point I'm slowly building an entire Mad Libs library by accident.</p>
+
+<p>📂 Repository Cleanup</p>
+<p>Probably the most satisfying change for me personally.</p>
+<p>I finally stopped throwing everything into one folder.</p>
+<p>The project is now properly organized with dedicated HTML, CSS, and JavaScript files, the homepage has its own folder, and I'm now using GitHub Actions to automatically publish everything to GitHub Pages.</p>
+
+<ul>
+    <li>The project is cleaner.</li>
+    <li>The repository is cleaner.</li>
+    <li>My sanity is cleaner.</li>
+</ul>
+
+<p>🧹 General Cleanup</p>
+
+<p>I also spent some time going through older pages and removing outdated information, updating descriptions, polishing text, and fixing little inconsistencies that had been bothering me for months.</p>
+
+<p>Nothing flashy. <br /> Just lots of quality-of-life improvements.</p>
+
+<hr />
+
+<p>So... that finally brings us here.</p>
+
+<p>This is easily one of the biggest updates I've ever published. <br />You might be wondering, "If you've been this busy for nine months... how on earth did this update get so huge?"</p>
+
+<p>Simple. Because I genuinely enjoy coding.</p>
+
+<p>Some of these projects were built during my coding classes. Others were already mostly finished and just needed an hour here and there to clean up. A few had been sitting on my desktop for months, patiently waiting for me to finally upload them.</p>
+
+<p>The homepage redesign, for example? I actually started that back in September 2025. It was supposed to be finished around November.</p>
+
+<p>...Yeah. <br /> That timeline aged like milk.</p>
+
+<p>The good news is school doesn't start for another couple of weeks, so I'm hoping to keep the momentum going before life inevitably decides to throw another surprise boss battle at me.</p>
+
+<p>I've got a lot planned between now and December.</p>
+
+<p>Whether I actually finish all of it...</p>
+
+<p>We'll find out together.</p>
+
+<p>No promises on perfect consistency, life has a funny way of laughing at schedules, but I'm excited to see where this project goes next.</p>
+
+<p>Thanks for sticking around.</p>
+
+<ul>
+    <li>Mission reboot complete.</li>
+    <li>Repository synchronized.</li>
+    <li>Computer functional.</li>
+    <li>Developer... cautiously optimistic.</li>
+</ul>
+
+<p>See you in the next update.</p>
+</div>
+
+
 <div class="entry">
   <h2>2025</h2>
   <div class="date">Change log for 2025</div>
