@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR Code Generator</title>
+
+<style>
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+font-family:Arial,Helvetica,sans-serif;
+background:#f3f4f6;
+color:#111827;
+transition:.3s;
+}
+
+body.dark{
+background:#111827;
+color:#f9fafb;
+}
+
+#app{
+max-width:1200px;
+margin:auto;
+padding:20px;
+}
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+h1{
+font-size:32px;
+margin:0;
+}
+
+button{
+border:0;
+padding:10px 15px;
+border-radius:8px;
+cursor:pointer;
+background:#2563eb;
+color:white;
+font-weight:bold;
+transition:.2s;
+}
+
+button:hover{
+opacity:.85;
+}
+
+#theme{
+font-size:20px;
+padding:8px 12px;
+}
+
+#wrap{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:25px;
+}
+
+#controls,#preview{
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 5px 20px #0002;
+}
+
+.dark #controls,.dark #preview{
+background:#1f2937;
+}
+
+label{
+display:block;
+margin-top:12px;
+margin-bottom:5px;
+font-size:14px;
+font-weight:bold;
+}
+
+input,select,textarea{
+width:100%;
+padding:10px;
+border-radius:8px;
+border:1px solid #d1d5db;
+background:white;
+color:#111827;
+}
+
+.dark input,.dark select,.dark textarea{
+background:#374151;
+color:white;
+border-color:#4b5563;
+}
+
+textarea{
+resize:vertical;
+}
+
+.group{
+display:none;
+}
+
+.group.active{
+display:block;
+}
+
+hr{
+margin:20px 0;
+border:0;
+border-top:1px solid #ddd;
+}
+
+.dark hr{
+border-color:#4b5563;
+}
+
+input[type=color]{
+height:40px;
+padding:2px;
+}
+
+input[type=checkbox]{
+width:auto;
+margin-right:5px;
+}
+
+input[type=range]{
+padding:0;
+}
+
+#preview{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+min-height:500px;
+}
+
+#qrWrap{
+padding:20px;
+background:white;
+border-radius:12px;
+}
+
+.dark #qrWrap{
+background:white;
+}
+
+#qr canvas,#qr svg{
+max-width:100%;
+height:auto;
+}
+
+#status{
+margin-top:15px;
+font-size:14px;
+opacity:.7;
+}
+
+.buttons{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-top:20px;
+}
+
+#downloadPNG{
+background:#16a34a;
+}
+
+#downloadSVG{
+background:#9333ea;
+}
+
+#copy{
+background:#ea580c;
+}
+
+#clear{
+background:#dc2626;
+}
+
+@media(max-width:800px){
+
+#wrap{
+grid-template-columns:1fr;
+}
+
+h1{
+font-size:24px;
+}
+
+#preview{
+min-height:350px;
+}
+
+}
+
+@media(max-width:450px){
+
+.buttons{
+grid-template-columns:1fr;
+}
+
+#app{
+padding:10px;
+}
+
+}
+
+</style>
+
+</head>
+<body>
+
+<div id="app">
+<header>
+<h1>QR Code Generator</h1>
+<button id="theme" title="Toggle Dark Mode">🌙</button>
+</header>
+
+<div id="wrap">
+<section id="controls">
+<label>QR Type</label>
+<select id="type">
+<option value="text">Text</option>
+<option value="url">URL</option>
+<option value="wifi">WiFi</option>
+<option value="email">Email</option>
+<option value="phone">Phone</option>
+<option value="sms">SMS</option>
+<option value="vcard">vCard</option>
+</select>
+
+<div id="fields">
+<div class="group" data-type="text">
+<label>Text</label>
+<textarea id="text" rows="5" placeholder="Enter text..."></textarea>
+</div>
+
+<div class="group" data-type="url">
+<label>URL</label>
+<input id="url" type="url" placeholder="https://example.com">
+</div>
+
+<div class="group" data-type="wifi">
+<label>SSID</label>
+<input id="ssid">
+<label>Password</label>
+<input id="wpass" type="password">
+<label>Encryption</label>
+<select id="enc">
+<option>WPA</option>
+<option>WEP</option>
+<option>nopass</option>
+</select>
+<label>
+<input id="hidden" type="checkbox">Hidden Network</label>
+</div>
+
+<div class="group" data-type="email">
+<label>Email</label>
+<input id="email" type="email">
+<label>Subject</label>
+<input id="subject">
+<label>Message</label>
+<textarea id="body" rows="4"></textarea>
+</div>
+
+<div class="group" data-type="phone">
+<label>Phone Number</label>
+<input id="phone">
+</div>
+
+<div class="group" data-type="sms">
+<label>Phone Number</label>
+<input id="smsnum">
+<label>Message</label>
+<textarea id="smsmsg" rows="4"></textarea>
+</div>
+
+<div class="group" data-type="vcard">
+<label>Full Name</label>
+<input id="vname">
+<label>Company</label>
+<input id="vcompany">
+<label>Title</label>
+<input id="vtitle">
+<label>Phone</label>
+<input id="vphone">
+<label>Email</label>
+<input id="vemail">
+<label>Website</label>
+<input id="vweb">
+<label>Address</label>
+<textarea id="vaddress" rows="3"></textarea>
+</div>
+</div>
+
+<hr>
+
+<label>Foreground</label>
+<input id="fg" type="color" value="#000000">
+<label>Background</label>
+<input id="bg" type="color" value="#ffffff">
+<label>
+<input id="transparent" type="checkbox">Transparent Background</label>
+<label>Size</label>
+<input id="size" type="range" min="128" max="1024" step="32" value="300">
+<span id="sizeVal">300 px</span>
+<label>Margin</label>
+<input id="margin" type="range" min="0" max="10" value="2">
+<span id="marginVal">2</span>
+<label>Error Correction</label>
+<select id="ecc">
+<option value="L">L (7%)</option>
+<option value="M" selected>M (15%)</option>
+<option value="Q">Q (25%)</option>
+<option value="H">H (30%)</option>
+</select>
+<hr>
+
+<label>Logo (Optional)</label>
+<input id="logo" type="file" accept="image/*">
+<label>Logo Size (%)</label>
+<input id="logosize" type="range" min="5" max="40" value="20">
+<span id="logoVal">20%</span>
+
+<hr>
+
+<div class="buttons">
+<button id="downloadPNG">Download PNG</button>
+<button id="downloadSVG">Download SVG</button>
+<button id="copy">Copy Image</button>
+<button id="clear">Clear</button>
+</div>
+</section>
+
+<section id="preview">
+
+<div id="qrWrap">
+<div id="qr"></div>
+</div>
+
+<div id="status">Ready</div>
+</section>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js"></script>
+<script>
+const $=i=>document.getElementById(i);
+
+const groups=document.querySelectorAll(".group");
+
+let logo=null;
+
+let qr=new QRCodeStyling({
+width:300,
+height:300,
+type:"canvas",
+data:"Hello QR!",
+margin:2,
+qrOptions:{errorCorrectionLevel:"M"},
+dotsOptions:{color:"#000000",type:"square"},
+backgroundOptions:{color:"#ffffff"},
+imageOptions:{crossOrigin:"anonymous",margin:5}
+});
+
+qr.append($("qr"));
+
+function showFields(){
+groups.forEach(g=>g.classList.toggle("active",g.dataset.type===$("type").value));
+}
+
+function data(){
+let t=$("type").value;
+
+if(t==="text")return $("text").value;
+
+if(t==="url")return $("url").value;
+
+if(t==="wifi")return `WIFI:T:${$("enc").value};S:${escape($("ssid").value)};P:${escape($("wpass").value)};H:${$("hidden").checked};;`;
+
+if(t==="email")return `mailto:${$("email").value}?subject=${encodeURIComponent($("subject").value)}&body=${encodeURIComponent($("body").value)}`;
+
+if(t==="phone")return `tel:${$("phone").value}`;
+
+if(t==="sms")return `SMSTO:${$("smsnum").value}:${$("smsmsg").value}`;
+
+if(t==="vcard")return `BEGIN:VCARD\nVERSION:3.0\nFN:${$("vname").value}\nORG:${$("vcompany").value}\nTITLE:${$("vtitle").value}\nTEL:${$("vphone").value}\nEMAIL:${$("vemail").value}\nURL:${$("vweb").value}\nADR:${$("vaddress").value}\nEND:VCARD`;
+
+return "";
+}
+
+function update(){
+
+let bg=$("transparent").checked?"transparent":$("bg").value;
+
+if(!qrData){
+$("status").textContent="Enter some data";
+return;
+}
+
+qr.update({
+width:+$("size").value,
+height:+$("size").value,
+data:data(),
+margin:+$("margin").value,
+qrOptions:{errorCorrectionLevel:$("ecc").value},
+dotsOptions:{color:$("fg").value},
+backgroundOptions:{color:bg},
+image:logo,
+imageOptions:{
+crossOrigin:"anonymous",
+margin:5,
+imageSize:+$("logosize").value/100
+}
+});
+
+$("sizeVal").textContent=$("size").value+" px";
+$("marginVal").textContent=$("margin").value;
+$("logoVal").textContent=$("logosize").value+"%";
+$("status").textContent="Updated";
+}
+
+$("type").onchange=showFields;
+
+document.querySelectorAll("input,textarea,select").forEach(e=>e.oninput=update);
+
+$("theme").onclick=()=>{
+document.body.classList.toggle("dark");
+};
+
+$("logo").onchange=e=>{
+let f=e.target.files[0];
+if(!f)return;
+let r=new FileReader();
+
+r.onload=()=>{
+logo=r.result;
+update();
+};
+
+r.readAsDataURL(f);
+};
+
+$("downloadPNG").onclick=()=>qr.download({name:"qrcode",extension:"png"});
+$("downloadSVG").onclick=()=>qr.download({name:"qrcode",extension:"svg"});
+
+$("copy").onclick=async()=>{
+let c=document.querySelector("#qr canvas");
+if(!c)return;
+
+c.toBlob(async b=>{
+await navigator.clipboard.write([
+new ClipboardItem({"image/png":b})
+]);
+
+$("status").textContent="Copied";
+});
+};
+
+$("clear").onclick=()=>{
+document.querySelectorAll("input,textarea").forEach(e=>{
+
+if(e.type!=="color"&&e.type!=="range"&&e.type!=="checkbox"&&e.type!=="file")e.value="";
+});
+
+logo=null;
+
+update();
+};
+
+showFields();
+update();
+
+$("theme").onclick=()=>{
+document.body.classList.toggle("dark");
+$("theme").textContent =
+document.body.classList.contains("dark") ? "☀️" : "🌙";
+};
+
+</script>
+
+</body>
+</html>
