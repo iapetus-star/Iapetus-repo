@@ -459,6 +459,11 @@ u:"https://randomfox.ca/floof/",
 r:d=>img(d.image)
 },
 
+quote:{
+    u:"https://api.quotable.io/random",
+    r:d=>`<b>${d.content}</b><br><br>— ${d.author}`
+},
+
 country:{
 u:"https://restcountries.com/v3.1/all",
 r:d=>{
@@ -565,15 +570,36 @@ fillOpacity:1
 }).addTo(map).bindPopup("📍 You")
 );
 
-const updateISS=()=>load("iss","https://api.wheretheiss.at/v1/satellites/25544",d=>{
-set("iss",`Latitude: ${d.latitude.toFixed(2)}<br>Longitude: ${d.longitude.toFixed(2)}<br>Speed: ${Math.round(d.velocity)} km/h`);
-let p=[d.latitude,d.longitude];
-issMarker
-?issMarker.setLatLng(p)
-:issMarker=L.marker(p).addTo(map).bindPopup("🛰 ISS");
+let issMarker;
+
+const issIcon = L.icon({
+    iconUrl: "https://cdn-icons-png.flaticon.com/512/3212/3212608.png",
+    iconSize: [32, 32]
 });
+
+const updateISS = () =>
+    load("iss", "https://api.wheretheiss.at/v1/satellites/25544", d => {
+
+        set(
+            "iss",
+            `Latitude: ${d.latitude.toFixed(2)}<br>
+             Longitude: ${d.longitude.toFixed(2)}<br>
+             Speed: ${Math.round(d.velocity)} km/h`
+        );
+
+        const p = [d.latitude, d.longitude];
+
+        if (!issMarker) {
+            issMarker = L.marker(p, {
+                icon: issIcon
+            }).addTo(map);
+        } else {
+            issMarker.setLatLng(p);
+        }
+    });
+
 updateISS();
-setInterval(updateISS,5e3);
+setInterval(updateISS, 5000);
 
 const drawEarthquakes=()=>fetchJSON("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson")
 .then(d=>{
@@ -646,16 +672,12 @@ function placeholder(id){
     if(el) el.innerHTML="Waiting for API...";
 }
 
-[
-"weather","iss","spacex","moon","crypto",
-"quakes","dog","fox","cat","joke",
-"quote","color","meal","drink","game",
-"movie","music","nasa","country","dictionary"
-].forEach(placeholder);
-
 //Clock
 function updateClock(){
-    $("#clock").textContent = new Date().toLocaleTimeString();
+    const clock = document.getElementById("clock");
+    if (!clock) return;
+
+    clock.textContent = new Date().toLocaleTimeString();
 }
 setInterval(updateClock,1000);
 updateClock();
