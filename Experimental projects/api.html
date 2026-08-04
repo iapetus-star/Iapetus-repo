@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Internet Mission Control</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter, sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top left, #6d28d9 0%, transparent 40%), radial-gradient(circle at bottom right, #06b6d4 0%, transparent 45%), #030712;
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(white 1px, transparent 1px);
+  background-size: 45px 45px;
+  opacity: .08;
+  animation: moveStars 90s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes moveStars {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-900px);
+  }
+}
+
+#cryptoChart {
+  width: 100% !important;
+  height: 300px !important;
+}
+
+#map {
+  width: 100%;
+  height: 320px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+#stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+#mouseGlow {
+  position: fixed;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,255,255,.18), transparent 70%);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.card {
+  animation: fade .5s ease;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.star {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #fff;
+  border-radius: 50%;
+  animation: fall linear infinite;
+}
+
+.glow {
+  position: fixed;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: .35;
+  pointer-events: none;
+}
+
+.g1 {
+  background: #7c3aed;
+  top: -180px;
+  left: -120px;
+  animation: float 18s infinite alternate;
+}
+
+.g2 {
+  background: #06b6d4;
+  bottom: -200px;
+  right: -120px;
+  animation: float 14s infinite alternate-reverse;
+}
+
+@keyframes float {
+  to {
+    transform: translate(80px, -40px) scale(1.2);
+  }
+}
+
+header {
+  padding: 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.title {
+  font-size: 42px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #67e8f9, #c084fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: #cbd5e1;
+  margin-top: 6px;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+button {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.15);
+  color: white;
+  padding: 12px 22px;
+  border-radius: 14px;
+  cursor: pointer;
+  backdrop-filter: blur(15px);
+  transition: .3s;
+}
+
+button:hover {
+  background: #2563eb;
+  transform: translateY(-3px);
+  box-shadow: 0 0 25px cyan;
+}
+
+.clock {
+  font-size: 18px;
+  font-weight: 600;
+  color: #67e8f9;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  padding: 30px;
+}
+
+.card {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.15);
+  backdrop-filter: blur(18px);
+  border-radius: 24px;
+  padding: 22px;
+  transition: .35s;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(cyan, #a855f7);
+  filter: blur(80px);
+  opacity: .15;
+  top: -120px;
+  right: -100px;
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 0 18px cyan, 0 0 40px #8b5cf6;
+}
+
+.card h2 {
+  margin-bottom: 16px;
+  font-size: 22px;
+}
+
+.content {
+  color: #d1d5db;
+  line-height: 1.6;
+  min-height: 70px;
+}
+
+footer {
+  padding: 40px;
+  text-align: center;
+  color: #94a3b8;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #1e293b;
+  font-size: 12px;
+  margin-bottom: 12px;
+  color: #7dd3fc;
+}
+
+@media (max-width: 700px) {
+  .title {
+    font-size: 32px;
+  }
+}
+</style>
+
+</head>
+<body>
+<div id="stars"></div>
+<div id="mouseGlow"></div>
+
+<div class="glow g1"></div>
+<div class="glow g2"></div>
+<header>
+<div>
+<div class="title">
+🌌 Internet Mission Control
+</div>
+<div class="subtitle">
+A giant collection of fun APIs in one dashboard
+</div>
+</div>
+<div class="controls">
+<div class="clock" id="clock">
+--:--:--
+</div>
+<button id="refresh">Refresh Everything</button>
+</div>
+</header>
+
+<div class="grid">
+
+<div class="card">
+<div class="badge">Weather</div>
+<h2>🌤 Weather</h2>
+<div class="content" id="weather">Loading...</div>
+</div>
+
+<div class="card">
+<div class="badge">Space</div>
+<h2>🛰 ISS Location</h2>
+<div class="content" id="iss">Loading...</div>
+</div>
+
+<div class="card">
+<div class="badge">SpaceX</div>
+<h2>🚀 Latest Launch</h2>
+<div class="content" id="spacex">Loading...</div>
+</div>
+
+<div class="card">
+<div class="badge">Astronomy</div>
+<h2>🌕 Moon Phase</h2>
+<div class="content" id="moon">Loading...</div>
+</div>
+
+<div class="card">
+<div class="badge">NASA</div>
+<h2>📷 Astronomy Picture</h2>
+<div class="content" id="nasa">
+Loading...
+</div>
+</div>
+
+<div class="card">
+<div class="badge">Crypto</div>
+<h2>💰 Crypto Prices</h2>
+<div class="content" id="crypto">Loading...</div>
+</div>
+
+<div class="card">
+<div class="badge">Charts</div>
+<h2>📈 Crypto Market</h2>
+<canvas id="cryptoChart"></canvas>
+</div>
+
+<div class="card">
+<div class="badge">Map</div>
+<h2>🌍 World Map</h2>
+<div id="map">
+Map will appear here
+</div>
+</div>
+
+<div class="card">
+<div class="badge">Earth</div>
+<h2>🌋 Earthquakes</h2>
+<div class="content" id="quakes">Loading...</div>
+</div>
+
+<div class="card">
+<div class="badge">Animals</div>
+<h2>🐶 Dog</h2>
+<div class="content" id="dog">Loading...</div>
+</div>
+
+<div class="card">
+<div class="badge">Animals</div>
+<h2>🦊 Fox</h2>
+<div class="content" id="fox">Loading...</div>
+</div>
+
+<div class="card">
+<div class="badge">Facts</div>
+<h2>🐱 Cat Fact</h2>
+<div class="content" id="cat">Loading...</div>
+</div>
+
+<div class="card">
+<div class="badge">Comedy</div>
+<h2>😂 Joke</h2>
+<div class="content" id="joke">Loading...</div>
+</div>
+
+<div class="card">
+<div class="badge">Quotes</div>
+<h2>📚 Quote</h2>
+<div class="content" id="quote">Loading...</div>
+</div>
+
+<div class="card">
+<div class="badge">Colors</div>
+<h2>🎨 Color Palette</h2>
+<div class="content" id="color">Loading...</div>
+</div>
+
+<div class="card">
+<div class="badge">Food</div>
+<h2>🍕 Random Meal</h2>
+<div class="content" id="meal">Loading...</div>
+</div>
+
+<div class="card">
+<div class="badge">Drinks</div>
+<h2>🍸 Cocktail</h2>
+<div class="content" id="drink">Loading...</div>
+</div>
+
+<div class="card">
+<div class="badge">Games</div>
+<h2>🎮 Random Game</h2>
+<div class="content" id="game">Loading...</div>
+</div>
+
+<div class="card">
+<div class="badge">Movies</div>
+<h2>🎬 Movie</h2>
+<div class="content" id="movie">Loading...</div>
+</div>
+
+<div class="card">
+<div class="badge">Music</div>
+<h2>🎵 Music Charts</h2>
+<div class="content" id="music">Loading...</div>
+</div>
+
+<div class="card">
+<div class="badge">Countries</div>
+<h2>🌎 Random Country</h2>
+<div class="content" id="country">Loading...</div>
+</div>
+
+<div class="card">
+<div class="badge">Dictionary</div>
+<h2>📖 Word of the Moment</h2>
+<div class="content" id="dictionary">Loading...</div>
+</div>
+
+</div>
+
+<footer>
+
+Internet Mission Control • Built with lots of public APIs
+
+</footer>
+
+<script>
+
+const $=id=>document.getElementById(id),
+set=(id,h)=>$(id).innerHTML=h,
+error=id=>set(id,"<span style='color:#f87171'>Unable to load.</span>"),
+img=(u,h="")=>`<img src="${u}" style="width:100%;border-radius:12px;${h}">`,
+load=async(id,url,fn)=>{try{fn(await fetchJSON(url))}catch{error(id)}};
+
+const API={
+
+weather:{
+u:"https://api.open-meteo.com/v1/forecast?latitude=40.7128&longitude=-74.0060&current=temperature_2m,wind_speed_10m",
+r:d=>`🌡 ${d.current.temperature_2m}°C<br>💨 ${d.current.wind_speed_10m} km/h`
+},
+
+spacex:{
+u:"https://api.spacexdata.com/v5/launches/latest",
+r:d=>`<b>${d.name}</b><br>${new Date(d.date_utc).toLocaleString()}`
+},
+
+cat:{
+u:"https://catfact.ninja/fact",
+r:d=>d.fact
+},
+
+joke:{
+u:"https://official-joke-api.appspot.com/random_joke",
+r:d=>`<b>${d.setup}</b><br><br>${d.punchline}`
+},
+
+dog:{
+u:"https://dog.ceo/api/breeds/image/random",
+r:d=>img(d.message)
+},
+
+fox:{
+u:"https://randomfox.ca/floof/",
+r:d=>img(d.image)
+},
+
+country:{
+u:"https://restcountries.com/v3.1/all",
+r:d=>{
+let c=d[Math.random()*d.length|0];
+return `<b>${c.name.common}</b><br>Capital: ${c.capital?.[0]||"Unknown"}<br>Population: ${c.population.toLocaleString()}<br>${c.region}`;
+}
+},
+
+meal:{
+u:"https://www.themealdb.com/api/json/v1/1/random.php",
+r:d=>{
+let m=d.meals[0];
+return `${img(m.strMealThumb)}<br><br><b>${m.strMeal}</b><br>${m.strArea}`;
+}
+},
+
+drink:{
+u:"https://www.thecocktaildb.com/api/json/v1/1/random.php",
+r:d=>{
+let x=d.drinks[0];
+return `${img(x.strDrinkThumb)}<br><br><b>${x.strDrink}</b><br>${x.strCategory}`;
+}
+},
+
+dictionary:{
+u:"https://api.dictionaryapi.dev/api/v2/entries/en/serendipity",
+r:d=>`<b>serendipity</b><br><br>${d[0].meanings[0].definitions[0].definition}`
+},
+
+color:{
+u:()=>`https://www.thecolorapi.com/id?hex=${(Math.random()*16777215|0).toString(16).padStart(6,"0")}`,
+r:d=>`<div style="height:80px;border-radius:12px;background:${d.hex.value};margin-bottom:10px"></div>${d.name.value}<br>${d.hex.value}`
+},
+
+crypto:{
+u:"https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd",
+r:d=>`₿ Bitcoin: $${d.bitcoin.usd}<br><br>Ξ Ethereum: $${d.ethereum.usd}<br><br>◎ Solana: $${d.solana.usd}`
+},
+
+movie:{
+u:"https://www.omdbapi.com/?apikey=564727fa&s=space",
+r:d=>{
+let m=d.Search[Math.random()*d.Search.length|0];
+return `<b>${m.Title}</b><br>${img(m.Poster)}`;
+}
+},
+
+game:{
+u:"https://api.rawg.io/api/games?key=1b2c9b8f3f5d4d1e8f7f4b2c3a1d9e8f&page_size=20",
+r:d=>{
+let g=d.results[Math.random()*d.results.length|0];
+return `<b>${g.name}</b><br>${img(g.background_image)}`;
+}
+},
+
+music:{
+u:"https://itunes.apple.com/us/rss/topsongs/limit=5/json",
+r:d=>d.feed.entry.slice(0,5).map(x=>`🎵 ${x["im:name"].label}`).join("<br>")
+},
+
+nasa:{
+u:"https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY",
+r:d=>`<b>${d.title}</b><br>${img(d.url,"margin:10px 0")}<br>${d.explanation.slice(0,180)}...`
+}
+
+};
+
+const run=id=>{
+let a=API[id];
+load(id,typeof a.u=="function"?a.u():a.u,d=>set(id,a.r(d)));
+};
+
+async function fetchJSON(url) {
+    const response = await fetch(url);
+
+    if (!response.ok)
+        throw new Error(`HTTP ${response.status}`);
+
+    return response.json();
+}
+
+const refreshAll=()=>{
+Object.keys(API).forEach(run);
+moon();
+cryptoChart();
+updateISS();
+drawEarthquakes();
+};
+
+
+// Leaflet 
+let map=L.map("map").setView([20,0],2),
+issMarker,
+quakes=[];
+
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18}).addTo(map);
+
+navigator.geolocation?.getCurrentPosition(({coords})=>
+L.circleMarker([coords.latitude,coords.longitude],{
+radius:9,
+color:"#fff",
+fillColor:"#0ff",
+fillOpacity:1
+}).addTo(map).bindPopup("📍 You")
+);
+
+const updateISS=()=>load("iss","https://api.wheretheiss.at/v1/satellites/25544",d=>{
+set("iss",`Latitude: ${d.latitude.toFixed(2)}<br>Longitude: ${d.longitude.toFixed(2)}<br>Speed: ${Math.round(d.velocity)} km/h`);
+let p=[d.latitude,d.longitude];
+issMarker
+?issMarker.setLatLng(p)
+:issMarker=L.marker(p).addTo(map).bindPopup("🛰 ISS");
+});
+updateISS();
+setInterval(updateISS,5e3);
+
+const drawEarthquakes=()=>fetchJSON("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson")
+.then(d=>{
+
+set("quakes",
+d.features
+.slice(0,5)
+.map(x=>`M${x.properties.mag} — ${x.properties.place}`)
+.join("<br><br>")
+);
+
+quakes.forEach(q=>map.removeLayer(q));
+quakes=[];
+
+d.features.forEach(f=>{
+let[cx,cy]=f.geometry.coordinates,m=f.properties.mag;
+quakes.push(
+L.circleMarker([cy,cx],{
+radius:Math.max(4,m*2),
+color:"#f22",
+fillColor:"#f44",
+fillOpacity:.5
+})
+.addTo(map)
+.bindPopup(`<b>${f.properties.place}</b><br>M${m}`)
+);
+});
+
+}).catch(()=>{});
+drawEarthquakes();
+setInterval(drawEarthquakes,6e4);
+
+setTimeout(()=>map.invalidateSize(),500);
+
+// Chart 
+let chart;
+
+const cryptoChart=()=>fetchJSON("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,solana")
+.then(d=>{
+chart?.destroy();
+chart=new Chart($("#cryptoChart"),{
+type:"bar",
+data:{
+labels:d.map(x=>x.name),
+datasets:[{
+data:d.map(x=>x.current_price),
+backgroundColor:["#f7931a","#627eea","#14f195"]
+}]
+},
+options:{
+plugins:{legend:{display:false}},
+scales:{
+x:{ticks:{color:"#fff"}},
+y:{ticks:{color:"#fff"}}
+}
+}
+});
+})
+.catch(()=>{});
+
+// Moon 
+const moon=()=>{
+let p=((Date.now()-Date.parse("2000-01-06T18:14:00Z"))/864e5%29.53).toFixed(1);
+set("moon",`${p<3||p>26?"🌑 New Moon":p<10?"🌓 First Quarter":p<18?"🌕 Full Moon":"🌗 Last Quarter"}<br>Cycle day: ${p}/29.5`);
+};
+
+//placeholder function
+function placeholder(id){
+    const el=$(id);
+    if(el) el.innerHTML="Waiting for API...";
+}
+
+[
+"weather","iss","spacex","moon","crypto",
+"quakes","dog","fox","cat","joke",
+"quote","color","meal","drink","game",
+"movie","music","nasa","country","dictionary"
+].forEach(placeholder);
+
+//Clock
+function updateClock(){
+    $("#clock").textContent = new Date().toLocaleTimeString();
+}
+setInterval(updateClock,1000);
+updateClock();
+
+// Animated Stars 
+for(let i=80;i--;){
+let s=document.createElement("div");
+s.className="star";
+s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${5+Math.random()*15}s`;
+document.body.appendChild(s);
+}
+
+//zoom ISS
+function zoomISS(){
+    if(issMarker){
+        map.setView(issMarker.getLatLng(),5,{animate:true});
+        issMarker.openPopup();
+    }
+}
+
+// Mouse Glow 
+const glow=$("#mouseGlow");
+document.onmousemove=e=>glow.style.cssText=`left:${e.clientX}px;top:${e.clientY}px`;
+
+refreshAll();
+
+$("#refresh").onclick=()=>{
+console.clear();
+refreshAll();
+};
+
+setInterval(refreshAll,60000);
+
+</script>
+
+</body>
+</html>		
