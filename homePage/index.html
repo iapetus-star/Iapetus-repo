@@ -117,8 +117,7 @@
       <p>I went into this one thinking the answer would either be a simple "yes" or "no." After digging around for a while, I realized it's actually somewhere in the middle.</p>
       <p>Spacecraft already make a surprising number of decisions without anyone pressing buttons on Earth.</p>
       <p>The biggest reason is distance. Radio signals travel at the speed of light, but space is so enormous that messages can take minutes or even hours to arrive. A signal to Mars, for example, can take anywhere from about <strong>3 to 22 minutes</strong> depending on where Earth and Mars are in their orbits. That means if something unexpected happens, engineers can't just grab a joystick and react immediately.</p>
-      <p>Because of this, spacecraft are already programmed to handle certain situations on their own.</p>
-      <p>If power starts running low, they can shut down non-essential systems. If they lose contact with Earth, they can switch into a "safe mode" that keeps the spacecraft alive while waiting for instructions. Some can even adjust their orientation to keep their solar panels facing the Sun or point antennas back toward Earth.</p>
+      <p>Because of this, spacecraft are already programmed to handle certain situations on their own. If power starts running low, they can shut down non-essential systems. If they lose contact with Earth, they can switch into a "safe mode" that keeps the spacecraft alive while waiting for instructions. Some can even adjust their orientation to keep their solar panels facing the Sun or point antennas back toward Earth.</p>
       <p>But that's not quite the same thing as generating their own mission plan.</p>
       <p>A truly autonomous spacecraft would need to look at its surroundings, decide what was important, and figure out the best course of action without waiting for human input. Imagine a Mars rover spotting an unusual rock formation. Instead of waiting for scientists to tell it what to do, it could decide the rock is worth investigating, calculate whether it has enough battery power and time, collect samples, and then continue its journey.</p>
       <p>That sounds like science fiction, but researchers are already working on technology that moves in that direction.</p>
@@ -148,8 +147,7 @@
     <div class="note-content">
       <p>This question turned out to be a lot more interesting than I expected because it isn't really about creating a brand-new programming language. It's about asking what features would matter if your code had to survive years in space with no one around to fix it.</p>
       <p>My first thought was that it would need to be incredibly fast.</p>
-      <p>After doing some reading, I realized speed isn't actually the top priority.</p>
-      <p>Reliability is.</p>
+      <p>After doing some reading, I realized speed isn't actually the top priority. Reliability is.</p>
       <p>Imagine you've spent ten years building a spacecraft. It launches perfectly, travels hundreds of millions of miles, and then a tiny software bug causes it to fail. There's no technician waiting nearby with a laptop. Whatever software is onboard has to keep working for years, sometimes even decades without crashing.</p>
       <p>That changes how you design a programming language.</p>
       <p>For starters, it would probably avoid anything unpredictable. Features like automatic memory management (also known as garbage collection) are really useful in everyday programming because they clean up unused memory for you. The downside is that they can happen at unpredictable moments, which isn't ideal if you're controlling something as important as a spacecraft.</p>
@@ -308,16 +306,12 @@
       <p>One of the most important is the camera. Modern autonomous vehicles often have multiple cameras pointed in every direction. These cameras are great at recognizing things like traffic lights, road signs, lane markings, pedestrians, and other vehicles.</p>
       <p>Many cars also use radar. Unlike cameras, radar works well in rain, fog, and darkness. It measures how far away objects are and how quickly they're moving.</p>
       <p>Some companies also use LiDAR, which fires thousands—or even millions—of laser pulses every second to build a detailed 3D map of the surrounding environment. It's incredibly accurate, although it's also one of the more expensive sensors.</p>
-      <p>What surprised me most is that none of these sensors are trusted on their own.</p>
-      <p>Instead, the computer combines all of them in a process called <strong>sensor fusion</strong>.</p>
+      <p>What surprised me most is that none of these sensors are trusted on their own. Instead, the computer combines all of them in a process called <strong>sensor fusion</strong>.</p>
       <p>Imagine one camera thinks it sees a cyclist, but the radar doesn't detect anything there. Rather than immediately making a decision, the vehicle compares information from all of its sensors before deciding what's actually happening.</p>
-      <p>Once the car understands its surroundings, it still has another challenge.</p>
-      <p>It has to predict what everyone else is going to do.</p>
+      <p>Once the car understands its surroundings, it still has another challenge. It has to predict what everyone else is going to do.</p>
       <p>That's surprisingly difficult.</p>
-      <p>A pedestrian standing on the sidewalk might stay where they are.</p>
-      <p>Or they might suddenly step into the road.</p>
-      <p>A parked car might remain parked.</p>
-      <p>Or its driver could suddenly pull out without warning.</p>
+      <p>A pedestrian standing on the sidewalk might stay where they are. Or they might suddenly step into the road.</p>
+      <p>A parked car might remain parked. Or its driver could suddenly pull out without warning.</p>
       <p>The software is constantly estimating probabilities rather than assuming it knows exactly what will happen. That uncertainty is one of the biggest reasons autonomous driving is so difficult.</p>
       <p>Humans do this instinctively without thinking about it. Computers have to be taught using enormous amounts of data collected from real roads. Even then, unusual situations can still confuse the system. Construction zones, unusual weather, emergency vehicles, or roads with faded lane markings can all make driving much more challenging.</p>
       <p>One thing I found interesting is that autonomous vehicles don't simply react, they're constantly planning several seconds ahead. Every fraction of a second they're generating possible paths, evaluating which ones are safe, comfortable, and legal, and then choosing the best option.</p>
@@ -339,33 +333,169 @@
   <div class="note">
     <button class="note-toggle">What are the challenges and solutions for storing and transmitting quantum information?</button>
     <div class="note-content">
-    Research on this question is not complete yet. Please check back later.
+      <p>When I first came across this question, I assumed storing quantum information would work more or less the same way as storing files on a normal computer.</p>
+      <p>After reading about it for a while, I realized it's almost the complete opposite.</p>
+      <p>A normal computer can save data to a hard drive, copy it as many times as it wants, and retrieve that information years later without changing it. Quantum information doesn't have that luxury.</p>
+      <p>A qubit exists in an incredibly delicate quantum state, and even tiny interactions with its surroundings can disturb it. Heat, vibrations, stray electromagnetic fields, or even cosmic rays can introduce errors that change the information you're trying to preserve. This loss of quantum information is known as decoherence, and it's one of the biggest challenges facing quantum computing today.</p>
+      <p>What surprised me even more is that you can't simply make a backup.</p>
+      <p>In classical computing, copying data is so routine that we hardly think about it. You can duplicate a file thousands of times without changing the original. Quantum mechanics doesn't allow that. The <strong>No-Cloning Theorem</strong> states that it's impossible to create a perfect copy of an unknown quantum state, so researchers have had to come up with completely different ways of protecting quantum information.</p>
+      <p>One of the most promising solutions is quantum error correction.</p>
+      <p>Rather than copying a qubit, scientists spread its information across many physical qubits that work together. If one of them experiences an error, the others can often provide enough information to detect and correct the problem before the calculation fails. It's a clever idea, but it comes with a trade-off. Protecting a single reliable qubit may require hundreds or even thousands of physical qubits, which is one of the reasons today's quantum computers are still relatively small.</p>
+      <p>Storing quantum information is only half the battle, though. Transmitting it over long distances creates a completely different set of challenges.</p>
+      <p>On today's internet, signals become weaker as they travel, so we simply amplify them along the way. Quantum information doesn't work like that. The moment you measure a quantum signal in order to amplify it, you've already disturbed the very information you're trying to send.</p>
+      <p>To get around this, researchers are developing quantum networks that use devices called quantum repeaters. Instead of boosting the signal like a traditional internet repeater, these systems help extend quantum connections without directly measuring the quantum information itself. The technology is still being developed, but it's considered one of the key pieces needed for a future quantum internet.</p>
+      <p>While researching this, I also came across something called quantum teleportation, which sounds like pure science fiction. Despite the name, it doesn't teleport objects from one place to another. Instead, it transfers the quantum state of one particle to another using entanglement and ordinary communication. The original state disappears as the new one is recreated elsewhere, making it fundamentally different from simply copying data.</p>
+      <p>I honestly didn't expect quantum networking to be so different from the internet we use every day. I assumed it would just be a faster version of our current technology, but it actually follows an entirely different set of rules because it's built around the strange behavior of quantum mechanics.</p>
+      <p>So my conclusion is:</p>
+      <p>The biggest challenge isn't creating quantum information, it's keeping it alive long enough to be useful. Whether it's storing qubits inside a quantum computer or sending them across a future quantum network, researchers are constantly fighting against a universe that seems determined to disturb them. Solving that problem will be one of the biggest milestones on the road to practical quantum computing.</p>
+      <div class="resources">
+        <h3>Want to read more?</h3>
+
+        <ul>
+          <li><a href="https://www.ibm.com/quantum" target="_blank" rel="noopener noreferrer">IBM Quantum Learning</a></li>
+          <li><a href="https://home.cern/science/computing/quantum-technologies" target="_blank" rel="noopener noreferrer">CERN - Quantum Technologies</a></li>
+          <li><a href="https://www.nature.com/" target="_blank" rel="noopener noreferrer">Nature - Quantum Information</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 
   <div class="note">
     <button class="note-toggle">What are the main technical hurdles in building scalable fusion reactors for energy?</button>
     <div class="note-content">
-    Research on this question is not complete yet. Please check back later.
+      <p>Fusion has always sounded like the perfect energy source to me. The fuel is abundant, it doesn't produce greenhouse gases while operating, and it creates far less long-lived radioactive waste than today's nuclear fission reactors. So naturally I ended up wondering: if fusion has so many advantages, why aren't we already powering cities with it?</p>
+      <p>After reading about it for a while, I realized the problem isn't that scientists don't know how fusion works. They've understood the physics for decades. The real challenge is building a machine that can keep a fusion reaction going long enough to produce useful electricity.</p>
+      <p>The basic idea is actually pretty straightforward. Instead of splitting heavy atoms apart like modern nuclear reactors do, fusion joins together light atoms-usually different forms of hydrogen. When those atoms fuse, a small amount of their mass is converted into an enormous amount of energy. It's the same process that powers the Sun, which makes it sound deceptively simple.</p>
+      <p>The catch is that hydrogen nuclei don't actually want to come together. Because they're both positively charged, they naturally repel each other. To overcome that repulsion, scientists have to heat the fuel to around 100 million degrees Celsius. At that temperature, the hydrogen turns into an extremely hot plasma, and that's where the engineering problems really begin.</p>
+      <p>You obviously can't build a container that can hold something hotter than the Sun. Any normal material would melt almost instantly. Instead, scientists use incredibly powerful magnetic fields to suspend the plasma so it never touches the walls of the reactor. One of the most common reactor designs, called a tokamak, does exactly this by trapping the plasma inside a doughnut-shaped chamber surrounded by massive superconducting magnets.</p>
+      <p>I thought that was the clever part of the whole system, but it turns out holding the plasma isn't enough. The plasma is constantly moving, twisting, and trying to escape the magnetic field. Even small instabilities can cause it to brush against the reactor wall, cooling it almost immediately and stopping the fusion reaction. Keeping the plasma stable for long periods is one of the biggest reasons practical fusion power has taken so long to develop.</p>
+      <p>Even if scientists solve that problem, there's another one waiting. The inside of a fusion reactor is an incredibly hostile environment. High-energy particles are constantly slamming into the reactor walls, gradually damaging the materials over time. Engineers are still developing alloys and other materials that can survive those conditions for years without becoming too weak or brittle to use safely.</p>
+      <p>While researching this, I also kept seeing headlines claiming that scientists had finally "achieved fusion." At first I assumed that meant we'd basically solved the problem, but that's a little misleading.</p>
+      <p>Researchers have absolutely demonstrated successful fusion reactions, and in recent years they've reached some impressive milestones. The challenge is that producing a successful fusion reaction isn't the same as building a practical power plant. A commercial reactor has to generate electricity continuously, produce more energy than the entire facility consumes, operate reliably for years, and do all of that at a price that can compete with other energy sources. That's a much bigger challenge than running a successful laboratory experiment.</p>
+      <p>One thing I wasn't expecting is just how international fusion research has become. Projects like ITER involve dozens of countries working together because the cost and complexity are simply too large for many nations to tackle alone. It's one of those rare scientific projects where researchers from around the world are working toward the same long-term goal.</p>
+      <p>So in conclusion, fusion isn't waiting for one magical breakthrough. Scientists have already shown that the underlying physics works. What's left is solving a long list of engineering problems, each one difficult in its own right. It might take years or even decades, but if those challenges can be overcome, fusion has the potential to completely change how we produce electricity.</p>
+      <div class="resources">
+        <h3>Want to read more?</h3>
+
+        <ul>
+          <li><a href="https://www.iter.org/" target="_blank" rel="noopener noreferrer">ITER - The World's Largest Fusion Project</a></li>
+          <li><a href="https://www.iaea.org/" target="_blank" rel="noopener noreferrer">International Atomic Energy Agency - Fusion Energy</a></li>
+          <li><a href="https://lasers.llnl.gov/" target="_blank" rel="noopener noreferrer">Lawrence Livermore National Laboratory - National Ignition Facility</a></li>
+          <li><a href="https://www.gov.uk/government/organisations/uk-atomic-energy-authority" target="_blank" rel="noopener noreferrer">UK Atomic Energy Authority</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 
   <div class="note">
     <button class="note-toggle">How do we use satellites to monitor and predict natural disasters like hurricanes or wildfires?</button>
     <div class="note-content">
-    Research on this question is not complete yet. Please check back later.
+      <p>I always knew satellites took pictures of Earth, but I never really thought about how much information they actually collect. After looking into this, I realized they're doing a lot more than snapping photos from space.</p>
+      <p>For hurricanes, satellites are constantly watching cloud formations, ocean temperatures, and water vapor in the atmosphere. One thing I didn't know is that hurricanes get a lot of their energy from warm ocean water. If the water is warm enough, it acts like fuel, allowing the storm to grow stronger.</p>
+      <p>Weather satellites can measure those temperatures from orbit, which gives meteorologists a better idea of where storms might strengthen or weaken. They also track the storm's movement, helping create the forecast paths we see on the news.</p>
+      <p>Of course, those famous "cones of uncertainty" aren't showing exactly where the hurricane will go. They're showing the range of places it <em>could</em> go based on computer models. The farther into the future the prediction is, the more uncertainty there is.</p>
+      <p>Wildfires are monitored a little differently.</p>
+      <p>Many satellites use infrared sensors, which detect heat instead of visible light. That means they can spot fires even through smoke or at night. Some satellites pass over the same area several times a day, allowing scientists to see how quickly a fire is spreading.</p>
+      <p>What's really impressive is that satellites don't work alone.</p>
+      <p>The information they collect is combined with data from weather stations, aircraft, ocean buoys, radar systems, and even ground crews. All of that information is fed into computer models that try to predict what will happen next.</p>
+      <p>One thing I found interesting is that satellites can also help after a disaster.</p>
+      <p>After hurricanes, floods, earthquakes, or wildfires, new satellite images can be compared with older ones to estimate the amount of damage. That helps emergency services decide where to send resources first and which areas need the most help.</p>
+      <p>As satellites become more advanced, they're collecting higher-resolution images more often than ever before. Some constellations can even image the same location multiple times in a single day, making it easier to monitor rapidly changing situations.</p>
+      <p>So in summary:</p>
+      <p>Satellites aren't predicting disasters by themselves. They're acting like giant eyes in the sky, constantly collecting information that scientists combine with other data to understand what's happening. The better our observations become, the better our forecasts become too.</p>
+      <div class="resources">
+        <h3>Want to read more?</h3>
+
+        <ul>
+          <li><a href="https://earthobservatory.nasa.gov/" target="_blank" rel="noopener noreferrer">NASA Earth Observatory</a></li>
+          <li><a href="https://www.nesdis.noaa.gov/" target="_blank" rel="noopener noreferrer">NOAA Satellites</a></li>
+          <li><a href="https://www.usgs.gov/landsat-missions" target="_blank" rel="noopener noreferrer">USGS Landsat Program</a></li>
+          <li><a href="https://www.esa.int/" target="_blank" rel="noopener noreferrer">European Space Agency - Earth Observation</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 
   <div class="note">
     <button class="note-toggle">How do different programming paradigms affect the development and maintenance of large software systems?</button>
     <div class="note-content">
-    Research on this question is not complete yet. Please check back later.
+      <p>This question ended up changing the way I think about programming.</p>
+      <p>At first, I assumed programming paradigms were mostly a matter of preference. Some people like object-oriented programming, others prefer functional programming, and some stick with procedural programming because it's simple. I figured it was a bit like choosing your favorite text editor.</p>
+      <p>After reading more about it, I realized the choice has much bigger consequences than I expected-especially once a project grows beyond a few thousand lines of code.</p>
+      <p>When you're writing a small program by yourself, almost any style can work. If you're making a calculator, a simple game, or a small website, you can usually keep everything in your head. Even if the code isn't perfectly organized, it's still manageable because you know where everything is.</p>
+      <p>Large software projects are completely different.</p>
+      <p>Some applications contain millions of lines of code written by hundreds or even thousands of developers over many years. At that point, the biggest challenge often isn't writing new features. It's making changes without accidentally breaking something that already works.</p>
+      <p>That's where programming paradigms start to matter.</p>
+      <p>A programming paradigm is really just a way of organizing your code and your thinking. Different paradigms encourage programmers to solve problems in different ways, and some approaches make large projects much easier to understand and maintain than others.</p>
+      <p>For example, procedural programming organizes code as a sequence of functions that perform specific tasks. It's simple, easy to learn, and works well for smaller projects. As the software grows, though, those functions often become tightly connected to each other. Changing one part of the program can unexpectedly affect several others, making the code harder to maintain over time.</p>
+      <p>That's one of the reasons object-oriented programming (OOP) became so popular.</p>
+      <p>Instead of organizing everything around functions, OOP groups related data and behavior into objects. A customer object, for example, might contain information like a person's name and address, along with functions that update or validate that information. Keeping related code together makes large projects easier to navigate because developers don't have to search through dozens of unrelated files to understand how one part of the system works.</p>
+      <p>While reading about this, I also came across functional programming, which honestly took me a while to wrap my head around. One of its main ideas is to avoid changing data whenever possible. Instead of modifying an existing value, you create a new one.</p>
+      <p>At first that sounded unnecessarily complicated, but I eventually realized why people like it.</p>
+      <p>In large software systems, hundreds of things might be happening at the same time. If different parts of the program are all changing the same piece of data, bugs can become incredibly difficult to track down. Functional programming reduces that risk by encouraging data to stay immutable, meaning it doesn't unexpectedly change underneath another part of the program.</p>
+      <p>One thing that surprised me is that modern programming languages rarely force developers to choose a single paradigm.</p>
+      <p>Python lets you write procedural code, object-oriented code, and even functional code in the same project. JavaScript works much the same way. In practice, experienced developers usually mix ideas together instead of treating programming paradigms like rival teams.</p>
+      <p>The more I read, the more I realized that companies don't choose paradigms because one is objectively better than another. They choose them because different kinds of software have different problems to solve.</p>
+      <p>If you're building a quick script that automates a task, procedural programming might be all you need.</p>
+      <p>If you're building a massive application that's going to be maintained by hundreds of developers for the next ten years, good organization becomes just as important as writing code that works. That's really what software maintenance is all about.</p>
+      <p>Writing the first version of a program is only part of the job. Over the years, bugs need to be fixed, features get added, old code gets replaced, and new developers join the project. If the original code wasn't organized well, every change becomes slower, riskier, and more expensive than it needs to be.</p>
+      <p>So at the end:</p>
+      <p>Programming paradigms aren't really about deciding which style is "best." They're about making software easier for humans to understand. The larger a project becomes, the more important that organization is, because eventually the biggest challenge isn't getting the code to work-it's making sure people can still understand and improve it years later.</p>
+      <div class="resources">
+        <h3>Want to read more?</h3>
+
+        <ul>
+          <li><a href="https://docs.python.org/" target="_blank" rel="noopener noreferrer">Python Documentation</a></li>
+          <li><a href="https://martinfowler.com/" target="_blank" rel="noopener noreferrer">Martin Fowler - Software Architecture</a></li>
+          <li><a href="https://refactoring.guru/" target="_blank" rel="noopener noreferrer">Refactoring Guru - Design Patterns</a></li>
+          <li><a href="https://www.freecodecamp.org/" target="_blank" rel="noopener noreferrer">freeCodeCamp - Programming Paradigms Explained</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 
   <div class="note">
     <button class="note-toggle">How do we simulate complex chemical reactions on classical and quantum computers?</button>
+    <div class="note-content">
+      <p>This ended up being one of the more difficult topics I looked into, mostly because chemistry and computing overlap in some pretty surprising ways. At first, I thought simulating a chemical reaction would just mean plugging some equations into a computer and waiting for the answer. After reading more about it, I realized the problem is far more complicated than that.</p>
+      <p>Every atom contains electrons, and those electrons interact with each other according to the rules of quantum mechanics. Even a relatively small molecule can have an enormous number of possible electron configurations, and as the molecule gets larger, the amount of computation needed grows incredibly fast. That's why accurately simulating large molecules is still one of the biggest challenges in computational chemistry.</p>
+      <p>Classical computers deal with this by making approximations. Instead of calculating every tiny interaction perfectly, scientists simplify parts of the problem using mathematical models that trade a little accuracy for a huge improvement in speed. For many real-world applications, those approximations work surprisingly well, which is why they're already used to study everything from new medicines to battery materials and industrial chemicals.</p>
+      <p>Eventually, though, those shortcuts reach their limits. Some molecules become so complex that even the world's most powerful supercomputers struggle to model them accurately. That's one of the main reasons researchers are so interested in quantum computers.</p>
+      <p>Since atoms themselves follow the rules of quantum mechanics, a quantum computer is naturally suited to describing quantum systems. Rather than trying to imitate quantum behavior with ordinary bits, quantum computers use qubits that can represent quantum states much more naturally. In theory, that could allow certain chemical simulations to be performed far more efficiently than on a classical computer.</p>
+      <p>That doesn't mean quantum computers are about to replace supercomputers, though. Today's quantum machines are still relatively small, noisy, and prone to errors, so most practical chemical simulations are still carried out on classical computers because they're far more reliable.</p>
+      <p>One thing that surprised me while reading about this is that researchers don't really expect one technology to replace the other. Instead, the future will probably involve both working together. A classical computer could handle most of the calculations while sending the most difficult quantum-mechanical parts of the problem to a quantum processor. Once those calculations are finished, the results could be combined to produce a much more accurate simulation than either system could manage on its own.</p>
+      <p>I think that's a much more realistic picture than the headlines that sometimes make it sound like quantum computers are about to replace every supercomputer overnight. Like most new technologies, they'll probably become another tool rather than a complete replacement.</p>
+      <p>So overall:</p>
+      <p>Chemical simulations are already helping scientists discover new medicines, better batteries, and new materials, but they're often limited by the amount of computing power available. Quantum computers have the potential to push those simulations much further, although we're still several years away from seeing that happen on a large scale. For now, the future looks less like "classical versus quantum" and more like classical and quantum computers working together to solve problems that neither could tackle as effectively on their own.</p>
+      <div class="resources">
+        <h3>Want to read more?</h3>
+
+        <ul>
+          <li><a href="https://www.ibm.com/quantum" target="_blank" rel="noopener noreferrer">IBM Quantum - Chemistry Applications</a></li>
+          <li><a href="https://news.mit.edu/" target="_blank" rel="noopener noreferrer">MIT News - Quantum Computing Research</a></li>
+          <li><a href="https://www.nature.com/" target="_blank" rel="noopener noreferrer">Nature - Computational Chemistry Collection</a></li>
+          <li><a href="https://www.acs.org/" target="_blank" rel="noopener noreferrer">American Chemical Society</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <button class="note-toggle">Could we design an AI that discovers new scientific laws without being explicitly taught them?</button>
+    <div class="note-content">
+    Research on this question is not complete yet. Please check back later.
+    </div>
+  </div>
+
+  <div class="note">
+    <button class="note-toggle">Could a computer ever accurately recreate a person’s memories, and what would that require?</button>
+    <div class="note-content">
+    Research on this question is not complete yet. Please check back later.
+    </div>
+  </div>
+
+  <div class="note">
+    <button class="note-toggle">How could you use code to predict what a newly discovered species might evolve into over millions of years?</button>
     <div class="note-content">
     Research on this question is not complete yet. Please check back later.
     </div>
@@ -375,12 +505,7 @@
 
   <div class="section">
     <h2>Random Facts I Think Are Cool</h2>
-    <ul>
-      <li>Octopuses have three hearts and blue blood.</li>
-      <li>The Voyager 1 spacecraft is over 15 billion miles from Earth and still sending signals.</li>
-      <li>Ancient Roman concrete gets stronger over time and can harden underwater.</li>
-      <li>Binary code (just 0s and 1s) powers almost everything in modern computing.</li>
-    </ul>
+    <ul id="fun-facts-list"></ul>
   </div>
 
   <section id="about-me" class="section">
@@ -444,7 +569,7 @@
 
   <footer aria-label="Footer">
     <p>This site is a little side project. Just exploring stuff I enjoy.</p>
-    <p style="margin-top: 10px; font-size: 0.8em;">Last updated: July 22, 2026</p>
+    <p style="margin-top: 10px; font-size: 0.8em;">Last updated: August 26, 2026</p>
     <p><a href="https://iapetus-star.github.io/Iapetus-repo/changelog.html" target="_blank" rel="noopener noreferrer">📜 View Changelog (where I log my legendary feats)</a></p>
   </footer>
   
@@ -453,6 +578,9 @@
     <path d="M8 12a.5.5 0 0 0 .5-.5V4.707l3.147 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 4.707V11.5A.5.5 0 0 0 8 12z"/>
     </svg>
 ↑ Top</button>
+
+
+    <script src="facts.js"></script>
 
     <script src="index.js"></script>
 </body>
