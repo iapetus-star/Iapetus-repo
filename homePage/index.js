@@ -1,291 +1,368 @@
-    
-      document.querySelectorAll('.note-toggle').forEach(button => {
-button.addEventListener('click', () => {
+  
+// Helpers & Configuration
+const $ = (selector) => document.querySelector(selector);
+const $$ = (selector) => document.querySelectorAll(selector);
+
+const CONFIG = {
+  typingSpeed: 60,
+  mobileBreakpoint: 768,
+  backToTopOffset: 250,
+  navbarScrollOffset: 50,
+  starCount: 150,
+  starMinRadius: 0.5,
+  starMaxRadius: 2,
+  starMinSpeed: 0.1,
+  starMaxSpeed: 0.4,
+  bannerFadeDuration: 500
+};
+
+const prefersReducedMotion = window.matchMedia(
+  "(prefers-reduced-motion: reduce)"
+).matches;
+
+// Initialize Everything
+document.addEventListener("DOMContentLoaded", () => {
+  initNoteToggles();
+  initBackToTop();
+  initTypingEffect();
+  initStarfield();
+  initAPOD();
+  initReadMore();
+  initAnchorAccessibility();
+  initSidebar();
+  initAnnouncementBanner();
+
+  console.log(
+    "%c👋 Hey explorer! Found the console? You're my kind of curious.",
+    "color:#00d4ff;font-size:16px;font-family:monospace;"
+  );
+});
+  
+// Note Toggles
+function initNoteToggles() {
+  const buttons = $$(".note-toggle");
+
+  if (!buttons.length) return;
+
+  buttons.forEach(button => {
+    button.addEventListener("click", () => {
       const content = button.nextElementSibling;
-      content.style.display = (content.style.display === 'block') ? 'none' : 'block';
+      if (!content) return;
+
+      const isOpen = content.style.display === "block";
+      content.style.display = isOpen ? "none" : "block";
     });
   });
-    
-    // Back to Top button
-const backToTopButton = document.getElementById("backToTop");
-const navbar = document.querySelector('.navbar');
-    
-window.addEventListener("scroll", () => {
-  if (window.scrollY > 250) {
-    backToTopButton.style.display = "block";
-  } else {
-    backToTopButton.style.display = "none";
-  }
-  
-    if (window.scrollY > 50) {
-    navbar.classList.add("scrolled");
-  } else {
-    navbar.classList.remove("scrolled");
-  }
-});
-
-backToTopButton.addEventListener("click", () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
-
-    console.log("%c👋 Hey explorer! Found the console? You're my kind of curious.", "color: #00d4ff; font-size: 16px; font-family: monospace;");
-
-const text = "Exploring science, code, stars, and stories.";
-const typedTextSpan = document.getElementById("typed-text");
-let i = 0;
-
-function type() {
-  if (i < text.length) {
-    typedTextSpan.textContent += text.charAt(i);
-    i++;
-    setTimeout(type, 60); // speed (ms)
-  }
 }
 
-window.addEventListener("DOMContentLoaded", type);
+// Back To Top + Navbar
+function initBackToTop() {
+  const button = $("#backToTop");
+  const navbar = $(".navbar");
 
-  const canvas = document.getElementById("stars");
-const ctx = canvas.getContext("2d");
+  if (!button) return;
 
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  const handleScroll = () => {
+    const y = window.scrollY;
+
+    button.style.display =
+      y > CONFIG.backToTopOffset ? "block" : "none";
+
+    if (navbar) {
+      navbar.classList.toggle("scrolled", y > CONFIG.navbarScrollOffset);
+    }
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  handleScroll();
+
+  button.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
 }
-window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
 
-const numStars = 150;
-const stars = [];
+// Typing Effect
+function initTypingEffect() {
+  const typedText = $("#typed-text");
 
-for (let i = 0; i < numStars; i++) {
-  stars.push({
+  if (!typedText) return;
+
+  const text = "Exploring science, code, stars, and stories.";
+
+  let index = 0;
+
+  function type() {
+    if (index >= text.length) return;
+
+    typedText.textContent += text.charAt(index++);
+    setTimeout(type, CONFIG.typingSpeed);
+  }
+
+  type();
+}
+
+// Starfield Animation
+function initStarfield() {
+  if (prefersReducedMotion) return;
+  const canvas = $("#stars");
+
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  resizeCanvas();
+  window.addEventListener("resize", resizeCanvas);
+
+  const stars = Array.from({ length: CONFIG.starCount }, () => ({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
-    radius: Math.random() * 1.5 + 0.5,
-    velocity: Math.random() * 0.3 + 0.1
-  });
+    radius: Math.random() * (CONFIG.starMaxRadius - CONFIG.starMinRadius) + CONFIG.starMinRadius,
+    velocity: Math.random() * (CONFIG.starMaxSpeed - CONFIG.starMinSpeed) + CONFIG.starMinSpeed
+  }));
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = getComputedStyle(document.documentElement)
+      .getPropertyValue("--star-color")
+      .trim();
+
+    stars.forEach(star => {
+      star.y += star.velocity;
+
+      if (star.y > canvas.height) {
+        star.y = 0;
+        star.x = Math.random() * canvas.width;
+      }
+
+      ctx.beginPath();
+      ctx.arc(
+        star.x,
+        star.y,
+        star.radius,
+        0,
+        Math.PI * 2
+      );
+      ctx.fill();
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
 }
 
-function animateStars() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--star-color').trim();
+// NASA Astronomy Picture of the Day
+async function initAPOD() {
+  const container = $("#apod-container");
 
-  stars.forEach(star => {
-    star.y += star.velocity;
-    if (star.y > canvas.height) {
-      star.y = 0;
-      star.x = Math.random() * canvas.width;
-    }
-    ctx.beginPath();
-    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-    ctx.fill();
-  });
+  if (!container) return;
 
-  requestAnimationFrame(animateStars);
-}
+  try {
+    const response = await fetch(
+      "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY"
+    );
 
-animateStars();
+    if (!response.ok)
+      throw new Error("Failed to fetch APOD");
 
-    fetch("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY")
-  .then(response => response.json())
-  .then(data => {
-    const container = document.getElementById("apod-container");
+    const data = await response.json();
+
     container.innerHTML = `
       <h3>${data.title}</h3>
       <img src="${data.url}" alt="${data.title}">
       <p>${data.explanation}</p>
     `;
-  })
-  .catch(err => {
-    document.getElementById("apod-container").innerHTML = "<p>Could not load APOD.</p>";
-    console.error(err);
-  });
+  } catch (error) {
+    container.innerHTML =
+      "<p>Could not load APOD.</p>";
 
-    /*
-document.querySelectorAll('.read-more').forEach(button => {
-  button.addEventListener('click', () => {
-    const fullTextId = button.getAttribute('aria-controls');
-    const fullText = document.getElementById(fullTextId);
-    const isOpen = fullText.classList.contains('open');
-
-    // Close all open full-text sections
-    document.querySelectorAll('.full-text.open').forEach(ft => {
-      ft.classList.remove('open');
-      ft.style.maxHeight = null;
-      ft.style.opacity = 0;
-      ft.setAttribute('aria-hidden', 'true');
-    });
-
-    // Reset all buttons
-    document.querySelectorAll('.read-more').forEach(btn => {
-      btn.textContent = 'Read More';
-      btn.setAttribute('aria-expanded', 'false');
-    });
-
-    // If clicked section is not open, open it
-    if (!isOpen) {
-      fullText.classList.add('open');
-      fullText.style.maxHeight = fullText.scrollHeight + 'px';
-      fullText.style.opacity = 1;
-      fullText.setAttribute('aria-hidden', 'false');
-      button.textContent = 'Read Less';
-      button.setAttribute('aria-expanded', 'true');
-    }
-  });
-});
-
-
-document.querySelectorAll('.read-more').forEach(button => {
-  button.addEventListener('click', () => {
-    const contentId = button.getAttribute('aria-controls');
-    const content = document.getElementById(contentId);
-    const isOpen = !content.hidden;
-
-    // Close all content sections
-    document.querySelectorAll('.full-text').forEach(section => {
-      section.hidden = true;
-    });
-
-    // Reset all buttons
-    document.querySelectorAll('.read-more').forEach(btn => {
-      btn.textContent = 'Read More';
-      btn.setAttribute('aria-expanded', 'false');
-    });
-
-    // If the clicked one was closed, open it
-    if (!isOpen) {
-      content.hidden = false;
-      button.textContent = 'Show Less';
-      button.setAttribute('aria-expanded', 'true');
-    }
-  });
-});
-*/
-
-    document.querySelectorAll('.read-more').forEach(button => {
-  button.addEventListener('click', () => {
-    const contentId = button.getAttribute('aria-controls');
-    const content = document.getElementById(contentId);
-    const isOpen = content.classList.contains('visible');
-
-    // Close all
-    document.querySelectorAll('.full-text').forEach(section => {
-      section.classList.remove('visible');
-      section.setAttribute('aria-hidden', 'true');
-      section.style.maxHeight = null;
-      section.style.opacity = 0;
-    });
-
-    document.querySelectorAll('.read-more').forEach(btn => {
-      btn.textContent = 'Read More';
-      btn.setAttribute('aria-expanded', 'false');
-    });
-
-    // Open clicked one
-    if (!isOpen) {
-      content.classList.add('visible');
-      content.setAttribute('aria-hidden', 'false');
-      content.style.maxHeight = content.scrollHeight + "px";
-      content.style.opacity = 1;
-
-      button.textContent = 'Show Less';
-      button.setAttribute('aria-expanded', 'true');
-    }
-  });
-});
-
-
-//sidebar links
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-  link.addEventListener('click', function(e) {
-    const targetId = this.getAttribute('href').substring(1);
-    const target = document.getElementById(targetId);
-    if (target) {
-      target.setAttribute('tabindex', '-1'); // Make it focusable
-      target.focus(); // Force screen reader to read
-    }
-  });
-});
-
-    
-// Sidebar toggle logic
-const toggleBtn = document.getElementById('menuToggle');
-const sidebar = document.getElementById('sidebar');
-
-function isMobileView() {
-  return window.innerWidth <= 768;
-}
-
-function updateAria() {
-  const isOpen = sidebar.classList.contains('open');
-
-  if (isMobileView()) {
-    sidebar.setAttribute('aria-hidden', !isOpen);
-    toggleBtn.setAttribute('aria-expanded', isOpen);
-  } else {
-    sidebar.removeAttribute('aria-hidden'); // Always accessible on desktop
-    toggleBtn.setAttribute('aria-expanded', false);
+    console.error(error);
   }
 }
 
-toggleBtn.addEventListener('click', () => {
-  sidebar.classList.toggle('open');
-  document.body.classList.toggle('sidebar-open');
-  updateAria();
-});
+// Read More Sections
+function initReadMore() {
+  const buttons = $$(".read-more");
+  const sections = $$(".full-text");
 
-// Re-check on window resize (in case user resizes from mobile to desktop)
-window.addEventListener('resize', updateAria);
+  if (!buttons.length) return;
 
-// Initial check on load
-updateAria();
+  buttons.forEach(button => {
+    button.addEventListener("click", () => {
+      const content = document.getElementById(
+        button.getAttribute("aria-controls")
+      );
 
-  fetch('https://iapetus-star.github.io/Iapetus-repo/changelog.html')
-    .then(response => response.text())
-    .then(html => {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
+      if (!content) return;
 
-      const firstEntry = doc.querySelector('.entry');
-      const dateHeading = firstEntry ? firstEntry.querySelector('h2') : null;
+      const isOpen = content.classList.contains("visible");
 
-      // Check if firstEntry or dateHeading is missing
-      if (!firstEntry || !dateHeading) {
-        const banner = document.getElementById('announcement-banner');
-        banner.style.display = 'none';
-        return; // Exit early if changelog content is missing
+      // Close all sections
+      sections.forEach(section => {
+        section.classList.remove("visible");
+        section.setAttribute("aria-hidden", "true");
+        section.style.maxHeight = null;
+        section.style.opacity = 0;
+      });
+
+      // Reset buttons
+      buttons.forEach(btn => {
+        btn.textContent = "Read More";
+        btn.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+      });
+
+      // Open selected section
+      if (!isOpen) {
+        content.classList.add("visible");
+        content.setAttribute(
+          "aria-hidden",
+          "false"
+        );
+        content.style.maxHeight =
+          content.scrollHeight + "px";
+        content.style.opacity = 1;
+
+        button.textContent = "Show Less";
+        button.setAttribute(
+          "aria-expanded",
+          "true"
+        );
       }
-
-      const latestDate = dateHeading.textContent.trim();
-
-      // Check if localStorage is available before using it
-      if (typeof localStorage !== 'undefined') {
-        const storedDismissedDate = localStorage.getItem('dismissedChangelogDate');
-
-        // Only show the banner if the changelog date hasn't been dismissed before
-        if (storedDismissedDate !== latestDate) {
-          const banner = document.getElementById('announcement-banner');
-          banner.innerHTML = `
-            ✨ Site updated on ${latestDate} <a href="https://iapetus-star.github.io/Iapetus-repo/changelog.html" rel="noopener noreferrer">See what's new!</a>
-            <button class="dismiss-button" aria-label="Dismiss announcement">&times;</button>
-          `;
-          banner.style.display = 'block';
-
-          const dismissBtn = banner.querySelector('.dismiss-button');
-          dismissBtn.addEventListener('click', () => {
-            banner.classList.add('fade-out');
-
-            // Wait for the fade-out to finish
-            setTimeout(() => {
-              localStorage.setItem('dismissedChangelogDate', latestDate);
-              banner.style.display = 'none';
-              banner.classList.remove('fade-out');
-            }, 500); // duration matches the CSS transition
-          });
-        }
-      }
-    })
-    .catch(error => {
-      console.error('Could not load changelog:', error);
     });
+  });
+}
+
+// Accessible Anchor Links
+function initAnchorAccessibility() {
+  const links = $$('a[href^="#"]');
+
+  if (!links.length) return;
+
+  links.forEach(link => {
+    link.addEventListener("click", () => {
+      const targetId = link.getAttribute("href").substring(1);
+      const target = document.getElementById(targetId);
+
+      if (!target) return;
+
+      target.setAttribute("tabindex", "-1");
+      target.focus({ preventScroll: true });
+    });
+  });
+}
+
+// Sidebar
+function initSidebar() {
+  const toggleBtn = $("#menuToggle");
+  const sidebar = $("#sidebar");
+
+  if (!toggleBtn || !sidebar) return;
+
+  const isMobileView = () =>
+    window.innerWidth <= CONFIG.mobileBreakpoint;
+
+  function updateAria() {
+    const isOpen = sidebar.classList.contains("open");
+
+    if (isMobileView()) {
+      sidebar.setAttribute("aria-hidden", !isOpen);
+      toggleBtn.setAttribute("aria-expanded", isOpen);
+    } else {
+      sidebar.removeAttribute("aria-hidden");
+      toggleBtn.setAttribute("aria-expanded", "false");
+    }
+  }
+
+  toggleBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+    document.body.classList.toggle("sidebar-open");
+
+    updateAria();
+  });
+
+  window.addEventListener("resize", updateAria);
+
+  updateAria();
+}
+
+// Announcement Banner
+async function initAnnouncementBanner() {
+  const banner = $("#announcement-banner");
+
+  if (!banner) return;
+
+  try {
+    const response = await fetch(
+      "https://iapetus-star.github.io/Iapetus-repo/changelog.html"
+    );
+
+    if (!response.ok)
+      throw new Error("Unable to fetch changelog.");
+
+    const html = await response.text();
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+
+    const firstEntry = doc.querySelector(".entry");
+    const dateHeading = firstEntry?.querySelector("h2");
+
+    if (!firstEntry || !dateHeading) {
+      banner.style.display = "none";
+      return;
+    }
+
+    const latestDate = dateHeading.textContent.trim();
+
+    const dismissedDate = typeof localStorage !== "undefined" ? localStorage.getItem("dismissedChangelogDate") : null;
+
+    if (dismissedDate === latestDate) return;
+
+    banner.innerHTML = `
+      ✨ Site updated on ${latestDate}
+      <a href="https://iapetus-star.github.io/Iapetus-repo/changelog.html"
+         rel="noopener noreferrer">
+         See what's new!
+      </a>
+      <button class="dismiss-button" aria-label="Dismiss announcement">
+        &times;
+      </button>
+    `;
+
+    banner.style.display = "block";
+
+    const dismissBtn = $(".dismiss-button");
+
+    dismissBtn?.addEventListener("click", () => {
+      banner.classList.add("fade-out");
+
+      setTimeout(() => {
+        if (typeof localStorage !== "undefined") {
+          localStorage.setItem(
+            "dismissedChangelogDate",
+            latestDate
+        );
+        }
+
+        banner.style.display = "none";
+        banner.classList.remove("fade-out");
+      }, CONFIG.bannerFadeDuration);
+    });
+
+  } catch (error) {
+    console.error("Could not load changelog:", error);
+  }
+}
 
