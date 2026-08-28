@@ -420,296 +420,963 @@ Internet Mission Control • Built with lots of public APIs
 </footer>
 
 <script>
+const $ = id => document.getElementById(id);
 
-const $=id=>document.getElementById(id),
-set=(id,h)=>$(id).innerHTML=h,
-error=id=>set(id,"<span style='color:#f87171'>Unable to load.</span>"),
-img=(u,h="")=>`<img src="${u}" style="width:100%;border-radius:12px;${h}">`,
-load=async(id,url,fn)=>{try{fn(await fetchJSON(url))}catch{error(id)}};
-
-const API={
-
-weather:{
-u:"https://api.open-meteo.com/v1/forecast?latitude=40.7128&longitude=-74.0060&current=temperature_2m,wind_speed_10m",
-r:d=>`🌡 ${d.current.temperature_2m}°C<br>💨 ${d.current.wind_speed_10m} km/h`
-},
-
-spacex:{
-u:"https://api.spacexdata.com/v5/launches/latest",
-r:d=>`<b>${d.name}</b><br>${new Date(d.date_utc).toLocaleString()}`
-},
-
-cat:{
-u:"https://catfact.ninja/fact",
-r:d=>d.fact
-},
-
-joke:{
-u:"https://official-joke-api.appspot.com/random_joke",
-r:d=>`<b>${d.setup}</b><br><br>${d.punchline}`
-},
-
-dog:{
-u:"https://dog.ceo/api/breeds/image/random",
-r:d=>img(d.message)
-},
-
-fox:{
-u:"https://randomfox.ca/floof/",
-r:d=>img(d.image)
-},
-
-quote:{
-    u:"https://api.quotable.io/random",
-    r:d=>`<b>${d.content}</b><br><br>— ${d.author}`
-},
-
-country:{
-u:"https://restcountries.com/v3.1/all",
-r:d=>{
-let c=d[Math.random()*d.length|0];
-return `<b>${c.name.common}</b><br>Capital: ${c.capital?.[0]||"Unknown"}<br>Population: ${c.population.toLocaleString()}<br>${c.region}`;
-}
-},
-
-meal:{
-u:"https://www.themealdb.com/api/json/v1/1/random.php",
-r:d=>{
-let m=d.meals[0];
-return `${img(m.strMealThumb)}<br><br><b>${m.strMeal}</b><br>${m.strArea}`;
-}
-},
-
-drink:{
-u:"https://www.thecocktaildb.com/api/json/v1/1/random.php",
-r:d=>{
-let x=d.drinks[0];
-return `${img(x.strDrinkThumb)}<br><br><b>${x.strDrink}</b><br>${x.strCategory}`;
-}
-},
-
-dictionary:{
-u:"https://api.dictionaryapi.dev/api/v2/entries/en/serendipity",
-r:d=>`<b>serendipity</b><br><br>${d[0].meanings[0].definitions[0].definition}`
-},
-
-color:{
-u:()=>`https://www.thecolorapi.com/id?hex=${(Math.random()*16777215|0).toString(16).padStart(6,"0")}`,
-r:d=>`<div style="height:80px;border-radius:12px;background:${d.hex.value};margin-bottom:10px"></div>${d.name.value}<br>${d.hex.value}`
-},
-
-crypto:{
-u:"https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd",
-r:d=>`₿ Bitcoin: $${d.bitcoin.usd}<br><br>Ξ Ethereum: $${d.ethereum.usd}<br><br>◎ Solana: $${d.solana.usd}`
-},
-
-movie:{
-u:"https://www.omdbapi.com/?apikey=564727fa&s=space",
-r:d=>{
-let m=d.Search[Math.random()*d.Search.length|0];
-return `<b>${m.Title}</b><br>${img(m.Poster)}`;
-}
-},
-
-game:{
-u:"https://api.rawg.io/api/games?key=1b2c9b8f3f5d4d1e8f7f4b2c3a1d9e8f&page_size=20",
-r:d=>{
-let g=d.results[Math.random()*d.results.length|0];
-return `<b>${g.name}</b><br>${img(g.background_image)}`;
-}
-},
-
-music:{
-u:"https://itunes.apple.com/us/rss/topsongs/limit=5/json",
-r:d=>d.feed.entry.slice(0,5).map(x=>`🎵 ${x["im:name"].label}`).join("<br>")
-},
-
-nasa:{
-u:"https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY",
-r:d=>`<b>${d.title}</b><br>${img(d.url,"margin:10px 0")}<br>${d.explanation.slice(0,180)}...`
-}
-
+const set = (id, html) => {
+    const el = $(id);
+    if (el) el.innerHTML = html;
 };
 
-const run=id=>{
-let a=API[id];
-load(id,typeof a.u=="function"?a.u():a.u,d=>set(id,a.r(d)));
+const error = (id, message = "Unable to load.") => {
+    set(
+        id,
+        `<span style="color:#f87171">${message}</span>`
+    );
 };
 
-async function fetchJSON(url) {
-    const response = await fetch(url);
+const img = (url, extra = "") => {
+    if (!url) return "";
 
-    if (!response.ok)
-        throw new Error(`HTTP ${response.status}`);
-
-    return response.json();
-}
-
-const refreshAll=()=>{
-Object.keys(API).forEach(run);
-moon();
-cryptoChart();
-updateISS();
-drawEarthquakes();
+    return `
+        <img
+            src="${url}"
+            style="
+                width:100%;
+                border-radius:12px;
+                display:block;
+                ${extra}
+            "
+            onerror="this.style.display='none'"
+        >
+    `;
 };
 
+async function fetchJSON(url, options = {}) {
+    const controller = new AbortController();
 
-// Leaflet 
-let map=L.map("map").setView([20,0],2),
-issMarker,
-quakes=[];
+    const timeout = setTimeout(
+        () => controller.abort(),
+        options.timeout || 10000
+    );
 
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18}).addTo(map);
+    try {
 
-navigator.geolocation?.getCurrentPosition(({coords})=>
-L.circleMarker([coords.latitude,coords.longitude],{
-radius:9,
-color:"#fff",
-fillColor:"#0ff",
-fillOpacity:1
-}).addTo(map).bindPopup("📍 You")
-);
+        const response = await fetch(url, {
+            ...options,
+            signal: controller.signal
+        });
 
-//let issMarker;
-
-const issIcon = L.icon({
-    iconUrl: "https://cdn-icons-png.flaticon.com/512/3212/3212608.png",
-    iconSize: [32, 32]
-});
-
-const updateISS = () =>
-    load("iss", "https://api.wheretheiss.at/v1/satellites/25544", d => {
-
-        set(
-            "iss",
-            `Latitude: ${d.latitude.toFixed(2)}<br>
-             Longitude: ${d.longitude.toFixed(2)}<br>
-             Speed: ${Math.round(d.velocity)} km/h`
-        );
-
-        const p = [d.latitude, d.longitude];
-
-        if (!issMarker) {
-            issMarker = L.marker(p, {
-                icon: issIcon
-            }).addTo(map);
-        } else {
-            issMarker.setLatLng(p);
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
         }
-    });
 
-updateISS();
-setInterval(updateISS, 5000);
+        return await response.json();
 
-const drawEarthquakes=()=>fetchJSON("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson")
-.then(d=>{
+    } finally {
 
-set("quakes",
-d.features
-.slice(0,5)
-.map(x=>`M${x.properties.mag} — ${x.properties.place}`)
-.join("<br><br>")
-);
+        clearTimeout(timeout);
 
-quakes.forEach(q=>map.removeLayer(q));
-quakes=[];
-
-d.features.forEach(f=>{
-let[cx,cy]=f.geometry.coordinates,m=f.properties.mag;
-quakes.push(
-L.circleMarker([cy,cx],{
-radius:Math.max(4,m*2),
-color:"#f22",
-fillColor:"#f44",
-fillOpacity:.5
-})
-.addTo(map)
-.bindPopup(`<b>${f.properties.place}</b><br>M${m}`)
-);
-});
-
-}).catch(()=>{});
-drawEarthquakes();
-setInterval(drawEarthquakes,6e4);
-
-setTimeout(()=>map.invalidateSize(),500);
-
-// Chart 
-let chart;
-
-const cryptoChart=()=>fetchJSON("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,solana")
-.then(d=>{
-chart?.destroy();
-chart=new Chart($("#cryptoChart"),{
-type:"bar",
-data:{
-labels:d.map(x=>x.name),
-datasets:[{
-data:d.map(x=>x.current_price),
-backgroundColor:["#f7931a","#627eea","#14f195"]
-}]
-},
-options:{
-plugins:{legend:{display:false}},
-scales:{
-x:{ticks:{color:"#fff"}},
-y:{ticks:{color:"#fff"}}
-}
-}
-});
-})
-.catch(()=>{});
-
-// Moon 
-const moon=()=>{
-let p=((Date.now()-Date.parse("2000-01-06T18:14:00Z"))/864e5%29.53).toFixed(1);
-set("moon",`${p<3||p>26?"🌑 New Moon":p<10?"🌓 First Quarter":p<18?"🌕 Full Moon":"🌗 Last Quarter"}<br>Cycle day: ${p}/29.5`);
-};
-
-//placeholder function
-function placeholder(id){
-    const el=$(id);
-    if(el) el.innerHTML="Waiting for API...";
-}
-
-//Clock
-function updateClock(){
-    const clock = document.getElementById("clock");
-    if (!clock) return;
-
-    clock.textContent = new Date().toLocaleTimeString();
-}
-setInterval(updateClock,1000);
-updateClock();
-
-// Animated Stars 
-for(let i=80;i--;){
-let s=document.createElement("div");
-s.className="star";
-s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${5+Math.random()*15}s`;
-document.body.appendChild(s);
-}
-
-//zoom ISS
-function zoomISS(){
-    if(issMarker){
-        map.setView(issMarker.getLatLng(),5,{animate:true});
-        issMarker.openPopup();
     }
 }
 
-// Mouse Glow 
-const glow=$("#mouseGlow");
-document.onmousemove=e=>glow.style.cssText=`left:${e.clientX}px;top:${e.clientY}px`;
+async function load(id, url, renderer) {
 
-refreshAll();
+    try {
 
-$("#refresh").onclick=()=>{
-console.clear();
-refreshAll();
+        const data = await fetchJSON(
+            typeof url === "function" ? url() : url
+        );
+
+        const html = renderer(data);
+
+        if (!html) {
+            throw new Error("No data returned");
+        }
+
+        set(id, html);
+
+    } catch (err) {
+
+        console.warn(`${id} API failed:`, err);
+
+        error(id, "Unavailable right now.");
+
+    }
+}
+
+const API = {
+
+    weather: {
+        u:
+            "https://api.open-meteo.com/v1/forecast" +
+            "?latitude=40.7128" +
+            "&longitude=-74.0060" +
+            "&current=temperature_2m,wind_speed_10m" +
+            "&temperature_unit=celsius" +
+            "&wind_speed_unit=kmh",
+
+        r: d => {
+
+            if (!d.current) return "";
+
+            return `
+                🌡 ${d.current.temperature_2m}°C
+                <br>
+                💨 ${d.current.wind_speed_10m} km/h
+            `;
+        }
+    },
+
+    spacex: {
+        u: "https://api.spacexdata.com/v5/launches/latest",
+
+        r: d => {
+
+            if (!d) return "";
+
+            return `
+                <b>${escapeHTML(d.name || "Unknown Launch")}</b>
+                <br>
+                ${d.date_utc
+                    ? new Date(d.date_utc).toLocaleString()
+                    : "Date unavailable"
+                }
+            `;
+        }
+    },
+
+    cat: {
+        u: "https://catfact.ninja/fact",
+
+        r: d => escapeHTML(d.fact || "")
+    },
+
+    joke: {
+        u: "https://official-joke-api.appspot.com/random_joke",
+
+        r: d => `
+            <b>${escapeHTML(d.setup || "")}</b>
+            <br><br>
+            ${escapeHTML(d.punchline || "")}
+        `
+    },
+
+    dog: {
+        u: "https://dog.ceo/api/breeds/image/random",
+
+        r: d => img(d.message)
+    },
+
+    fox: {
+        u: "https://randomfox.ca/floof/",
+
+        r: d => img(d.image)
+    },
+
+    quote: {
+        u: "https://api.quotable.io/random",
+
+        r: d => `
+            <b>${escapeHTML(d.content || "No quote found.")}</b>
+            <br><br>
+            — ${escapeHTML(d.author || "Unknown")}
+        `
+    },
+
+    country: {
+
+        u: "https://restcountries.com/v3.1/all",
+
+        r: d => {
+
+            if (!Array.isArray(d) || !d.length) {
+                return "";
+            }
+
+            const c =
+                d[Math.floor(Math.random() * d.length)];
+
+            return `
+                <b>${escapeHTML(c.name?.common || "Unknown")}</b>
+                <br>
+                Capital:
+                ${escapeHTML(c.capital?.[0] || "Unknown")}
+                <br>
+                Population:
+                ${(c.population || 0).toLocaleString()}
+                <br>
+                ${escapeHTML(c.region || "Unknown")}
+            `;
+        }
+    },
+
+    meal: {
+
+        u: "https://www.themealdb.com/api/json/v1/1/random.php",
+
+        r: d => {
+
+            const m = d.meals?.[0];
+
+            if (!m) return "";
+
+            return `
+                ${img(m.strMealThumb)}
+                <br>
+                <b>${escapeHTML(m.strMeal)}</b>
+                <br>
+                ${escapeHTML(m.strArea || "Unknown cuisine")}
+            `;
+        }
+    },
+
+    drink: {
+
+        u: "https://www.thecocktaildb.com/api/json/v1/1/random.php",
+
+        r: d => {
+
+            const x = d.drinks?.[0];
+
+            if (!x) return "";
+
+            return `
+                ${img(x.strDrinkThumb)}
+                <br>
+                <b>${escapeHTML(x.strDrink)}</b>
+                <br>
+                ${escapeHTML(x.strCategory || "Cocktail")}
+            `;
+        }
+    },
+
+    dictionary: {
+
+        u:
+            "https://api.dictionaryapi.dev/api/v2/entries/en/serendipity",
+
+        r: d => {
+
+            const definition =
+                d?.[0]?.meanings?.[0]?.definitions?.[0]?.definition;
+
+            if (!definition) return "";
+
+            return `
+                <b>serendipity</b>
+                <br><br>
+                ${escapeHTML(definition)}
+            `;
+        }
+    },
+
+    color: {
+
+        u: () => {
+
+            const hex =
+                (Math.random() * 16777215 | 0)
+                    .toString(16)
+                    .padStart(6, "0");
+
+            return `
+                https://www.thecolorapi.com/id?hex=${hex}
+            `;
+        },
+
+        r: d => {
+
+            if (!d.hex?.value) return "";
+
+            return `
+                <div
+                    style="
+                        height:80px;
+                        border-radius:12px;
+                        background:${d.hex.value};
+                        margin-bottom:10px;
+                    ">
+                </div>
+
+                ${escapeHTML(d.name?.value || "Random Color")}
+                <br>
+                ${escapeHTML(d.hex.value)}
+            `;
+        }
+    },
+
+    crypto: {
+
+        u:
+            "https://api.coingecko.com/api/v3/simple/price" +
+            "?ids=bitcoin,ethereum,solana" +
+            "&vs_currencies=usd",
+
+        r: d => {
+
+            if (!d.bitcoin || !d.ethereum || !d.solana) {
+                return "";
+            }
+
+            return `
+                ₿ Bitcoin:
+                $${Number(d.bitcoin.usd).toLocaleString()}
+                <br><br>
+
+                Ξ Ethereum:
+                $${Number(d.ethereum.usd).toLocaleString()}
+                <br><br>
+
+                ◎ Solana:
+                $${Number(d.solana.usd).toLocaleString()}
+            `;
+        }
+    },
+
+    movie: {
+
+        u:
+            "https://www.omdbapi.com/" +
+            "?apikey=564727fa&s=space",
+
+        r: d => {
+
+            if (!d.Search?.length) {
+                return "";
+            }
+
+            const m =
+                d.Search[
+                    Math.floor(
+                        Math.random() * d.Search.length
+                    )
+                ];
+
+            return `
+                <b>${escapeHTML(m.Title)}</b>
+                <br>
+                ${img(
+                    m.Poster !== "N/A"
+                        ? m.Poster
+                        : ""
+                )}
+            `;
+        }
+    },
+
+    game: {
+
+        u:
+            "https://api.rawg.io/api/games" +
+            "?key=1b2c9b8f3f5d4d1e8f7f4b2c3a1d9e8f" +
+            "&page_size=20",
+
+        r: d => {
+
+            if (!d.results?.length) {
+                return "";
+            }
+
+            const g =
+                d.results[
+                    Math.floor(
+                        Math.random() * d.results.length
+                    )
+                ];
+
+            return `
+                <b>${escapeHTML(g.name || "Unknown Game")}</b>
+                <br>
+                ${img(g.background_image)}
+            `;
+        }
+    },
+
+    music: {
+
+        u:
+            "https://itunes.apple.com/us/rss/topsongs/limit=5/json",
+
+        r: d => {
+
+            const entries = d.feed?.entry;
+
+            if (!entries?.length) return "";
+
+            return entries
+                .slice(0, 5)
+                .map(x =>
+                    `🎵 ${escapeHTML(
+                        x["im:name"]?.label || "Unknown"
+                    )}`
+                )
+                .join("<br>");
+        }
+    },
+
+    nasa: {
+
+        u:
+            "https://api.nasa.gov/planetary/apod" +
+            "?api_key=DEMO_KEY",
+
+        r: d => {
+
+            if (!d.title) return "";
+
+            const media =
+                d.media_type === "image"
+                    ? img(d.url, "margin:10px 0")
+                    : `<a href="${d.url}" target="_blank"
+                         style="color:#67e8f9">
+                         Open NASA video
+                       </a>`;
+
+            return `
+                <b>${escapeHTML(d.title)}</b>
+                <br>
+                ${media}
+                <br>
+                ${escapeHTML(
+                    (d.explanation || "").slice(0, 220)
+                )}...
+            `;
+        }
+    }
 };
 
-setInterval(refreshAll,60000);
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function run(id) {
+
+    const api = API[id];
+
+    if (!api) return;
+
+    load(
+        id,
+        api.u,
+        api.r
+    );
+}
+
+let issMarker = null;
+
+const issIcon = L.icon({
+    iconUrl:
+        "https://cdn-icons-png.flaticon.com/512/3212/3212608.png",
+
+    iconSize: [32, 32],
+
+    iconAnchor: [16, 16]
+});
+
+
+async function updateISS() {
+
+    try {
+
+        const d = await fetchJSON(
+            "https://api.wheretheiss.at/v1/satellites/25544"
+        );
+
+        set(
+            "iss",
+            `
+            Latitude:
+            ${Number(d.latitude).toFixed(2)}
+            <br>
+
+            Longitude:
+            ${Number(d.longitude).toFixed(2)}
+            <br>
+
+            Speed:
+            ${Math.round(d.velocity)}
+            km/h
+            `
+        );
+
+        const position = [
+            d.latitude,
+            d.longitude
+        ];
+
+        if (!issMarker) {
+
+            issMarker = L.marker(
+                position,
+                { icon: issIcon }
+            )
+            .addTo(map)
+            .bindPopup("🛰 International Space Station");
+
+        } else {
+
+            issMarker.setLatLng(position);
+
+        }
+
+    } catch (err) {
+
+        console.warn("ISS API failed:", err);
+
+        error("iss", "ISS location unavailable.");
+
+    }
+}
+
+let map = L
+    .map("map")
+    .setView([20, 0], 2);
+
+L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+        maxZoom: 18,
+        attribution: "&copy; OpenStreetMap contributors"
+    }
+).addTo(map);
+
+if (navigator.geolocation) {
+
+    navigator.geolocation.getCurrentPosition(
+        ({ coords }) => {
+
+            L.circleMarker(
+                [
+                    coords.latitude,
+                    coords.longitude
+                ],
+                {
+                    radius: 9,
+                    color: "#fff",
+                    fillColor: "#0ff",
+                    fillOpacity: 1
+                }
+            )
+            .addTo(map)
+            .bindPopup("📍 You");
+
+        },
+
+        () => {
+            console.log("User location unavailable.");
+        }
+    );
+}
+
+
+let earthquakeMarkers = [];
+
+async function drawEarthquakes() {
+
+    try {
+
+        const d = await fetchJSON(
+            "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
+        );
+
+        if (!d.features?.length) {
+            error("quakes", "No recent earthquakes.");
+            return;
+        }
+
+        set(
+            "quakes",
+            d.features
+                .slice(0, 5)
+                .map(x => {
+
+                    const mag =
+                        x.properties.mag ?? "?";
+
+                    const place =
+                        escapeHTML(
+                            x.properties.place ||
+                            "Unknown location"
+                        );
+
+                    return `
+                        M${mag} — ${place}
+                    `;
+                })
+                .join("<br><br>")
+        );
+
+
+        earthquakeMarkers.forEach(
+            marker => map.removeLayer(marker)
+        );
+
+        earthquakeMarkers = [];
+
+
+        d.features.forEach(feature => {
+
+            const coordinates =
+                feature.geometry.coordinates;
+
+            const longitude = coordinates[0];
+            const latitude = coordinates[1];
+            const magnitude =
+                Number(feature.properties.mag) || 0;
+
+            const marker =
+                L.circleMarker(
+                    [latitude, longitude],
+                    {
+                        radius:
+                            Math.max(
+                                4,
+                                magnitude * 2
+                            ),
+
+                        color: "#f22",
+
+                        fillColor: "#f44",
+
+                        fillOpacity: .5
+                    }
+                )
+                .addTo(map)
+                .bindPopup(`
+                    <b>
+                        ${escapeHTML(
+                            feature.properties.place ||
+                            "Unknown location"
+                        )}
+                    </b>
+                    <br>
+                    M${magnitude}
+                `);
+
+            earthquakeMarkers.push(marker);
+
+        });
+
+    } catch (err) {
+
+        console.warn(
+            "Earthquake API failed:",
+            err
+        );
+
+        error(
+            "quakes",
+            "Earthquake data unavailable."
+        );
+    }
+}
+
+
+let chart = null;
+
+async function cryptoChart() {
+
+    try {
+
+        const data = await fetchJSON(
+            "https://api.coingecko.com/api/v3/coins/markets" +
+            "?vs_currency=usd" +
+            "&ids=bitcoin,ethereum,solana"
+        );
+
+
+        if (!data?.length) {
+            throw new Error("No crypto data");
+        }
+
+
+        chart?.destroy();
+
+        chart = new Chart(
+            $("cryptoChart"),
+            {
+                type: "bar",
+
+                data: {
+
+                    labels:
+                        data.map(x => x.name),
+
+                    datasets: [
+                        {
+                            data:
+                                data.map(
+                                    x => x.current_price
+                                ),
+
+                            backgroundColor: [
+                                "#f7931a",
+                                "#627eea",
+                                "#14f195"
+                            ],
+
+                            borderRadius: 8
+                        }
+                    ]
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+
+                    scales: {
+
+                        x: {
+                            ticks: {
+                                color: "#fff"
+                            }
+                        },
+
+                        y: {
+                            ticks: {
+                                color: "#fff"
+                            }
+                        }
+                    }
+                }
+            }
+        );
+
+    } catch (err) {
+
+        console.warn(
+            "Crypto chart failed:",
+            err
+        );
+    }
+}
+
+function moon() {
+
+    const knownNewMoon =
+        Date.parse(
+            "2000-01-06T18:14:00Z"
+        );
+
+    const days =
+        (
+            Date.now() -
+            knownNewMoon
+        ) / 86400000;
+
+    let phase =
+        (
+            days % 29.53058867
+        );
+
+    if (phase < 0) {
+        phase += 29.53058867;
+    }
+
+    let icon;
+    let name;
+
+    if (phase < 1.85) {
+
+        icon = "🌑";
+        name = "New Moon";
+
+    } else if (phase < 7.38) {
+
+        icon = "🌒";
+        name = "Waxing Crescent";
+
+    } else if (phase < 9.23) {
+
+        icon = "🌓";
+        name = "First Quarter";
+
+    } else if (phase < 14.77) {
+
+        icon = "🌔";
+        name = "Waxing Gibbous";
+
+    } else if (phase < 16.61) {
+
+        icon = "🌕";
+        name = "Full Moon";
+
+    } else if (phase < 22.15) {
+
+        icon = "🌖";
+        name = "Waning Gibbous";
+
+    } else if (phase < 23.99) {
+
+        icon = "🌗";
+        name = "Last Quarter";
+
+    } else {
+
+        icon = "🌘";
+        name = "Waning Crescent";
+    }
+
+    set(
+        "moon",
+        `${icon} ${name}<br>Cycle day: ${phase.toFixed(1)}/29.5`
+    );
+}
+
+function updateClock() {
+
+    const clock = $("clock");
+
+    if (!clock) return;
+
+    clock.textContent =
+        new Date().toLocaleTimeString();
+}
+
+updateClock();
+
+setInterval(
+    updateClock,
+    1000
+);
+
+for (let i = 80; i--;) {
+
+    const star =
+        document.createElement("div");
+
+    star.className = "star";
+
+    star.style.cssText = `
+        left:${Math.random() * 100}%;
+        top:${Math.random() * 100}%;
+        animation-duration:${5 + Math.random() * 15}s;
+    `;
+
+    document.body.appendChild(star);
+}
+
+
+const glow = $("mouseGlow");
+
+if (glow) {
+
+    document.addEventListener(
+        "mousemove",
+        event => {
+
+            glow.style.left =
+                `${event.clientX}px`;
+
+            glow.style.top =
+                `${event.clientY}px`;
+        }
+    );
+}
+
+function zoomISS() {
+
+    if (!issMarker) {
+
+        console.log(
+            "ISS marker is not available yet."
+        );
+
+        return;
+    }
+
+    map.setView(
+        issMarker.getLatLng(),
+        5,
+        {
+            animate: true
+        }
+    );
+
+    issMarker.openPopup();
+}
+
+async function refreshAll() {
+
+    console.log(
+        "Refreshing Internet Mission Control..."
+    );
+
+    Object.keys(API).forEach(run);
+
+    moon();
+
+    cryptoChart();
+
+    updateISS();
+
+    drawEarthquakes();
+
+
+    setTimeout(
+        () => map.invalidateSize(),
+        300
+    );
+}
+
+$("refresh").addEventListener(
+    "click",
+    () => {
+
+        $("refresh").textContent =
+            "Refreshing...";
+
+        refreshAll()
+            .finally(() => {
+
+                setTimeout(() => {
+
+                    $("refresh").textContent =
+                        "Refresh Everything";
+
+                }, 500);
+
+            });
+    }
+);
+
+
+refreshAll();
+
+setInterval(
+    updateISS,
+    5000
+);
+
+setInterval(
+    drawEarthquakes,
+    60000
+);
+
+setInterval(
+    refreshAll,
+    60000
+);
+
+
+setTimeout(
+    () => map.invalidateSize(),
+    500
+);
 
 </script>
 
