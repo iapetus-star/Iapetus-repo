@@ -357,140 +357,448 @@ padding:10px;
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js"></script>
+
 <script>
-const $=i=>document.getElementById(i);
+const $ = id => document.getElementById(id);
 
-const groups=document.querySelectorAll(".group");
+const groups = document.querySelectorAll(".group");
 
-let logo=null;
+let logo = null;
 
-let qr=new QRCodeStyling({
-width:300,
-height:300,
-type:"canvas",
-data:"Hello QR!",
-margin:2,
-qrOptions:{errorCorrectionLevel:"M"},
-dotsOptions:{color:"#000000",type:"square"},
-backgroundOptions:{color:"#ffffff"},
-imageOptions:{crossOrigin:"anonymous",margin:5}
+const qr = new QRCodeStyling({
+    width: 300,
+    height: 300,
+    type: "canvas",
+    data: "Hello QR!",
+    margin: 2,
+    qrOptions: {
+        errorCorrectionLevel: "M"
+    },
+    dotsOptions: {
+        color: "#000000",
+        type: "square"
+    },
+    backgroundOptions: {
+        color: "#ffffff"
+    },
+    imageOptions: {
+        crossOrigin: "anonymous",
+        margin: 5
+    }
 });
 
 qr.append($("qr"));
 
-function showFields(){
-groups.forEach(g=>g.classList.toggle("active",g.dataset.type===$("type").value));
+
+function showFields() {
+    const type = $("type").value;
+
+    groups.forEach(group => {
+        group.classList.toggle(
+            "active",
+            group.dataset.type === type
+        );
+    });
 }
 
-function data(){
-let t=$("type").value;
-
-if(t==="text")return $("text").value;
-
-if(t==="url")return $("url").value;
-
-if(t==="wifi")return `WIFI:T:${$("enc").value};S:${escape($("ssid").value)};P:${escape($("wpass").value)};H:${$("hidden").checked};;`;
-
-if(t==="email")return `mailto:${$("email").value}?subject=${encodeURIComponent($("subject").value)}&body=${encodeURIComponent($("body").value)}`;
-
-if(t==="phone")return `tel:${$("phone").value}`;
-
-if(t==="sms")return `SMSTO:${$("smsnum").value}:${$("smsmsg").value}`;
-
-if(t==="vcard")return `BEGIN:VCARD\nVERSION:3.0\nFN:${$("vname").value}\nORG:${$("vcompany").value}\nTITLE:${$("vtitle").value}\nTEL:${$("vphone").value}\nEMAIL:${$("vemail").value}\nURL:${$("vweb").value}\nADR:${$("vaddress").value}\nEND:VCARD`;
-
-return "";
+function escapeWifi(value) {
+    return String(value)
+        .replace(/\\/g, "\\\\")
+        .replace(/;/g, "\\;")
+        .replace(/,/g, "\\,")
+        .replace(/:/g, "\\:");
 }
 
-function update(){
-
-let bg=$("transparent").checked?"transparent":$("bg").value;
-
-if(!qrData){
-$("status").textContent="Enter some data";
-return;
+function escapeVCard(value) {
+    return String(value)
+        .replace(/\\/g, "\\\\")
+        .replace(/\n/g, "\\n")
+        .replace(/,/g, "\\,")
+        .replace(/;/g, "\\;");
 }
 
-qr.update({
-width:+$("size").value,
-height:+$("size").value,
-data:data(),
-margin:+$("margin").value,
-qrOptions:{errorCorrectionLevel:$("ecc").value},
-dotsOptions:{color:$("fg").value},
-backgroundOptions:{color:bg},
-image:logo,
-imageOptions:{
-crossOrigin:"anonymous",
-margin:5,
-imageSize:+$("logosize").value/100
+function getData() {
+
+    const type = $("type").value;
+
+    switch (type) {
+
+        case "text":
+            return $("text").value.trim();
+
+
+        case "url": {
+            const url = $("url").value.trim();
+
+            if (!url) {
+                return "";
+            }
+
+            return url;
+        }
+
+        case "wifi": {
+            const ssid = $("ssid").value;
+
+            if (!ssid) {
+                return "";
+            }
+
+            const encryption = $("enc").value;
+            const password = $("wpass").value;
+            const hidden = $("hidden").checked ? "true" : "false";
+
+            return `WIFI:T:${encryption};S:${escapeWifi(ssid)};P:${escapeWifi(password)};H:${hidden};;`;
+        }
+
+
+        case "email": {
+            const email = $("email").value.trim();
+
+            if (!email) {
+                return "";
+            }
+
+            const subject = $("subject").value;
+            const body = $("body").value;
+
+            let result = `mailto:${email}`;
+
+            const params = [];
+
+            if (subject) {
+                params.push(`subject=${encodeURIComponent(subject)}`);
+            }
+
+            if (body) {
+                params.push(`body=${encodeURIComponent(body)}`);
+            }
+
+            if (params.length) {
+                result += "?" + params.join("&");
+            }
+
+            return result;
+        }
+
+
+        case "phone": {
+            const phone = $("phone").value.trim();
+
+            if (!phone) {
+                return "";
+            }
+
+            return `tel:${phone}`;
+        }
+
+
+        case "sms": {
+            const number = $("smsnum").value.trim();
+            const message = $("smsmsg").value;
+
+            if (!number) {
+                return "";
+            }
+
+            return `sms:${number}${message ? "?body=" + encodeURIComponent(message) : ""}`;
+        }
+
+
+        case "vcard": {
+
+            const name = $("vname").value.trim();
+
+            if (!name) {
+                return "";
+            }
+
+            return [
+                "BEGIN:VCARD",
+                "VERSION:3.0",
+                `FN:${escapeVCard(name)}`,
+                `ORG:${escapeVCard($("vcompany").value)}`,
+                `TITLE:${escapeVCard($("vtitle").value)}`,
+                `TEL:${escapeVCard($("vphone").value)}`,
+                `EMAIL:${escapeVCard($("vemail").value)}`,
+                `URL:${escapeVCard($("vweb").value)}`,
+                `ADR:${escapeVCard($("vaddress").value)}`,
+                "END:VCARD"
+            ].join("\n");
+        }
+
+
+        default:
+            return "";
+    }
 }
+
+function update() {
+
+    const qrData = getData();
+
+    const size = Number($("size").value);
+    const margin = Number($("margin").value);
+    const logoSize = Number($("logosize").value);
+
+    const foreground = $("fg").value;
+    const background = $("transparent").checked
+        ? "transparent"
+        : $("bg").value;
+
+    // Update displayed values 
+
+    $("sizeVal").textContent = `${size} px`;
+    $("marginVal").textContent = margin;
+    $("logoVal").textContent = `${logoSize}%`;
+
+
+    // Empty data 
+
+    if (!qrData) {
+        $("status").textContent = "Enter some data";
+
+        qr.update({
+            width: size,
+            height: size,
+            data: " ",
+            margin: margin,
+
+            qrOptions: {
+                errorCorrectionLevel: $("ecc").value
+            },
+
+            dotsOptions: {
+                color: foreground
+            },
+
+            backgroundOptions: {
+                color: background
+            },
+
+            image: undefined,
+
+            imageOptions: {
+                crossOrigin: "anonymous",
+                margin: 5,
+                imageSize: logoSize / 100
+            }
+        });
+
+        return;
+    }
+
+
+    qr.update({
+        width: size,
+        height: size,
+
+        data: qrData,
+
+        margin: margin,
+
+        qrOptions: {
+            errorCorrectionLevel: $("ecc").value
+        },
+
+        dotsOptions: {
+            color: foreground,
+            type: "square"
+        },
+
+        backgroundOptions: {
+            color: background
+        },
+
+        image: logo || undefined,
+
+        imageOptions: {
+            crossOrigin: "anonymous",
+            margin: 5,
+            imageSize: logoSize / 100
+        }
+    });
+
+    $("status").textContent = "Updated";
+}
+
+$("type").addEventListener("change", () => {
+    showFields();
+    update();
 });
 
-$("sizeVal").textContent=$("size").value+" px";
-$("marginVal").textContent=$("margin").value;
-$("logoVal").textContent=$("logosize").value+"%";
-$("status").textContent="Updated";
-}
 
-$("type").onchange=showFields;
+document.querySelectorAll("input, textarea, select").forEach(element => {
 
-document.querySelectorAll("input,textarea,select").forEach(e=>e.oninput=update);
+    element.addEventListener("input", update);
 
-$("theme").onclick=()=>{
-document.body.classList.toggle("dark");
-};
+    element.addEventListener("change", update);
 
-$("logo").onchange=e=>{
-let f=e.target.files[0];
-if(!f)return;
-let r=new FileReader();
-
-r.onload=()=>{
-logo=r.result;
-update();
-};
-
-r.readAsDataURL(f);
-};
-
-$("downloadPNG").onclick=()=>qr.download({name:"qrcode",extension:"png"});
-$("downloadSVG").onclick=()=>qr.download({name:"qrcode",extension:"svg"});
-
-$("copy").onclick=async()=>{
-let c=document.querySelector("#qr canvas");
-if(!c)return;
-
-c.toBlob(async b=>{
-await navigator.clipboard.write([
-new ClipboardItem({"image/png":b})
-]);
-
-$("status").textContent="Copied";
-});
-};
-
-$("clear").onclick=()=>{
-document.querySelectorAll("input,textarea").forEach(e=>{
-
-if(e.type!=="color"&&e.type!=="range"&&e.type!=="checkbox"&&e.type!=="file")e.value="";
 });
 
-logo=null;
+$("theme").addEventListener("click", () => {
 
-update();
-};
+    document.body.classList.toggle("dark");
+
+    $("theme").textContent =
+        document.body.classList.contains("dark")
+            ? "☀️"
+            : "🌙";
+});
+
+$("logo").addEventListener("change", event => {
+
+    const file = event.target.files[0];
+
+    if (!file) {
+        logo = null;
+        update();
+        return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+        $("status").textContent = "Please select an image file";
+        event.target.value = "";
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+
+        logo = reader.result;
+
+        update();
+
+        $("status").textContent = "Logo added";
+    };
+
+    reader.onerror = () => {
+        $("status").textContent = "Could not load logo";
+    };
+
+    reader.readAsDataURL(file);
+});
+
+
+$("downloadPNG").addEventListener("click", async () => {
+
+    try {
+
+        await qr.download({
+            name: "qrcode",
+            extension: "png"
+        });
+
+        $("status").textContent = "PNG downloaded";
+
+    } catch (error) {
+
+        console.error(error);
+
+        $("status").textContent = "PNG download failed";
+    }
+});
+
+$("downloadSVG").addEventListener("click", async () => {
+
+    try {
+
+        await qr.download({
+            name: "qrcode",
+            extension: "svg"
+        });
+
+        $("status").textContent = "SVG downloaded";
+
+    } catch (error) {
+
+        console.error(error);
+
+        $("status").textContent = "SVG download failed";
+    }
+});
+
+$("copy").addEventListener("click", async () => {
+
+    try {
+
+        if (!navigator.clipboard || !window.ClipboardItem) {
+            throw new Error("Clipboard API not supported");
+        }
+
+        const canvas = document.querySelector("#qr canvas");
+
+        if (!canvas) {
+            throw new Error("QR canvas not found");
+        }
+
+        const blob = await new Promise(resolve => {
+            canvas.toBlob(resolve, "image/png");
+        });
+
+        if (!blob) {
+            throw new Error("Could not create image");
+        }
+
+        await navigator.clipboard.write([
+            new ClipboardItem({
+                "image/png": blob
+            })
+        ]);
+
+        $("status").textContent = "Copied";
+
+    } catch (error) {
+
+        console.error(error);
+
+        $("status").textContent =
+            "Copy failed — try using HTTPS or localhost";
+    }
+});
+
+$("clear").addEventListener("click", () => {
+
+
+    document.querySelectorAll(
+        "input[type=text], input[type=url], input[type=email], input[type=password], textarea"
+    ).forEach(element => {
+        element.value = "";
+    });
+
+
+    $("fg").value = "#000000";
+    $("bg").value = "#ffffff";
+
+
+    $("size").value = 300;
+    $("margin").value = 2;
+    $("logosize").value = 20;
+
+
+    $("type").value = "text";
+    $("enc").value = "WPA";
+    $("ecc").value = "M";
+
+
+    $("hidden").checked = false;
+    $("transparent").checked = false;
+
+
+    $("logo").value = "";
+    logo = null;
+
+
+    showFields();
+    update();
+
+    $("status").textContent = "Cleared";
+});
 
 showFields();
+
 update();
-
-$("theme").onclick=()=>{
-document.body.classList.toggle("dark");
-$("theme").textContent =
-document.body.classList.contains("dark") ? "☀️" : "🌙";
-};
-
 </script>
-
 </body>
 </html>
