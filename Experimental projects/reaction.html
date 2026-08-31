@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reaction Time Tester</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #080a0f;
+  --panel: #10131a;
+  --panel-light: #161a23;
+  --border: #252b36;
+  --text: #f5f7fa;
+  --muted: #7f8795;
+  --green: #39f58a;
+  --green-dark: #0c5d35;
+  --red: #ff4d67;
+  --yellow: #ffd166;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 50% -20%, #1d2638 0%, transparent 45%),
+    var(--bg);
+  color: var(--text);
+  font-family: "Inter", sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.app {
+  width: min(900px, 100%);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 28px;
+}
+
+.eyebrow {
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+}
+
+h1 {
+  font-size: clamp(32px, 6vw, 54px);
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.round-counter {
+  text-align: right;
+}
+
+.round-counter span {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.round-counter strong {
+  font-size: 24px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.stat-card {
+  background: rgba(16, 19, 26, 0.8);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 17px;
+}
+
+.stat-card span {
+  display: block;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin-bottom: 7px;
+}
+
+.stat-card strong {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.game-card {
+  position: relative;
+}
+
+.game-area {
+  height: 430px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at center, #171b24 0%, #0d1016 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  cursor: crosshair;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+  user-select: none;
+}
+
+.game-area::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+}
+
+.game-content {
+  position: relative;
+  z-index: 2;
+}
+
+.target-icon {
+  width: 68px;
+  height: 68px;
+  border: 2px solid #39404d;
+  border-radius: 50%;
+  margin: 0 auto 24px;
+  display: grid;
+  place-items: center;
+  transition: all 0.15s ease;
+}
+
+.target-icon span {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #39404d;
+  transition: all 0.15s ease;
+}
+
+.game-content h2 {
+  font-size: clamp(28px, 5vw, 42px);
+  letter-spacing: -1.5px;
+}
+
+.game-content p {
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.game-area.waiting {
+  background:
+    radial-gradient(circle at center, #302a16 0%, #17140c 75%);
+  border-color: #66551d;
+}
+
+.game-area.waiting .target-icon {
+  border-color: var(--yellow);
+  animation: pulse 1.2s infinite;
+}
+
+.game-area.waiting .target-icon span {
+  background: var(--yellow);
+}
+
+.game-area.go {
+  background:
+    radial-gradient(circle at center, #29c86e 0%, #087b3d 55%, #064b28 100%);
+  border-color: var(--green);
+  box-shadow:
+    0 0 50px rgba(57, 245, 138, 0.2),
+    inset 0 0 80px rgba(57, 245, 138, 0.08);
+}
+
+.game-area.go .target-icon {
+  border-color: rgba(255,255,255,0.8);
+  transform: scale(1.15);
+}
+
+.game-area.go .target-icon span {
+  background: white;
+  box-shadow: 0 0 30px white;
+}
+
+.game-area.go h2,
+.game-area.go p {
+  color: white;
+}
+
+.game-area.result {
+  background:
+    radial-gradient(circle at center, #173224 0%, #0d1712 75%);
+  border-color: #275c3e;
+}
+
+.game-area.false-start {
+  background:
+    radial-gradient(circle at center, #3b1520 0%, #170d11 75%);
+  border-color: var(--red);
+}
+
+.game-area.false-start .target-icon {
+  border-color: var(--red);
+}
+
+.game-area.false-start .target-icon span {
+  background: var(--red);
+}
+
+.game-area.false-start h2 {
+  color: var(--red);
+}
+
+.game-area.finished {
+  background:
+    radial-gradient(circle at center, #1c2535 0%, #0d1016 75%);
+  border-color: #344154;
+}
+
+.start-button,
+.again-button {
+  width: 100%;
+  border: 0;
+  border-radius: 13px;
+  margin-top: 14px;
+  padding: 18px;
+  background: var(--green);
+  color: #04170c;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.start-button:hover,
+.again-button:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+}
+
+.start-button:active,
+.again-button:active {
+  transform: translateY(0);
+}
+
+.results {
+  display: none;
+  margin-top: 14px;
+  padding: 28px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  animation: slideUp 0.3s ease;
+}
+
+.results.show {
+  display: block;
+}
+
+.results-header span {
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.results-header h2 {
+  font-size: 28px;
+  margin-top: 6px;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.result-grid div {
+  background: var(--panel-light);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.result-grid span {
+  display: block;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 7px;
+}
+
+.result-grid strong {
+  font-size: 22px;
+}
+
+.final-message {
+  color: #c8ced8;
+  text-align: center;
+  font-size: 15px;
+  margin: 26px 0 4px;
+  min-height: 20px;
+}
+
+.again-button {
+  margin-top: 20px;
+}
+
+footer {
+  text-align: center;
+  color: #4f5662;
+  font-size: 11px;
+  line-height: 1.8;
+  margin-top: 24px;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(0.95);
+    opacity: 0.65;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 650px) {
+  body {
+    padding: 25px 14px;
+  }
+
+  .header {
+    align-items: center;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .game-area {
+    height: 390px;
+  }
+
+  .result-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  h1 {
+    font-size: 34px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+  }
+
+  .round-counter strong {
+    font-size: 20px;
+  }
+
+  .game-area {
+    height: 350px;
+  }
+
+  .game-content h2 {
+    font-size: 30px;
+  }
+}
+</style>
+</head>
+<body>
+
+  <main class="app">
+    <header class="header">
+      <div>
+        <p class="eyebrow">REFLEX LAB</p>
+        <h1>Reaction Time</h1>
+        <p class="subtitle">How fast can you react?</p>
+      </div>
+
+      <div class="round-counter">
+        <span>ROUND</span>
+        <strong id="round">0/5</strong>
+      </div>
+    </header>
+
+    <section class="stats">
+      <div class="stat-card">
+        <span>LAST</span>
+        <strong id="reactionTime">--</strong>
+      </div>
+
+      <div class="stat-card">
+        <span>AVERAGE</span>
+        <strong id="average">--</strong>
+      </div>
+
+      <div class="stat-card">
+        <span>BEST</span>
+        <strong id="best">--</strong>
+      </div>
+
+      <div class="stat-card">
+        <span>FALSE STARTS</span>
+        <strong id="falseStarts">0</strong>
+      </div>
+    </section>
+
+    <section class="game-card">
+      <div class="game-area" id="gameArea">
+        <div class="game-content">
+          <div class="target-icon">
+            <span></span>
+          </div>
+
+          <h2 id="status">Ready?</h2>
+          <p id="message">Click the button below to start</p>
+        </div>
+      </div>
+    </section>
+
+    <button class="start-button" id="startButton">
+      Start Challenge
+    </button>
+
+    <section class="results" id="results">
+      <div class="results-header">
+        <span>CHALLENGE COMPLETE</span>
+        <h2>Your Results</h2>
+      </div>
+
+      <div class="result-grid">
+        <div>
+          <span>AVERAGE</span>
+          <strong id="finalAverage">--</strong>
+        </div>
+
+        <div>
+          <span>BEST</span>
+          <strong id="finalBest">--</strong>
+        </div>
+
+        <div>
+          <span>FALSE STARTS</span>
+          <strong id="finalFalseStarts">0</strong>
+        </div>
+      </div>
+
+      <p class="final-message" id="finalMessage"></p>
+
+      <button class="again-button" id="againButton">
+        Try Again
+      </button>
+    </section>
+
+    <footer>
+      <p>Click only when the screen turns green.</p>
+      <p>Spacebar and Enter also work.</p>
+    </footer>
+  </main>
+
+<script>
+const gameArea = document.getElementById("gameArea");
+const statusText = document.getElementById("status");
+const message = document.getElementById("message");
+
+const reactionTimeDisplay = document.getElementById("reactionTime");
+const roundDisplay = document.getElementById("round");
+const averageDisplay = document.getElementById("average");
+const bestDisplay = document.getElementById("best");
+const falseStartDisplay = document.getElementById("falseStarts");
+
+const startButton = document.getElementById("startButton");
+const results = document.getElementById("results");
+
+const finalAverage = document.getElementById("finalAverage");
+const finalBest = document.getElementById("finalBest");
+const finalFalseStarts = document.getElementById("finalFalseStarts");
+const finalMessage = document.getElementById("finalMessage");
+const againButton = document.getElementById("againButton");
+
+const TOTAL_ROUNDS = 5;
+
+let round = 0;
+let reactionTimes = [];
+let falseStarts = 0;
+
+let bestTime = Number(localStorage.getItem("reactionBest")) || null;
+
+let timer = null;
+let startTime = 0;
+
+let state = "idle";
+
+const messages = {
+  excellent: [
+    "Are you even human?",
+    "Lightning fingers. Respect.",
+    "That was ridiculously fast.",
+    "You blinked and already clicked.",
+    "NASA wants your reflexes."
+  ],
+
+  good: [
+    "Pretty quick!",
+    "Nice reaction speed.",
+    "Your reflexes are looking sharp.",
+    "That was solid.",
+    "You're getting dangerous."
+  ],
+
+  average: [
+    "Not bad. Not amazing either.",
+    "Your reflexes have entered the chat.",
+    "Decent. Your mouse survived.",
+    "You definitely saw it coming.",
+    "Room for improvement!"
+  ],
+
+  slow: [
+    "Were you taking a nap?",
+    "The button was waiting for you.",
+    "Did your brain buffer?",
+    "A turtle just beat you.",
+    "Maybe stretch your clicking finger."
+  ],
+
+  falseStart: [
+    "Too early! Patience, grasshopper.",
+    "You jumped the gun!",
+    "False start! The color wasn't ready.",
+    "Someone was a little trigger-happy.",
+    "Your reflexes need a little chill."
+  ]
+};
+
+function randomMessage(type) {
+  const list = messages[type];
+  return list[Math.floor(Math.random() * list.length)];
+}
+
+function updateStats() {
+  const average = reactionTimes.length
+    ? Math.round(
+        reactionTimes.reduce((sum, time) => sum + time, 0) /
+        reactionTimes.length
+      )
+    : null;
+
+  roundDisplay.textContent = `${round}/${TOTAL_ROUNDS}`;
+
+  averageDisplay.textContent = average
+    ? `${average} ms`
+    : "--";
+
+  bestDisplay.textContent = bestTime
+    ? `${bestTime} ms`
+    : "--";
+
+  falseStartDisplay.textContent = falseStarts;
+}
+
+function resetGame() {
+  clearTimeout(timer);
+
+  round = 0;
+  reactionTimes = [];
+  falseStarts = 0;
+  startTime = 0;
+  state = "idle";
+
+  reactionTimeDisplay.textContent = "--";
+  roundDisplay.textContent = "0/5";
+  averageDisplay.textContent = "--";
+  falseStartDisplay.textContent = "0";
+
+  statusText.textContent = "Ready?";
+  message.textContent = "Click the button below to start";
+
+  gameArea.className = "game-area";
+
+  results.classList.remove("show");
+
+  startButton.textContent = "Start Challenge";
+
+  updateStats();
+}
+
+function startGame() {
+  clearTimeout(timer);
+
+  round = 0;
+  reactionTimes = [];
+  falseStarts = 0;
+  startTime = 0;
+  state = "starting";
+
+  results.classList.remove("show");
+
+  startButton.textContent = "Restart Challenge";
+
+  reactionTimeDisplay.textContent = "--";
+  message.textContent = "";
+
+  updateStats();
+
+  nextRound();
+}
+
+function nextRound() {
+  clearTimeout(timer);
+
+  if (round >= TOTAL_ROUNDS) {
+    finishGame();
+    return;
+  }
+
+  round++;
+  state = "waiting";
+
+  gameArea.className = "game-area waiting";
+
+  statusText.textContent = "Wait for green...";
+  message.textContent = "Don't click yet";
+
+  reactionTimeDisplay.textContent = "--";
+
+  updateStats();
+
+  const delay = Math.floor(Math.random() * 3500) + 1500;
+
+  timer = setTimeout(() => {
+    if (state !== "waiting") {
+      return;
+    }
+
+    state = "go";
+    startTime = performance.now();
+
+    gameArea.className = "game-area go";
+
+    statusText.textContent = "CLICK!";
+    message.textContent = "NOW!";
+  }, delay);
+}
+
+function handleGameClick() {
+  if (state === "idle") {
+    startGame();
+    return;
+  }
+
+  if (state === "waiting") {
+    handleFalseStart();
+    return;
+  }
+
+  if (state !== "go") {
+    return;
+  }
+
+  handleSuccessfulReaction();
+}
+
+function handleFalseStart() {
+  clearTimeout(timer);
+
+  falseStarts++;
+  state = "false-start";
+
+  gameArea.className = "game-area false-start";
+
+  statusText.textContent = "TOO EARLY!";
+  message.textContent = randomMessage("falseStart");
+
+  reactionTimeDisplay.textContent = "--";
+
+  updateStats();
+
+  setTimeout(() => {
+    if (state === "false-start") {
+      nextRound();
+    }
+  }, 1200);
+}
+
+function handleSuccessfulReaction() {
+  const reactionTime = Math.round(performance.now() - startTime);
+
+  reactionTimes.push(reactionTime);
+
+  if (!bestTime || reactionTime < bestTime) {
+    bestTime = reactionTime;
+    localStorage.setItem("reactionBest", bestTime);
+  }
+
+  state = "result";
+
+  gameArea.className = "game-area result";
+
+  statusText.textContent = `${reactionTime} ms`;
+
+  reactionTimeDisplay.textContent = `${reactionTime} ms`;
+
+  if (reactionTime < 200) {
+    message.textContent = randomMessage("excellent");
+  } else if (reactionTime < 300) {
+    message.textContent = randomMessage("good");
+  } else if (reactionTime < 450) {
+    message.textContent = randomMessage("average");
+  } else {
+    message.textContent = randomMessage("slow");
+  }
+
+  updateStats();
+
+  setTimeout(() => {
+    if (state === "result") {
+      nextRound();
+    }
+  }, 1100);
+}
+
+function getFinalMessage(average) {
+  if (falseStarts >= 3) {
+    return "You false-started your way through half the challenge. Legendary.";
+  }
+
+  if (average < 200) {
+    return "Absolutely cracked. Your reflexes are illegal.";
+  }
+
+  if (average < 250) {
+    return "Elite reaction speed. You came to click.";
+  }
+
+  if (average < 300) {
+    return "Very solid. You've got some seriously quick reflexes.";
+  }
+
+  if (average < 400) {
+    return "Pretty good! A little more practice and you'll be flying.";
+  }
+
+  if (average < 500) {
+    return "Not terrible. Your brain and mouse are still negotiating.";
+  }
+
+  return "Let's just call that a warm-up.";
+}
+
+function finishGame() {
+  clearTimeout(timer);
+
+  state = "finished";
+
+  gameArea.className = "game-area finished";
+
+  statusText.textContent = "Challenge Complete";
+  message.textContent = "Five rounds. How did you do?";
+
+  const average = reactionTimes.length
+    ? Math.round(
+        reactionTimes.reduce((sum, time) => sum + time, 0) /
+        reactionTimes.length
+      )
+    : null;
+
+  finalAverage.textContent = average
+    ? `${average} ms`
+    : "--";
+
+  finalBest.textContent = bestTime
+    ? `${bestTime} ms`
+    : "--";
+
+  finalFalseStarts.textContent = falseStarts;
+
+  if (average) {
+    finalMessage.textContent = getFinalMessage(average);
+  } else {
+    finalMessage.textContent =
+      "You managed to false-start every round. Absolutely legendary.";
+  }
+
+  results.classList.add("show");
+
+  updateStats();
+}
+
+gameArea.addEventListener("click", handleGameClick);
+
+startButton.addEventListener("click", startGame);
+
+againButton.addEventListener("click", startGame);
+
+document.addEventListener("keydown", event => {
+  if (event.code !== "Space" && event.code !== "Enter") {
+    return;
+  }
+
+  event.preventDefault();
+
+  if (state === "idle" || state === "finished") {
+    startGame();
+    return;
+  }
+
+  handleGameClick();
+});
+
+resetGame();
+
+</script>
+</body>
+</html>

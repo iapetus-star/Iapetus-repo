@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DON'T CLICK THE BUTTON</title>
+<style>
+*{box-sizing:border-box;user-select:none;}
+html,body{width:100%;height:100%;margin:0;overflow:hidden;}
+	
+body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:white;background:radial-gradient(circle at 50% 40%,#172554 0%,#020617 45%,#000 100%);transition:background 1s,filter .3s;}
+
+#background{position:fixed;inset:0;overflow:hidden;pointer-events:none;}
+
+.grid{position:absolute;inset:-50%;background-image:linear-gradient(rgba(0,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,255,.08) 1px,transparent 1px);background-size:50px 50px;transform:perspective(500px) rotateX(65deg);animation:gridMove 8s linear infinite;}
+
+@keyframes gridMove{
+
+from{transform:perspective(500px) rotateX(65deg) translateY(0);}
+
+to{transform:perspective(500px) rotateX(65deg) translateY(50px);}
+
+}
+
+.orb{position:absolute;width:500px;height:500px;border-radius:50%;filter:blur(100px);opacity:.25;animation:floatOrb 12s infinite alternate ease-in-out;}
+
+.orb.one{background:#00ffff;top:-200px;left:-200px;}
+
+.orb.two{background:#ff00ff;bottom:-250px;right:-200px;animation-delay:-5s;}
+
+.orb.three{background:#7c3aed;top:30%;left:40%;animation-delay:-8s;}
+
+@keyframes floatOrb{
+
+to{transform:translate(200px,-100px) scale(1.4);}
+
+}
+
+#game{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:10;transition:transform .15s,filter .2s;}
+
+#title{font-size:clamp(2rem,5vw,4rem);font-weight:900;text-align:center;letter-spacing:-2px;text-shadow:0 0 10px #00ffff,0 0 30px #00ffff;margin-bottom:10px;animation:titlePulse 3s infinite;}
+
+@keyframes titlePulse{
+
+50%{text-shadow:0 0 5px #fff,0 0 50px #ff00ff;}
+
+}
+
+#subtitle{color:#94a3b8;text-align:center;margin-bottom:35px;}
+
+#counter{position:fixed;top:20px;left:50%;transform:translateX(-50%);padding:10px 18px;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.4);backdrop-filter:blur(10px);border-radius:999px;font-size:14px;z-index:9999;}
+
+#buttonZone{position:relative;width:min(800px,90vw);height:300px;display:flex;align-items:center;justify-content:center;}
+
+#mainButton{position:absolute;padding:22px 45px;min-width:250px;border:0;border-radius:18px;font-size:24px;font-weight:900;letter-spacing:2px;color:white;cursor:pointer;background:linear-gradient(135deg,#ef4444,#dc2626);box-shadow:0 0 15px #ef4444,0 0 40px rgba(239,68,68,.5),inset 0 0 20px rgba(255,255,255,.15);transition:transform .15s,background .3s,box-shadow .3s;z-index:100;}
+
+#mainButton:hover{box-shadow:0 0 20px #ff0000,0 0 70px #ff0000;transform:scale(1.05);}
+
+#mainButton:active{transform:scale(.9);}
+
+.fakeButton{position:fixed;padding:14px 24px;border-radius:12px;border:2px solid rgba(255,255,255,.3);color:white;background:linear-gradient(135deg,#2563eb,#7c3aed);font-weight:900;cursor:pointer;box-shadow:0 0 20px rgba(124,58,237,.6);z-index:500;animation:fakeFloat 2s infinite alternate ease-in-out;}
+
+@keyframes fakeFloat{
+
+to{transform:translateY(-15px) rotate(3deg);}
+
+}
+
+.falling{position:fixed;top:-100px;padding:12px 25px;border-radius:10px;background:#111827;border:2px solid #22d3ee;color:#22d3ee;font-weight:bold;box-shadow:0 0 20px #22d3ee;z-index:300;animation:fall linear forwards;}
+
+@keyframes fall{
+
+to{transform:translateY(calc(100vh + 200px)) rotate(720deg);}
+
+}
+
+#toastContainer{position:fixed;top:80px;right:20px;width:min(350px,90vw);z-index:99999;display:flex;flex-direction:column;gap:10px;}
+
+.toast{padding:16px;border-radius:14px;background:rgba(15,23,42,.9);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(15px);box-shadow:0 10px 40px #0008;animation:toastIn .3s ease;font-weight:600;}
+
+@keyframes toastIn{
+
+from{opacity:0;transform:translateX(100px);}
+
+}
+
+.glitch{animation:glitch .2s infinite;}
+
+@keyframes glitch{
+
+0%{transform:translate(0);}
+
+25%{transform:translate(8px,-5px);}
+
+50%{transform:translate(-8px,5px);}
+
+75%{transform:translate(5px,8px);}
+
+100%{transform:translate(0);}
+
+}
+
+#chaos{position:fixed;inset:0;pointer-events:none;z-index:90000;mix-blend-mode:screen;opacity:0;background:repeating-linear-gradient(0deg,transparent 0px,transparent 3px,rgba(0,255,255,.04) 4px);transition:opacity .2s;}
+
+#finalChallenge{position:fixed;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;background:radial-gradient(circle,#450a0a,#000);z-index:100000;text-align:center;padding:30px;}
+
+#finalChallenge h2{font-size:clamp(2rem,8vw,6rem);color:#ef4444;text-shadow:0 0 20px red,0 0 80px red;animation:finalPulse 1s infinite;}
+
+@keyframes finalPulse{
+
+50%{transform:scale(1.1);}
+
+}
+
+#finalButton{margin-top:30px;padding:25px 50px;font-size:25px;font-weight:900;color:white;background:#000;border:3px solid #ef4444;border-radius:20px;cursor:pointer;box-shadow:0 0 30px red;}
+
+#finalStatus{margin-top:20px;color:#fca5a5;}
+
+@media(max-width:600px){
+
+#buttonZone{height:250px;}
+
+#mainButton{min-width:200px;font-size:18px;padding:18px 25px;}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="background">
+<div class="grid"></div>
+<div class="orb one"></div>
+<div class="orb two"></div>
+<div class="orb three"></div>
+</div>
+
+<div id="chaos"></div>
+<div id="counter">Clicks: <span id="clickCount">0</span></div>
+<div id="game">
+<div id="title">DON'T CLICK THE BUTTON</div>
+<div id="subtitle">Seriously. Why would you?</div>
+<div id="buttonZone">
+<button id="mainButton">DON'T CLICK ME</button>
+</div>
+</div>
+
+<div id="toastContainer"></div>
+<div id="finalChallenge">
+
+<h2>YOU'VE RUINED EVERYTHING.</h2>
+<p>There is only one way to fix this.</p>
+<button id="finalButton">DEFINITELY DON'T CLICK THIS</button>
+<div id="finalStatus">Whatever you do... don't click it.</div>
+</div>
+
+<script>
+const mainButton=document.getElementById("mainButton");
+const game=document.getElementById("game");
+const chaos=document.getElementById("chaos");
+const countDisplay=document.getElementById("clickCount");
+const toastContainer=document.getElementById("toastContainer");
+const finalChallenge=document.getElementById("finalChallenge");
+const finalButton=document.getElementById("finalButton");
+const finalStatus=document.getElementById("finalStatus");
+
+let clicks=0;
+let chaosLevel=0;
+let gameOver=false;
+
+function toast(message){
+const el=document.createElement("div");
+el.className="toast";
+el.innerHTML=message;
+toastContainer.appendChild(el);
+setTimeout(()=>el.remove(),2500);
+}
+
+function random(min,max){
+return Math.random()*(max-min)+min;
+}
+
+function randomInt(min,max){
+return Math.floor(random(min,max));
+}
+
+function moveButton(){
+const padding=30;
+const maxX=window.innerWidth-mainButton.offsetWidth-padding;
+const maxY=window.innerHeight-mainButton.offsetHeight-padding;
+mainButton.style.position="fixed";
+mainButton.style.left=random(padding,Math.max(padding,maxX))+"px";
+mainButton.style.top=random(padding,Math.max(padding,maxY))+"px";
+mainButton.style.transform=`rotate(${random(-15,15)}deg) scale(${random(.75,1.25)})`;
+}
+
+function createFakeButton(){
+const button=document.createElement("button");
+button.className="fakeButton";
+const lies=["DON'T CLICK ME","SAFE BUTTON","THIS ONE IS SAFE","REAL BUTTON","CLICK ME INSTEAD","IGNORE THIS","FREE COOKIES","DO NOT PRESS","TOTALLY NORMAL","ERROR BUTTON","DO NOT TRUST","CLICK FOR NOTHING"];
+button.textContent=lies[randomInt(0,lies.length)];
+
+button.style.left=randomInt(5,90)+"vw";
+
+button.style.top=randomInt(10,90)+"vh";
+
+button.style.transform=`rotate(${random(-20,20)}deg)`;
+
+document.body.appendChild(button);
+
+button.addEventListener("click",()=>{
+
+clicks++;
+
+countDisplay.textContent=clicks;
+
+toast("😂 YOU CLICKED A FAKE BUTTON.");
+
+button.remove();
+chaos++;
+
+});
+}
+
+function spawnFallingButton(){
+const button=document.createElement("button");
+
+button.className="falling";
+
+button.textContent="DON'T CLICK";
+
+button.style.left=random(0,95)+"vw";
+
+button.style.animationDuration=random(3,8)+"s";
+
+document.body.appendChild(button);
+
+button.addEventListener("click",()=>{
+toast("WHY ARE YOU CLICKING THE FALLING ONES?");
+clicks++;
+countDisplay.textContent=clicks;
+button.remove();
+});
+
+setTimeout(()=>button.remove(),9000);
+}
+
+function shake(){
+game.classList.remove("glitch");
+void game.offsetWidth;
+game.classList.add("glitch");
+setTimeout(()=>game.classList.remove("glitch"),300);
+}
+
+function randomColors(){
+const colors=["#020617","#1e1b4b","#450a0a","#052e16","#172554","#3b0764","#164e63"];
+document.body.style.background=`radial-gradient(circle at ${random(0,100)}% ${random(0,100)}%,${colors[randomInt(0,colors.length)]},#000)`;
+}
+
+function cursorChaos(){
+document.body.style.cursor=["crosshair","wait","cell","grab","progress","help","not-allowed"][randomInt(0,7)];
+}
+
+function textChaos(){
+const titles=["STOP CLICKING","WHY","I'M SERIOUS","YOU HAVE A PROBLEM","THIS IS GETTING EMBARRASSING","PLEASE","THE BUTTON IS SCARED","YOU'RE MAKING IT WORSE","WHAT ARE YOU DOING","NO.","ABSOLUTELY NOT","THIS IS YOUR FAULT","ERROR 418: TOO MUCH CLICKING","THE INTERNET IS DISAPPOINTED"];
+document.getElementById("title").textContent=titles[randomInt(0,titles.length)];
+}
+
+mainButton.addEventListener("click",()=>{
+if(gameOver)return;
+clicks++;
+chaosLevel++;
+countDisplay.textContent=clicks;
+
+if(clicks===1){
+toast("I TOLD YOU NOT TO CLICK IT.");
+mainButton.textContent="WHY WOULD YOU DO THAT?";
+moveButton();
+
+}else if(clicks===2){
+toast("Okay. Now I'm moving.");
+mainButton.textContent="CATCH ME";
+moveButton();
+createFakeButton();
+createFakeButton();
+
+}else if(clicks===3){
+toast("THERE ARE NOW MULTIPLE BUTTONS.");
+mainButton.textContent="STOP CLICKING";
+moveButton();
+for(let i=0;i<4;i++)createFakeButton();
+
+}else if(clicks===4){
+toast("THIS IS YOUR LAST WARNING.");
+shake();
+randomColors();
+cursorChaos();
+
+for(let i=0;i<8;i++)createFakeButton();
+
+moveButton();
+
+}else{
+const actions=[moveButton,shake,randomColors,cursorChaos,textChaos,createFakeButton,spawnFallingButton];
+actions[randomInt(0,actions.length)]();
+
+if(clicks%2===0){
+createFakeButton();
+createFakeButton();
+}
+
+if(clicks>=6)spawnFallingButton();
+
+if(clicks>=8){
+chaos.style.opacity=Math.min(.8,clicks/20);
+shake();
+}
+
+if(clicks>=10)textChaos();
+
+if(clicks>=15)startFinalChallenge();
+}
+});
+
+mainButton.addEventListener("mouseenter",()=>{
+if(clicks>=4&&Math.random()<.6){
+moveButton();
+toast("NICE TRY.");
+}
+});
+
+setInterval(()=>{
+if(clicks>=5&&!gameOver&&Math.random()<Math.min(.15+clicks*.01,.65))spawnFallingButton();
+},1500);
+
+function startFinalChallenge(){
+if(gameOver)return;
+
+gameOver=true;
+
+finalChallenge.style.display="flex";
+document.body.style.cursor="default";
+toast("FINAL CHALLENGE ACTIVATED.");
+startFinalChaos();
+}
+
+function startFinalChaos(){
+let finalClicks=0;
+
+finalButton.addEventListener("click",()=>{
+finalClicks++;
+
+finalStatus.textContent=["WHY.","THAT WAS THE WRONG BUTTON.","YOU HAD ONE JOB.","INCREDIBLE.","YOU HAVE LEARNED NOTHING.","STOP.","SERIOUSLY.","THE END IS NEAR.","I GIVE UP.","FINE."][Math.min(finalClicks-1,9)];
+
+finalButton.style.transform=`translate(${random(-150,150)}px,${random(-150,150)}px) rotate(${random(-30,30)}deg) scale(${random(.7,1.4)})`;
+
+if(finalClicks>=10){
+
+finalStatus.textContent="YOU WIN. SOMEHOW.";
+
+finalButton.textContent="YOU ACTUALLY WON";
+
+finalButton.style.background="#16a34a";
+
+finalButton.style.borderColor="#22c55e";
+
+finalButton.style.boxShadow="0 0 50px #22c55e";
+
+document.body.style.background="#022c22";
+}
+});
+}
+
+let konami=[];
+
+const secret=["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight"];
+
+document.addEventListener("keydown",event=>{
+konami.push(event.key);
+konami=konami.slice(-secret.length);
+
+if(JSON.stringify(konami)===JSON.stringify(secret)){
+toast("🕹️ SECRET CHAOS MODE UNLOCKED.");
+
+for(let i=0;i<30;i++)setTimeout(createFakeButton,i*100);
+
+for(let i=0;i<30;i++)setTimeout(spawnFallingButton,i*100);
+
+document.body.style.filter="hue-rotate(180deg)";
+
+}
+});
+
+window.addEventListener("resize",()=>{
+if(clicks>0)moveButton();
+});
+
+</script>
+</body>
+</html>

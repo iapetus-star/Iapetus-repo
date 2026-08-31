@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typing Horror</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Special+Elite&display=swap');
+
+:root {
+  --blood: #a40000;
+  --bright-blood: #ff1111;
+  --dark-red: #280000;
+  --black: #020202;
+  --white: #dedede;
+  --muted: #686868;
+  --glow: rgba(255, 0, 0, .35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+body {
+  color: var(--white);
+  font-family: "Share Tech Mono", monospace;
+  cursor: crosshair;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.game {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background:
+    radial-gradient(circle at 50% 35%, #1b0505 0%, #080101 35%, #000 75%);
+  overflow: hidden;
+}
+
+.noise {
+  position: fixed;
+  inset: -100%;
+  z-index: 100;
+  pointer-events: none;
+  opacity: .055;
+  background-image:
+    repeating-radial-gradient(
+      circle at 0 0,
+      transparent 0,
+      rgba(255,255,255,.3) 1px,
+      transparent 2px
+    );
+  background-size: 7px 7px;
+  animation: noise .15s steps(2) infinite;
+}
+
+.scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  pointer-events: none;
+  opacity: .16;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 3px,
+      rgba(255,255,255,.035) 4px
+    );
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 98;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 30%,
+      rgba(0,0,0,.25) 55%,
+      rgba(0,0,0,.95) 100%
+    );
+  transition: background .4s;
+}
+
+.hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 20px;
+  padding: 28px 40px;
+  border-bottom: 1px solid rgba(255,0,0,.15);
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,.85),
+    transparent
+  );
+}
+
+.hud-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-shadow: 0 0 10px var(--glow);
+}
+
+.hud-block:last-child {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.label {
+  color: #555;
+  font-size: 11px;
+  letter-spacing: 4px;
+}
+
+.hud-block > span:last-child {
+  font-size: 24px;
+  color: #bbb;
+}
+
+.danger-meter {
+  align-items: center;
+}
+
+.danger-meter .label {
+  color: #6b1717;
+}
+
+.meter {
+  width: 100%;
+  max-width: 420px;
+  height: 5px;
+  margin-top: 3px;
+  overflow: hidden;
+  background: #150000;
+  box-shadow: 0 0 10px rgba(255,0,0,.15);
+}
+
+#threatBar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #390000,
+    #8b0000,
+    #ff0000
+  );
+  box-shadow:
+    0 0 8px red,
+    0 0 20px red;
+  transition: width .25s ease;
+}
+
+.arena {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.moon {
+  position: absolute;
+  top: 16%;
+  left: 50%;
+  width: 180px;
+  height: 180px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 35%, #9d9d9d, #3e3e3e 55%, #101010 80%);
+  opacity: .08;
+  filter: blur(1px);
+  box-shadow: 0 0 80px rgba(255,255,255,.08);
+}
+
+.entity {
+  position: absolute;
+  left: 50%;
+  bottom: -120px;
+  width: 260px;
+  height: 430px;
+  transform: translateX(-50%) scale(.55);
+  opacity: .08;
+  transition:
+    transform .7s cubic-bezier(.2,.8,.2,1),
+    opacity .7s ease;
+  filter: blur(1px);
+}
+
+.entity::before {
+  content: "";
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  width: 190px;
+  height: 260px;
+  transform: translateX(-50%);
+  border-radius: 48% 48% 35% 35%;
+  background:
+    radial-gradient(
+      ellipse at 50% 35%,
+      #151515 0%,
+      #080808 55%,
+      #000 75%
+    );
+  box-shadow:
+    0 0 50px rgba(0,0,0,.9),
+    0 0 100px rgba(120,0,0,.1);
+}
+
+.entity::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 250px;
+  height: 260px;
+  transform: translateX(-50%);
+  border-radius: 50% 50% 0 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #030303 25%,
+    #080808 50%,
+    #030303 75%,
+    transparent
+  );
+}
+
+.entity-eyes {
+  position: absolute;
+  z-index: 3;
+  top: 118px;
+  left: 50%;
+  width: 120px;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: space-between;
+}
+
+.entity-eyes span {
+  width: 16px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff1a1a;
+  box-shadow:
+    0 0 8px #ff0000,
+    0 0 25px #ff0000;
+  opacity: .9;
+}
+
+.warning {
+  position: absolute;
+  top: 22%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255,0,0,.65);
+  font-family: "Special Elite", serif;
+  font-size: clamp(12px, 1.5vw, 18px);
+  letter-spacing: 7px;
+  opacity: 0;
+  white-space: nowrap;
+  text-shadow:
+    0 0 8px red,
+    0 0 30px rgba(255,0,0,.5);
+}
+
+.warning.show {
+  animation: warning 1.5s ease-in-out infinite;
+}
+
+.word-layer {
+  position: absolute;
+  inset: 120px 0 190px;
+}
+
+.word {
+  position: absolute;
+  padding: 8px 15px;
+  color: #aaa;
+  font-size: clamp(18px, 2vw, 29px);
+  letter-spacing: 2px;
+  text-shadow:
+    0 0 8px rgba(255,255,255,.2);
+  user-select: none;
+  white-space: nowrap;
+  transition:
+    color .15s,
+    transform .15s,
+    opacity .15s;
+}
+
+.word::before {
+  content: "[";
+  color: #410000;
+  margin-right: 7px;
+}
+
+.word::after {
+  content: "]";
+  color: #410000;
+  margin-left: 7px;
+}
+
+.word.active {
+  color: #eee;
+  text-shadow:
+    0 0 5px white,
+    0 0 18px rgba(255,255,255,.25);
+}
+
+.word.danger {
+  color: #ff3333;
+  animation: wordDanger .25s infinite alternate;
+  text-shadow:
+    0 0 5px red,
+    0 0 25px red;
+}
+
+.word.destroyed {
+  color: #ff0000;
+  transform: scale(1.5);
+  opacity: 0;
+  filter: blur(4px);
+}
+
+.input-area {
+  position: absolute;
+  left: 50%;
+  bottom: 70px;
+  width: min(700px, 80vw);
+  transform: translateX(-50%);
+  z-index: 15;
+}
+
+.input-glow {
+  position: absolute;
+  inset: -30px;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse,
+    rgba(255,0,0,.12),
+    transparent 70%
+  );
+  opacity: .4;
+}
+
+#typingInput {
+  position: relative;
+  width: 100%;
+  height: 62px;
+  padding: 0 25px;
+  border: 1px solid #3b0808;
+  outline: none;
+  color: #eee;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(30,0,0,.8),
+      rgba(5,0,0,.95)
+    );
+  box-shadow:
+    inset 0 0 25px rgba(0,0,0,.9),
+    0 0 25px rgba(100,0,0,.12);
+  text-align: center;
+  font-size: 24px;
+  letter-spacing: 3px;
+  caret-color: #ff0000;
+}
+
+#typingInput:focus {
+  border-color: #8b0000;
+  box-shadow:
+    inset 0 0 25px rgba(0,0,0,.9),
+    0 0 20px rgba(255,0,0,.18);
+}
+
+#typingInput::placeholder {
+  color: #351010;
+}
+
+.input-label {
+  margin-top: 10px;
+  color: #461414;
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 6px;
+}
+
+.center-message {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(700px, 90vw);
+  text-align: center;
+  z-index: 10;
+}
+
+.center-message.hidden {
+  display: none;
+}
+
+.center-message .small {
+  margin: 0 0 15px;
+  color: #5b0b0b;
+  font-size: 12px;
+  letter-spacing: 8px;
+  animation: flicker 3s infinite;
+}
+
+.center-message h1 {
+  position: relative;
+  margin: 0;
+  color: #cfcfcf;
+  font-family: "Special Elite", serif;
+  font-size: clamp(40px, 7vw, 90px);
+  font-weight: normal;
+  letter-spacing: 10px;
+  text-shadow:
+    4px 0 #310000,
+    -3px 0 #150000,
+    0 0 30px rgba(255,0,0,.12);
+  animation: titleFlicker 6s infinite;
+}
+
+.center-message > p:not(.small) {
+  margin: 20px 0 35px;
+  color: #555;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+button {
+  position: relative;
+  padding: 15px 35px;
+  border: 1px solid #651010;
+  color: #bbb;
+  background: rgba(15,0,0,.8);
+  cursor: pointer;
+  letter-spacing: 4px;
+  transition: .2s;
+  box-shadow:
+    0 0 20px rgba(255,0,0,.08),
+    inset 0 0 20px rgba(100,0,0,.08);
+}
+
+button:hover {
+  color: white;
+  border-color: #d00000;
+  background: #210000;
+  box-shadow:
+    0 0 25px rgba(255,0,0,.25),
+    inset 0 0 20px rgba(100,0,0,.15);
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+.footer {
+  position: absolute;
+  right: 40px;
+  bottom: 25px;
+  left: 40px;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  color: #353535;
+  font-size: 11px;
+  letter-spacing: 4px;
+}
+
+#status {
+  color: #541010;
+}
+
+#score {
+  color: #666;
+}
+
+.blood {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      transparent 40%,
+      rgba(100,0,0,.2) 70%,
+      rgba(255,0,0,.7) 100%
+    );
+}
+
+.blood.hit {
+  animation: bloodHit .4s ease-out;
+}
+
+.game-over {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(
+      circle,
+      rgba(50,0,0,.55),
+      rgba(0,0,0,.97) 65%
+    );
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .5s;
+}
+
+.game-over.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.game-over h2 {
+  margin: 10px 0 45px;
+  color: #ddd;
+  font-family: "Special Elite", serif;
+  font-size: clamp(45px, 8vw, 100px);
+  font-weight: normal;
+  letter-spacing: 8px;
+  text-shadow:
+    0 0 10px red,
+    0 0 40px rgba(255,0,0,.4);
+  animation: deathText 1.5s infinite;
+}
+
+.death-glitch {
+  color: #690000;
+  font-size: 13px;
+  letter-spacing: 7px;
+  animation: glitch 1s infinite;
+}
+
+.final-stats {
+  display: flex;
+  gap: 70px;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.final-stats div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.final-stats span {
+  color: #444;
+  font-size: 10px;
+  letter-spacing: 4px;
+}
+
+.final-stats strong {
+  color: #999;
+  font-size: 25px;
+  font-weight: normal;
+}
+
+.shake {
+  animation: shake .12s infinite;
+}
+
+.panic .vignette {
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 15%,
+      rgba(80,0,0,.3) 50%,
+      rgba(0,0,0,1) 100%
+    );
+}
+
+.panic .entity {
+  filter: blur(0);
+}
+
+@keyframes noise {
+  0% { transform: translate(0,0); }
+  25% { transform: translate(2%,-3%); }
+  50% { transform: translate(-3%,2%); }
+  75% { transform: translate(3%,3%); }
+  100% { transform: translate(-2%,-2%); }
+}
+
+@keyframes flicker {
+  0%, 18%, 20%, 63%, 64%, 100% { opacity: 1; }
+  19%, 62% { opacity: .2; }
+}
+
+@keyframes titleFlicker {
+  0%, 94%, 96%, 100% { opacity: 1; }
+  95% { opacity: .3; }
+}
+
+@keyframes warning {
+  0%, 100% {
+    opacity: .1;
+    transform: translateX(-50%) scale(.98);
+  }
+  50% {
+    opacity: .8;
+    transform: translateX(-50%) scale(1.02);
+  }
+}
+
+@keyframes wordDanger {
+  from {
+    transform: translateX(-2px);
+  }
+  to {
+    transform: translateX(2px);
+  }
+}
+
+@keyframes bloodHit {
+  0% {
+    opacity: .8;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes shake {
+  0% { transform: translate(0); }
+  25% { transform: translate(-3px, 2px); }
+  50% { transform: translate(3px, -2px); }
+  75% { transform: translate(-2px, -1px); }
+  100% { transform: translate(2px, 1px); }
+}
+
+@keyframes deathText {
+  0%, 100% { transform: translateX(0); }
+  10% { transform: translateX(-4px); }
+  20% { transform: translateX(4px); }
+  30% { transform: translateX(0); }
+}
+
+@keyframes glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 1px); }
+  40% { transform: translate(3px, -1px); }
+  60% { transform: translate(-1px, 2px); }
+  80% { transform: translate(2px, 0); }
+}
+
+@media (max-width: 700px) {
+  .hud {
+    padding: 20px;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    gap: 10px;
+  }
+
+  .hud-block > span:last-child {
+    font-size: 18px;
+  }
+
+  .label {
+    font-size: 8px;
+    letter-spacing: 2px;
+  }
+
+  .entity {
+    bottom: -80px;
+  }
+
+  .warning {
+    letter-spacing: 3px;
+  }
+
+  .input-area {
+    width: 90vw;
+    bottom: 55px;
+  }
+
+  #typingInput {
+    height: 54px;
+    font-size: 18px;
+  }
+
+  .footer {
+    right: 20px;
+    bottom: 15px;
+    left: 20px;
+  }
+
+  .final-stats {
+    gap: 25px;
+  }
+}
+</style>
+
+</head>
+<body>
+  <div class="noise"></div>
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
+
+  <main class="game">
+    <header class="hud">
+      <div class="hud-block">
+        <span class="label">SURVIVAL</span>
+        <span id="survival">00:00</span>
+      </div>
+
+      <div class="hud-block danger-meter">
+        <span class="label">THREAT</span>
+        <div class="meter">
+          <div id="threatBar"></div>
+        </div>
+      </div>
+
+      <div class="hud-block">
+        <span class="label">MISSES</span>
+        <span id="misses">0 / 5</span>
+      </div>
+    </header>
+
+    <section class="arena" id="arena">
+      <div class="moon"></div>
+
+      <div class="entity" id="entity">
+        <div class="entity-eyes">
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
+      <div class="warning" id="warning">
+        <span>DON'T LOOK BEHIND YOU</span>
+      </div>
+
+      <div class="word-layer" id="wordLayer"></div>
+
+      <div class="center-message" id="centerMessage">
+        <p class="small">THEY HEARD YOU</p>
+        <h1>TYPING HORROR</h1>
+        <p>Type the words before they reach you.</p>
+        <button id="startButton">ENTER THE DARK</button>
+      </div>
+
+      <div class="input-area">
+        <div class="input-glow"></div>
+        <input
+          id="typingInput"
+          type="text"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          disabled
+        >
+        <div class="input-label">TYPE TO SURVIVE</div>
+      </div>
+
+      <div class="blood"></div>
+    </section>
+
+    <footer class="footer">
+      <span id="level">LEVEL 1</span>
+      <span id="status">WAITING</span>
+      <span id="score">0</span>
+    </footer>
+  </main>
+
+  <div class="game-over" id="gameOver">
+    <div class="death-glitch">YOU WERE TOO SLOW</div>
+    <h2>IT FOUND YOU</h2>
+
+    <div class="final-stats">
+      <div>
+        <span>SURVIVED</span>
+        <strong id="finalSurvival">00:00</strong>
+      </div>
+
+      <div>
+        <span>SCORE</span>
+        <strong id="finalScore">0</strong>
+      </div>
+
+      <div>
+        <span>LEVEL</span>
+        <strong id="finalLevel">1</strong>
+      </div>
+    </div>
+
+    <button id="restartButton">TRY AGAIN</button>
+  </div>
+
+
+<script>
+
+const wordSets = {
+  1: [
+    "run",
+    "hide",
+    "dark",
+    "fear",
+    "dead",
+    "blood",
+    "alone",
+    "help",
+    "door",
+    "cold"
+  ],
+
+  2: [
+    "shadow",
+    "whisper",
+    "window",
+    "basement",
+    "silence",
+    "monster",
+    "horror",
+    "behind",
+    "watching",
+    "scream"
+  ],
+
+  3: [
+    "something",
+    "nightmare",
+    "creeping",
+    "hallway",
+    "footsteps",
+    "breathing",
+    "darkness",
+    "possession",
+    "terrifying",
+    "apparition"
+  ],
+
+  4: [
+    "paranormal",
+    "disturbance",
+    "supernatural",
+    "unconscious",
+    "abandoned",
+    "manifestation",
+    "possession",
+    "hallucination",
+    "disappearance",
+    "malevolent"
+  ],
+
+  5: [
+    "unpredictable",
+    "psychological",
+    "transformation",
+    "extraterrestrial",
+    "consciousness",
+    "incorporeal",
+    "unexplainable",
+    "otherworldly",
+    "unrecognizable",
+    "claustrophobic"
+  ]
+};
+
+const bossWords = [
+  "RUNFORYOURLIFE",
+  "DONTLOOKBEHINDYOU",
+  "ITSSTANDINGBEHINDYOU",
+  "YOURENOTALONE",
+  "ITKNOWSYOURNAME",
+  "THERESNOWHERETOHIDE",
+  "ITNEVERSTOPS",
+  "DONTSTOPTYPING"
+];
+
+
+const game = document.querySelector(".game");
+const arena = document.getElementById("arena");
+const wordLayer = document.getElementById("wordLayer");
+const entity = document.getElementById("entity");
+const warning = document.getElementById("warning");
+const typingInput = document.getElementById("typingInput");
+const centerMessage = document.getElementById("centerMessage");
+const gameOver = document.getElementById("gameOver");
+const blood = document.querySelector(".blood");
+const survivalDisplay = document.getElementById("survival");
+const threatBar = document.getElementById("threatBar");
+const missesDisplay = document.getElementById("misses");
+const levelDisplay = document.getElementById("level");
+const statusDisplay = document.getElementById("status");
+const scoreDisplay = document.getElementById("score");
+const finalSurvival = document.getElementById("finalSurvival");
+const finalScore = document.getElementById("finalScore");
+const finalLevel = document.getElementById("finalLevel");
+const startButton = document.getElementById("startButton");
+const restartButton = document.getElementById("restartButton");
+
+
+const MAX_MISSES = 5;
+const MAX_THREAT = 100;
+
+let running = false;
+let score = 0;
+let level = 1;
+let misses = 0;
+let threat = 0;
+let survivalSeconds = 0;
+let spawnTimer = null;
+let gameTimer = null;
+let difficultyTimer = null;
+let wordId = 0;
+let activeWords = new Map();
+let lastSpawnTime = 0;
+
+
+const config = {
+  baseSpawnRate: 1800,
+  minimumSpawnRate: 550,
+
+  baseWordSpeed: 0.018,
+  maxWordSpeed: 0.055,
+
+  threatPerSecond: 1.2,
+
+  levelEvery: 20,
+
+  pointsPerWord: 10,
+  bossPoints: 100
+};
+
+
+function randomItem(array) {
+  return array[
+    Math.floor(Math.random() * array.length)
+  ];
+}
+
+function random(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function formatTime(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+
+  return `${String(minutes).padStart(2, "0")}:${String(
+    secs
+  ).padStart(2, "0")}`;
+}
+
+
+function calculateLevel() {
+  return Math.max(
+    1,
+    Math.floor(survivalSeconds / config.levelEvery) + 1
+  );
+}
+
+function updateLevel() {
+  const newLevel = calculateLevel();
+
+  if (newLevel !== level) {
+    level = newLevel;
+
+    levelDisplay.textContent = `LEVEL ${level}`;
+
+    showWarning(level >= 5
+        ? "IT'S GETTING CLOSER"
+        : "SOMETHING IS WRONG"
+    );
+
+    threat = clamp(threat + 5, 0, MAX_THREAT);
+    updateDifficulty();
+  }
+}
+
+function getSpawnRate() {
+  const reduction = (level - 1) * 140;
+  return Math.max(config.minimumSpawnRate, config.baseSpawnRate - reduction);
+}
+
+function getWordSpeed() {
+  const increase = (level - 1) * 0.004;
+  return Math.min(config.maxWordSpeed, config.baseWordSpeed + increase);
+}
+
+function updateDifficulty() {
+  clearInterval(spawnTimer);
+
+  if (!running) {
+    return;
+  }
+
+  spawnTimer = setInterval(spawnWord, getSpawnRate());
+}
+
+function getWord() {
+  if (
+    level >= 4 &&
+    Math.random() < 0.08
+  ) {
+    return {
+      text: randomItem(bossWords),
+      boss: true
+    };
+  }
+
+  const availableLevels = Math.min(
+    5,
+    Math.ceil(level / 2)
+  );
+
+  const pool = [];
+
+  for (let i = 1; i <= availableLevels; i++) {
+    pool.push(...wordSets[i]);
+  }
+
+  return {
+    text: randomItem(pool),
+    boss: false
+  };
+}
+
+function spawnWord() {
+  if (!running) {
+    return;
+  }
+
+  const data = getWord();
+  const word = document.createElement("div");
+  word.className = "word";
+
+  if (data.boss) {
+    word.classList.add("danger");
+  }
+
+  word.textContent = data.text;
+
+  const layerRect = wordLayer.getBoundingClientRect();
+
+  const maxX = Math.max(30, layerRect.width - 220);
+  const maxY = Math.max(30, layerRect.height - 80);
+  const x = random(20, maxX);
+  const y = random(20, maxY);
+
+  word.style.left = `${x}px`;
+  word.style.top = `${y}px`;
+
+  const scale = data.boss ? 1.15 : random(0.9, 1.1);
+  word.style.transform = `scale(${scale})`;
+
+  wordLayer.appendChild(word);
+
+  const id = ++wordId;
+
+  const wordData = {
+    id,
+    element: word,
+    text: data.text.toLowerCase(),
+    boss: data.boss,
+    progress: 0,
+    speed: getWordSpeed() *
+      (data.boss ? 1.25 : random(0.8, 1.15)),
+    createdAt: performance.now()
+  };
+
+  activeWords.set(id, wordData);
+
+  updateActiveWord();
+}
+
+function getTypedTarget() {
+  const value =
+    typingInput.value.trim().toLowerCase();
+
+  if (!value) {
+    return null;
+  }
+
+  for (const word of activeWords.values()) {
+    if (word.text.startsWith(value)) {
+      return word;
+    }
+  }
+
+  return null;
+}
+
+function updateActiveWord() {
+  const typed =
+    typingInput.value.trim().toLowerCase();
+
+  activeWords.forEach(word => {
+    word.element.classList.remove("active");
+  });
+
+  if (!typed) {
+    return;
+  }
+
+  const target = getTypedTarget();
+
+  if (target) {
+    target.element.classList.add("active");
+  }
+}
+
+function handleInput() {
+  if (!running) {
+    return;
+  }
+
+  let value =
+    typingInput.value
+      .toLowerCase()
+      .replace(/\s/g, "");
+
+  if (typingInput.value !== value) {
+    typingInput.value = value;
+  }
+
+  if (!value) {
+    updateActiveWord();
+    statusDisplay.textContent = "LISTENING";
+    return;
+  }
+
+  const target = getTypedTarget();
+
+  if (target) {
+    target.element.classList.add("active");
+
+    statusDisplay.textContent =
+      target.boss
+        ? "DESTROY IT"
+        : "KEEP TYPING";
+
+    if (value === target.text) {
+      destroyWord(target);
+    }
+
+    return;
+  }
+
+  statusDisplay.textContent = "WRONG";
+
+  registerMiss();
+
+  typingInput.value = "";
+
+  updateActiveWord();
+}
+
+function destroyWord(word) {
+  if (!activeWords.has(word.id)) {
+    return;
+  }
+
+  const points =
+    word.boss
+      ? config.bossPoints + level * 20
+      : config.pointsPerWord + level * 5;
+
+  score += points;
+
+  word.element.classList.add("destroyed");
+
+  activeWords.delete(word.id);
+
+  threat = clamp(
+    threat - (word.boss ? 12 : 5),
+    0,
+    MAX_THREAT
+  );
+
+  statusDisplay.textContent =
+    word.boss
+      ? "DESTROYED"
+      : "GOOD";
+
+  typingInput.value = "";
+
+  updateActiveWord();
+  updateUI();
+
+  setTimeout(() => {
+    word.element.remove();
+  }, 200);
+}
+
+function registerMiss() {
+  misses++;
+
+  threat = clamp(
+    threat + 12,
+    0,
+    MAX_THREAT
+  );
+
+  flashBlood();
+
+  game.classList.remove("shake");
+
+  void game.offsetWidth;
+
+  game.classList.add("shake");
+
+  setTimeout(() => {
+    game.classList.remove("shake");
+  }, 150);
+
+  updateUI();
+
+  if (misses >= MAX_MISSES) {
+    endGame();
+  }
+}
+
+function wordReachedPlayer(word) {
+  if (!activeWords.has(word.id)) {
+    return;
+  }
+
+  activeWords.delete(word.id);
+
+  word.element.remove();
+
+  registerMiss();
+
+  threat = clamp(
+    threat + 8,
+    0,
+    MAX_THREAT
+  );
+
+  showWarning(
+    word.boss
+      ? "IT FOUND YOU"
+      : "TOO CLOSE"
+  );
+
+  updateUI();
+}
+
+function updateThreat() {
+  if (!running) {
+    return;
+  }
+
+  threat +=
+    config.threatPerSecond *
+    (1 + (level - 1) * 0.12) /
+    60;
+
+  const activeCount = activeWords.size;
+
+  threat += activeCount * 0.004;
+
+  threat = clamp(
+    threat,
+    0,
+    MAX_THREAT
+  );
+}
+
+function updateEntity() {
+  const normalized = threat / MAX_THREAT;
+  const scale = 0.55 + normalized * 0.8;
+  const opacity = 0.08 + normalized * 0.75;
+  const bottom = -120 + normalized * 130;
+
+  entity.style.transform = `translateX(-50%) scale(${scale})`;
+  entity.style.opacity = opacity;
+  entity.style.bottom = `${bottom}px`;
+
+  if (threat >= 70) {
+    game.classList.add("panic");
+  } else {
+    game.classList.remove("panic");
+  }
+
+  if (threat >= 80) {
+    warning.classList.add("show");
+  } else {
+    warning.classList.remove("show");
+  }
+}
+
+let warningTimeout = null;
+
+function showWarning(message) {
+  clearTimeout(warningTimeout);
+
+  warning.innerHTML =
+    `<span>${message}</span>`;
+
+  warning.classList.add("show");
+
+  warningTimeout = setTimeout(() => {
+    if (threat < 80) {
+      warning.classList.remove("show");
+    }
+  }, 1800);
+}
+
+function flashBlood() {
+  blood.classList.remove("hit");
+
+  void blood.offsetWidth;
+
+  blood.classList.add("hit");
+}
+
+
+function updateUI() {
+  survivalDisplay.textContent =
+    formatTime(survivalSeconds);
+
+  missesDisplay.textContent =
+    `${misses} / ${MAX_MISSES}`;
+
+  levelDisplay.textContent =
+    `LEVEL ${level}`;
+
+  scoreDisplay.textContent =
+    score;
+
+  threatBar.style.width =
+    `${threat}%`;
+
+  if (threat >= 80) {
+    threatBar.style.background =
+      "linear-gradient(90deg, #700000, #ff0000, #ffffff)";
+  } else if (threat >= 50) {
+    threatBar.style.background =
+      "linear-gradient(90deg, #390000, #ff0000)";
+  } else {
+    threatBar.style.background =
+      "linear-gradient(90deg, #390000, #8b0000, #ff0000)";
+  }
+}
+
+
+let lastFrame = 0;
+
+function gameLoop(timestamp) {
+  if (!running) {
+    return;
+  }
+
+  if (!lastFrame) {
+    lastFrame = timestamp;
+  }
+
+  const delta =
+    Math.min(
+      timestamp - lastFrame,
+      100
+    );
+
+  lastFrame = timestamp;
+
+  activeWords.forEach(word => {
+    word.progress +=
+      word.speed * delta;
+
+    const progress = clamp(word.progress, 0, 1);
+    const currentLeft = parseFloat(word.element.style.left) || 0;
+    const currentTop = parseFloat(word.element.style.top) || 0;
+    const arenaRect = wordLayer.getBoundingClientRect();
+    const targetX = arenaRect.width / 2;
+    const targetY = arenaRect.height - 20;
+    const newX = currentLeft +
+      (targetX - currentLeft) *
+      progress *
+      0.0025;
+
+    const newY = currentTop +
+      (targetY - currentTop) *
+      progress *
+      0.0025;
+
+    word.element.style.left = `${newX}px`;
+    word.element.style.top = `${newY}px`;
+
+    if (progress >= 0.65) {
+      word.element.classList.add("danger");
+    }
+
+    const scale = 1 + progress * 0.45;
+
+    word.element.style.transform = `scale(${scale})`;
+
+    if (progress >= 1) {
+      wordReachedPlayer(word);
+    }
+  });
+
+  updateThreat();
+  updateEntity();
+  updateUI();
+
+  requestAnimationFrame(gameLoop);
+}
+
+function startTimers() {
+  clearInterval(gameTimer);
+  clearInterval(spawnTimer);
+  clearInterval(difficultyTimer);
+
+  gameTimer = setInterval(() => {
+    if (!running) {
+      return;
+    }
+
+    survivalSeconds++;
+
+    updateLevel();
+    updateUI();
+  }, 1000);
+
+  spawnTimer = setInterval(
+    spawnWord,
+    getSpawnRate()
+  );
+}
+
+function startGame() {
+  clearInterval(gameTimer);
+  clearInterval(spawnTimer);
+  clearInterval(difficultyTimer);
+
+  activeWords.forEach(word => {
+    word.element.remove();
+  });
+
+  activeWords.clear();
+
+  running = true;
+
+  score = 0;
+  level = 1;
+  misses = 0;
+  threat = 0;
+  survivalSeconds = 0;
+
+  wordId = 0;
+  lastFrame = 0;
+
+  game.classList.remove("panic");
+  warning.classList.remove("show");
+
+  blood.classList.remove("hit");
+
+  entity.style.transform =
+    "translateX(-50%) scale(.55)";
+
+  entity.style.opacity = ".08";
+  entity.style.bottom = "-120px";
+
+  centerMessage.classList.add("hidden");
+  gameOver.classList.remove("show");
+
+  typingInput.disabled = false;
+  typingInput.value = "";
+
+  statusDisplay.textContent =
+    "SURVIVE";
+
+  spawnWord();
+
+  updateUI();
+  updateDifficulty();
+
+  typingInput.focus();
+
+  startTimers();
+
+  requestAnimationFrame(gameLoop);
+}
+
+function endGame() {
+  if (!running) {
+    return;
+  }
+
+  running = false;
+
+  clearInterval(gameTimer);
+  clearInterval(spawnTimer);
+  clearInterval(difficultyTimer);
+
+  lastFrame = 0;
+
+  typingInput.disabled = true;
+
+  game.classList.remove("panic");
+
+  activeWords.forEach(word => {
+    word.element.remove();
+  });
+
+  activeWords.clear();
+
+  finalSurvival.textContent =
+    formatTime(survivalSeconds);
+
+  finalScore.textContent =
+    score;
+
+  finalLevel.textContent =
+    level;
+
+  statusDisplay.textContent =
+    "DEAD";
+
+  entity.style.opacity = "1";
+  entity.style.transform =
+    "translateX(-50%) scale(1.25)";
+
+  setTimeout(() => {
+    gameOver.classList.add("show");
+  }, 350);
+}
+
+startButton.addEventListener("click", startGame);
+restartButton.addEventListener("click", startGame);
+
+typingInput.addEventListener("input", handleInput);
+
+typingInput.addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
+  }
+);
+
+arena.addEventListener("click", event => {
+    if (
+      running &&
+      event.target !== typingInput
+    ) {
+      typingInput.focus();
+    }
+  }
+);
+
+typingInput.disabled = true;
+survivalDisplay.textContent = "00:00";
+missesDisplay.textContent = "0 / 5";
+levelDisplay.textContent = "LEVEL 1";
+statusDisplay.textContent = "WAITING";
+scoreDisplay.textContent = "0";
+
+threatBar.style.width = "0%";
+</script>
+
+</body>
+</html>
