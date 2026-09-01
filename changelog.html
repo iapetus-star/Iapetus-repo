@@ -174,7 +174,210 @@ summary::-webkit-details-marker {
   <h1>Iapetus Project Changelog 🧠✨</h1>
 
 
+ 
+<div class="entry">
+  <h2>August 31, 2026</h2>
+  <div class="date">The Month Long Update</div>
 
+<p>Another month goes by. I know I said I would update sooner. And I kinda did??? I've been updating a lot and working on projects for the last month, more on that in a minute. I'm not kidding, for the last week, every time I sat in front of my computer I've been wanting to work on and push this changelog. But every time, I've been getting distracted by a bug fix, adding a new feature to a project, completing the last bits of work for my research questions, or some other thing that would not let ME work on this.</p>
+<p>And honestly, it was kind of my fault. I'm in a place where I have a bunch of stuff that are almost done, and just need a few hours or days to fully complete. Which sounds great until you realize that having a bunch of things that are "almost done" means you somehow have a bunch of things that still aren't done.</p>
+<p>But anyways, today I was like, no matter what, the first thing I'm doing after all of my homework is complete this changelog. No bug fixes, no new features, no getting distracted by some random thing that suddenly becomes very important. Just this.</p>
+<p>So, here we are...</p>
+
+<h3>Homepage</h3>
+<p>The homepage got quite a bit of work this month. Most of it was either making things easier to maintain or making sure things don't completely fall apart when something goes wrong.</p>
+<p><strong>Random Facts</strong></p>
+<ul>
+    <li>Reworked the "Random Facts I Think Are Cool" section to use a dynamic fact system instead of a fixed list.</li>
+    <li>Added a dedicated <code>funFacts.js</code> file to keep the growing collection of facts separate from the main site JavaScript.</li>
+    <li>The homepage now randomly selects 4 facts whenever the page loads.</li>
+    <li>Removed the old hardcoded facts from the homepage HTML.</li>
+    <li>Made it much easier to add new facts without having to dig through the homepage code.</li>
+    <li>Future plan: grow the collection beyond 100 facts.</li>
+    <li>Future plan: possibly add categories like space, science, history, technology, and whatever else I decide is cool.</li>
+</ul>
+<p>Basically, the facts are now free from their HTML prison.</p>
+
+<p><strong>Mobile Improvements</strong></p>
+<ul>
+    <li>Improved mobile spacing and typography.</li>
+    <li>Updated the sidebar to use a more responsive width and <code>100dvh</code>.</li>
+    <li>Added extra padding to sidebar links for better mobile touch targets.</li>
+    <li>Adjusted the notebook and announcement banner for smaller screens.</li>
+    <li>Improved the mobile back-to-top button sizing and positioning.</li>
+    <li>Added additional styling for screens 480px and smaller.</li>
+    <li>Kept the typing animation intact because obviously.</li>
+</ul>
+
+<p><strong>JavaScript Cleanup</strong></p>
+<ul>
+    <li>Reorganized the JavaScript into dedicated initialization functions.</li>
+    <li>Added <code>$()</code> and <code>$$()</code> helper functions for DOM selection.</li>
+    <li>Added a centralized <code>CONFIG</code> object for breakpoints, animation speeds, starfield settings, and banner timing.</li>
+    <li>Added a single <code>DOMContentLoaded</code> initializer.</li>
+    <li>Added safety checks throughout the JavaScript so missing elements don't immediately cause problems.</li>
+    <li>Moved note toggles into <code>initNoteToggles()</code>.</li>
+    <li>Moved back-to-top functionality into <code>initBackToTop()</code>.</li>
+    <li>Moved typing animation into <code>initTypingEffect()</code>.</li>
+    <li>Moved the starfield into <code>initStarfield()</code>.</li>
+    <li>Moved Read More functionality into <code>initReadMore()</code>.</li>
+    <li>Moved anchor accessibility into <code>initAnchorAccessibility()</code>.</li>
+    <li>Moved sidebar functionality into <code>initSidebar()</code>.</li>
+    <li>Moved the announcement banner into <code>initAnnouncementBanner()</code>.</li>
+    <li>Kept the existing developer console message, but moved it into the centralized initialization process.</li>
+</ul>
+
+<p><strong>Starfield</strong></p>
+<ul>
+    <li>Centralized star count, radius, and speed settings in <code>CONFIG</code>.</li>
+    <li>Added an element-existence check for the canvas.</li>
+    <li>Added <code>prefers-reduced-motion</code> detection.</li>
+    <li>The starfield animation now stops when reduced motion is requested.</li>
+</ul>
+<p>Because even the stars respect accessibility settings.</p>
+
+<p><strong>NASA APOD</strong></p>
+<ul>
+    <li>Converted APOD loading to async/await.</li>
+    <li>Added <code>response.ok</code> validation.</li>
+    <li>Improved error handling.</li>
+</ul>
+
+<p><strong>📖 Read More</strong></p>
+<ul>
+    <li>Moved the Read More functionality into <code>initReadMore()</code>.</li>
+    <li>Removed the two old commented-out Read More implementations.</li>
+    <li>Added element checks.</li>
+    <li>Preserved the existing expand/collapse behavior.</li>
+    <li>Preserved the ARIA updates.</li>
+</ul>
+
+<p><strong>🔗 Anchor Accessibility</strong></p>
+<ul>
+    <li>Moved anchor handling into <code>initAnchorAccessibility()</code>.</li>
+    <li>Preserved automatic focus on linked sections.</li>
+    <li>Added <code>focus({ preventScroll: true })</code> so focusing doesn't interfere with smooth scrolling.</li>
+</ul>
+
+<p><strong>Sidebar</strong></p>
+<ul>
+    <li>Moved sidebar functionality into <code>initSidebar()</code>.</li>
+    <li>Centralized the mobile breakpoint in <code>CONFIG</code>.</li>
+    <li>Added safety checks for missing sidebar and toggle elements.</li>
+    <li>Preserved mobile open/close behavior.</li>
+    <li>Preserved ARIA state management.</li>
+    <li>Preserved resize handling.</li>
+</ul>
+
+<p><strong>Announcement Banner</strong></p>
+<ul>
+    <li>Moved changelog/banner functionality into <code>initAnnouncementBanner()</code>.</li>
+    <li>Converted fetching to async/await.</li>
+    <li>Added <code>response.ok</code> validation.</li>
+    <li>Added safer optional chaining for the date heading and dismiss button.</li>
+    <li>Added localStorage availability checks when reading and saving the dismissed date.</li>
+    <li>Banner fade duration is now controlled by <code>CONFIG.bannerFadeDuration</code>.</li>
+</ul>
+
+<p><strong>Overall</strong></p>
+<p>This JavaScript update is primarily a refactor and hardening pass, rather than a major functionality change. The goal was better organization, maintainability, error handling, null checks, centralized configuration, and reduced-motion support. Existing site behavior was preserved wherever possible.</p>
+
+<h3>QR Code Generator</h3>
+<p>The QR Code Generator got a pretty substantial cleanup this month.</p>
+
+<ul>
+    <li>Fixed a QR generation bug caused by an undefined <code>qrData</code>.</li>
+    <li>Improved QR data generation for all supported QR types.</li>
+    <li>Added proper Wi-Fi character escaping.</li>
+    <li>Improved email QR formatting.</li>
+    <li>Improved SMS QR formatting.</li>
+    <li>Improved vCard formatting and special-character handling.</li>
+    <li>Improved empty-field handling so blank or invalid QR codes don't break the app.</li>
+    <li>Improved logo upload and validation.</li>
+    <li>Improved PNG download error handling.</li>
+    <li>Improved SVG download error handling.</li>
+    <li>Improved image-copy functionality.</li>
+    <li>Added better browser compatibility and error feedback for copying images.</li>
+    <li>Fixed the Clear button so it properly resets the form and QR settings.</li>
+    <li>Removed duplicate dark-mode logic.</li>
+    <li>Improved input/change event handling for more reliable live updates.</li>
+    <li>Added clearer status messages like Updated, Copied, Logo added, and Cleared.</li>
+    <li>Kept the existing UI, design, and responsive layout unchanged.</li>
+</ul>
+<p>The Clear button now clears things.</p>
+<p>I know.</p>
+<p>Groundbreaking.</p>
+
+<h3>API / Internet Mission Control</h3>
+<p>The API dashboard received a lot of work too. The main goal was making it so one broken API doesn't make the entire dashboard look like it has been hit by a meteor.</p>
+
+<ul>
+    <li>Added request timeouts for API requests.</li>
+    <li>Added proper HTTP/API error detection.</li>
+    <li>Added graceful fallback messages.</li>
+    <li>Prevented one failed API from affecting the rest of the dashboard.</li>
+    <li>Improved ISS marker updating and map behavior.</li>
+    <li>Fixed earthquake marker cleanup and refresh behavior.</li>
+    <li>Improved Moon Phase calculations to include all major lunar phases.</li>
+    <li>Improved crypto chart creation and cleanup.</li>
+    <li>Added safer handling for missing API response data.</li>
+    <li>Added image error handling so broken API images don't leave ugly broken-image elements.</li>
+    <li>Added HTML escaping for API-provided text.</li>
+    <li>Removed duplicate refresh calls that were unnecessarily hitting APIs multiple times.</li>
+    <li>Improved the Refresh Everything button with loading feedback.</li>
+    <li>Improved automatic refresh intervals.</li>
+    <li>Improved Leaflet map sizing on initial load.</li>
+    <li>Kept the existing visual design and layout unchanged.</li>
+    <li>APIs requiring external keys or subject to rate limits remain optional and now fail gracefully.</li>
+</ul>
+<p>So the dashboard is now more of a "best effort" fun API dashboard.</p>
+<p>If the API works, awesome.</p>
+<p>If it doesn't, that one card just says it's unavailable and everyone moves on with their lives.</p>
+
+<h3>Experimental Page</h3>
+<p>The Experimental page got 7 more projects this month.</p>
+<p>Each one now has its own link and a description of what it does.</p>
+
+<ul>
+    <li>🔳 QR Code Generator - Generate different types of QR codes and customize them.</li>
+    <li>🌐 API / Internet Mission Control - A dashboard pulling information from a ridiculous number of internet APIs.</li>
+    <li>🎰 THE WORLD'S WORST CASINO - Exactly what it sounds like. Probably.</li>
+    <li>🚫 Don't Click the Button - There is a button. It says don't click it. You know what to do.</li>
+    <li>⚡ Reaction Time Tester - Test how quickly you can react.</li>
+    <li>Scary Typing Game - Because normal typing apparently wasn't stressful enough.</li>
+    <li>Typing Speed Battle - Put your typing speed to the test.</li>
+</ul>
+<p>The Experimental page is slowly becoming a collection of things that started with "this would be funny" and somehow turned into actual projects.</p>
+<p>I'm not complaining.</p>
+
+<h3>Homepage Questions</h3>
+<p>The homepage questions got some attention too.</p>
+
+<ul>
+    <li>Answered the last 5 unanswered questions on the homepage.</li>
+    <li>Continued improving the answers to previously answered questions.</li>
+    <li>Improved grammar and wording throughout the existing answers.</li>
+    <li>Added 3 new questions to the page.</li>
+</ul>
+<p>Yes, I finally finished the questions.</p>
+<p>And then immediately added three more.</p>
+<p>I have learned nothing.</p>
+
+<h3>🔮 What's Next?</h3>
+<p>There's still quite a bit I want to get done before the madness of senior year hits. The fun facts collection will keep growing, the experimental page will probably continue accumulating increasingly questionable projects, and I have a bunch of other things sitting in that wonderful "almost finished" category.</p>
+<p>I'm hoping to actually finish some of those instead of constantly finding new things to work on.</p>
+<p>Hopefully.</p>
+<p>We'll see.</p>
+
+<h3>Final Words</h3>
+<p>Well, I hope that delivered. I still have some more stuff that I will be trying to complete before the madness of senior hits. Soon I will have to do so many forms for scholarships and colleges that I'll start to hate my computer.</p>
+<p>Anyways, by then, I'll try to get some more goodies out to the world. And don't worry, this time, I won't disappear without saying something.</p>
+<p>At least I'll try not to.</p>
+<p>For now, enjoy the new projects, play around with the new stuff, click the button you're definitely not supposed to click, and maybe learn a random fact while you're here.</p>
+<p>And with that, another update is finally done.</p>
+<p>Now I can go back to pretending all those "almost finished" projects aren't staring at me.</p>
+<p>With much chaos, see you next time.</p>
+</div>
   
 <div class="entry">
   <h2>July 23, 2026</h2>
