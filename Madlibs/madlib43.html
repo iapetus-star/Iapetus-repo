@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A Pirate's Guide to Modern Technology</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #071d2b, #145374, #1b998b);
+      font-family: Georgia, serif;
+      color: #f8f1df;
+      margin: 0;
+      padding: 2rem 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fffaf0;
+      color: #253746;
+      border-radius: 18px;
+      padding: 2rem;
+      max-width: 820px;
+      width: 100%;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+      border: 4px solid #d4a84f;
+    }
+
+    h1 {
+      text-align: center;
+      color: #0c526e;
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #a65e18;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .instructions {
+      text-align: center;
+      line-height: 1.7;
+      color: #536471;
+      margin: 1.5rem 0;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    label {
+      font-weight: bold;
+      color: #174b60;
+      margin-top: 0.5rem;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 2px solid #d8dfe1;
+      background: #fff;
+      color: #253746;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #168aad;
+      box-shadow: 0 0 0 3px rgba(22, 138, 173, 0.15);
+    }
+
+    button {
+      margin-top: 1.25rem;
+      background: #a65e18;
+      color: white;
+      padding: 0.9rem;
+      border: none;
+      font-size: 1.1rem;
+      border-radius: 9px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    button:hover {
+      background: #804513;
+      transform: translateY(-2px);
+    }
+
+    .story {
+      background: #f0f7f4;
+      border-left: 6px solid #168aad;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 10px;
+      line-height: 1.85;
+      overflow-wrap: anywhere;
+    }
+
+    .story h2 {
+      text-align: center;
+      color: #0c526e;
+      line-height: 1.4;
+    }
+
+    .story p {
+      margin-bottom: 1rem;
+    }
+
+    .story p:last-child {
+      margin-bottom: 0;
+    }
+
+    .banner {
+      text-align: center;
+      font-size: 2rem;
+      margin: 0.5rem 0;
+    }
+
+    #tryAgainBtn {
+      display: none;
+      width: 100%;
+      background: #0c526e;
+    }
+
+    #tryAgainBtn:hover {
+      background: #083b50;
+    }
+
+    .footer {
+      text-align: center;
+      color: #77848a;
+      font-size: 0.85rem;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 500px) {
+      body {
+        padding: 1rem 0.5rem;
+      }
+
+      .container {
+        padding: 1.25rem;
+      }
+
+      .story {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🏴‍☠️ A Pirate's Guide to Modern Technology</h1>
+  <p class="subtitle">Arrr you ready to upgrade yer ship?</p>
+
+  <form id="madLibForm">
+    <p class="instructions">
+      Ahoy, landlubber! The digital seas be treacherous, and even the
+      mightiest pirate must learn to use modern gadgets. Fill in the blanks
+      below to discover how Captain Bytebeard conquers the internet,
+      battles evil software, and searches for buried treasure online.
+    </p>
+
+    <label for="captain">1. A pirate captain's name</label>
+    <input id="captain" type="text" name="captain"
+      placeholder="e.g., Captain Crumbbeard" required />
+
+    <label for="gadget">2. A piece of technology</label>
+    <input id="gadget" type="text" name="gadget"
+      placeholder="e.g., a holographic toaster" required />
+
+    <label for="bodyPart">3. A body part</label>
+    <input id="bodyPart" type="text" name="bodyPart"
+      placeholder="e.g., left elbow" required />
+
+    <label for="piratePhrase">4. A ridiculous pirate phrase</label>
+    <input id="piratePhrase" type="text" name="piratePhrase"
+      placeholder="e.g., Shiver me soggy biscuits!" required />
+
+    <label for="appName">5. A made-up app name</label>
+    <input id="appName" type="text" name="appName"
+      placeholder="e.g., ParrotPal 3000" required />
+
+    <label for="villain">6. A villainous character</label>
+    <input id="villain" type="text" name="villain"
+      placeholder="e.g., Admiral Malware" required />
+
+    <label for="password">7. A ridiculous password</label>
+    <input id="password" type="text" name="password"
+      placeholder="e.g., PicklePirate99" required />
+
+    <label for="digitalTreasure">8. Something valuable</label>
+    <input id="digitalTreasure" type="text" name="digitalTreasure"
+      placeholder="e.g., a golden gaming chair" required />
+
+    <label for="internetSpeed">9. An adjective describing speed</label>
+    <input id="internetSpeed" type="text" name="internetSpeed"
+      placeholder="e.g., painfully sluggish" required />
+
+    <label for="emoji">10. An emoji or symbol</label>
+    <input id="emoji" type="text" name="emoji"
+      placeholder="e.g., 💀" required />
+
+    <label for="snack">11. A snack fit for a pirate</label>
+    <input id="snack" type="text" name="snack"
+      placeholder="e.g., cheese-flavored seaweed" required />
+
+    <label for="destination">12. A futuristic destination</label>
+    <input id="destination" type="text" name="destination"
+      placeholder="e.g., the Moon's underground shopping mall" required />
+
+    <button type="submit">⚓ Set Sail into the Digital Seas!</button>
+  </form>
+
+  <div id="story" class="story" aria-live="polite" style="display:none"></div>
+  <button id="tryAgainBtn" type="button">🔄 Sail on Another Adventure</button>
+
+  <p class="footer">
+    No Wi-Fi? No problem. Just ask a parrot to reboot the router.
+  </p>
+</div>
+
+<script>
+  const form = document.getElementById('madLibForm');
+  const storyDiv = document.getElementById('story');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const values = Object.fromEntries(new FormData(form).entries());
+    storyDiv.innerHTML = generateStory(values);
+
+    form.style.display = 'none';
+    storyDiv.style.display = 'block';
+    tryAgainBtn.style.display = 'block';
+
+    storyDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  tryAgainBtn.addEventListener('click', () => {
+    form.reset();
+    form.style.display = 'flex';
+    storyDiv.style.display = 'none';
+    storyDiv.innerHTML = '';
+    tryAgainBtn.style.display = 'none';
+
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, character => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    })[character]);
+  }
+
+  function generateStory(values) {
+    const safe = Object.fromEntries(
+      Object.entries(values).map(([key, value]) => [
+        key,
+        escapeHTML(value)
+      ])
+    );
+
+    const {
+      captain,
+      gadget,
+      bodyPart,
+      piratePhrase,
+      appName,
+      villain,
+      password,
+      digitalTreasure,
+      internetSpeed,
+      emoji,
+      snack,
+      destination
+    } = safe;
+
+    return `
+      <div class="banner">⚓ 🏴‍☠️ 💻</div>
+
+      <h2>Captain ${captain} and the Curse of the Broken Wi-Fi</h2>
+
+      <p>
+        In the golden age of piracy, there sailed a legendary captain named
+        <strong>${captain}</strong>, feared across the seven seas for their
+        questionable navigation skills and spectacularly outdated
+        <strong>${gadget}</strong>. One fine morning, the captain woke up,
+        scratched their <strong>${bodyPart}</strong>, and declared,
+        "<strong>${piratePhrase}</strong>! Today, we conquer the internet!"
+      </p>
+
+      <p>
+        Unfortunately, the ship's Wi-Fi was moving at a
+        <strong>${internetSpeed}</strong> pace. The crew had been waiting
+        three days for a single video to load. Even the ship's parrot had
+        started yelling, "Have ye tried turning it off and on again?"
+        Nobody knew what that meant, but everyone nodded respectfully.
+      </p>
+
+      <p>
+        Desperate for a solution, ${captain} downloaded a revolutionary app
+        called <strong>${appName}</strong>. It promised to locate hidden
+        treasure, translate whale songs, and automatically insult anyone
+        who used the wrong pirate slang. The app immediately requested the
+        captain's password. With great confidence, ${captain} typed
+        <strong>${password}</strong>.
+      </p>
+
+      <p>
+        ERROR! The password was rejected because it needed at least one
+        capital letter, three numbers, a mathematical equation, and the
+        captain's childhood nickname. Furious, ${captain} slammed the
+        ${gadget} with their <strong>${bodyPart}</strong> and shouted,
+        "<strong>${piratePhrase}</strong>!"
+      </p>
+
+      <p>
+        Suddenly, a terrifying notification appeared. The notorious
+        <strong>${villain}</strong> had hacked the ship's navigation system
+        and stolen the coordinates to the legendary
+        <strong>${digitalTreasure}</strong>. Worse still, the villain had
+        changed every setting to ${emoji} mode, making all the buttons
+        look like mysterious sea creatures.
+      </p>
+
+      <p>
+        "We must fight back!" cried ${captain}. The crew assembled their
+        finest weapons: a suspiciously sticky keyboard, two outdated
+        smartphones, and a potato that supposedly boosted the signal.
+        While munching on <strong>${snack}</strong>, they launched a
+        daring cyberattack by reporting the villain's account for
+        "extremely rude behavior."
+      </p>
+
+      <p>
+        The plan worked! The villain was temporarily locked out after
+        forgetting their own password. The crew recovered the treasure
+        coordinates, which pointed straight to
+        <strong>${destination}</strong>. Unfortunately, the directions
+        required a software update that would take approximately
+        four hundred years to install.
+      </p>
+
+      <p>
+        Undeterred, ${captain} connected the ship's computer to a very
+        confused dolphin, who somehow downloaded the update in seconds.
+        The crew cheered, the parrot learned to send emails, and the
+        ship's Wi-Fi finally reached a respectable speed.
+      </p>
+
+      <h2>🏴‍☠️ The Digital Seas Were Conquered! 🏴‍☠️</h2>
+
+      <p>
+        From that day forward, Captain ${captain} became the world's
+        first cyber-pirate. They used ${appName} to track treasure,
+        ${gadget} to browse the web, and ${emoji} as their official
+        digital flag. Their new motto?
+        "<strong>${piratePhrase}</strong>!"
+      </p>
+
+      <p>
+        And remember, young buccaneers: never share your password,
+        always update your software, and never trust a parrot who
+        claims to be tech support.
+      </p>
+
+      <div class="banner">💀 🦜 🪙</div>
+      <p style="text-align:center">
+        <strong>THE END. NOW CLEAR YOUR BROWSER HISTORY, MATEY!</strong>
+      </p>
+    `;
+  }
+</script>
+
+</body>
+</html>

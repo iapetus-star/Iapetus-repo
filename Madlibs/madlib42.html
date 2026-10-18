@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The World's Most Ridiculous Talent Show</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #ffecd2, #fcb69f);
+      font-family: 'Georgia', serif;
+      color: #29213f;
+      margin: 0;
+      padding: 2rem 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fffdf9;
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: 0 12px 35px rgba(60, 35, 70, 0.18);
+      border: 3px solid #fff;
+    }
+
+    h1 {
+      text-align: center;
+      color: #7b2cbf;
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin: 0 0 0.75rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #d35400;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .instructions {
+      text-align: center;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #665c73;
+      margin-bottom: 1.5rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    label {
+      font-weight: bold;
+      color: #49365f;
+      margin-top: 0.4rem;
+    }
+
+    input[type="text"] {
+      padding: 0.8rem;
+      font-size: 1rem;
+      border-radius: 9px;
+      border: 2px solid #e2d5f3;
+      background: #fff;
+      width: 100%;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #9d4edd;
+      box-shadow: 0 0 0 3px rgba(157, 78, 221, 0.15);
+    }
+
+    button {
+      margin-top: 1rem;
+      background: #7b2cbf;
+      color: white;
+      padding: 0.9rem;
+      border: none;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    button:hover {
+      background: #5a189a;
+      transform: translateY(-2px);
+    }
+
+    .story {
+      background: #fff4e6;
+      border-left: 6px solid #ff922b;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 12px;
+      line-height: 1.85;
+      font-size: 1.05rem;
+      overflow-wrap: anywhere;
+    }
+
+    .story h2 {
+      color: #7b2cbf;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .story p {
+      margin-bottom: 1rem;
+    }
+
+    .story p:last-child {
+      margin-bottom: 0;
+    }
+
+    .spotlight {
+      text-align: center;
+      font-size: 2rem;
+      margin: 0.5rem 0;
+    }
+
+    #tryAgainBtn {
+      display: none;
+      width: 100%;
+      background: #e8590c;
+    }
+
+    #tryAgainBtn:hover {
+      background: #c2410c;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #8a7d99;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 500px) {
+      body {
+        padding: 1rem 0.5rem;
+      }
+
+      .container {
+        padding: 1.25rem;
+      }
+
+      .story {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🎤 The World's Most Ridiculous Talent Show</h1>
+  <p class="subtitle">Where absolutely no talent is required!</p>
+
+  <form id="madLibForm">
+    <p class="instructions">
+      Welcome, future superstar! Fill in the blanks with your weirdest ideas
+      and prepare to witness the most gloriously ridiculous talent competition
+      in human history. No talent? No problem!
+    </p>
+
+    <label for="performer">1. A ridiculous name for a performer</label>
+    <input id="performer" type="text" name="performer"
+      placeholder="e.g., Professor Wobblepants" required />
+
+    <label for="adjective1">2. An outrageous adjective</label>
+    <input id="adjective1" type="text" name="adjective1"
+      placeholder="e.g., gloriously stinky" required />
+
+    <label for="animal">3. An animal</label>
+    <input id="animal" type="text" name="animal"
+      placeholder="e.g., llama" required />
+
+    <label for="talent">4. A completely useless talent</label>
+    <input id="talent" type="text" name="talent"
+      placeholder="e.g., juggling invisible potatoes" required />
+
+    <label for="verb">5. A verb ending in -ing</label>
+    <input id="verb" type="text" name="verb"
+      placeholder="e.g., tap-dancing" required />
+
+    <label for="prop">6. A random object</label>
+    <input id="prop" type="text" name="prop"
+      placeholder="e.g., a rubber chicken" required />
+
+    <label for="food">7. A food</label>
+    <input id="food" type="text" name="food"
+      placeholder="e.g., spaghetti" required />
+
+    <label for="sound">8. A funny sound</label>
+    <input id="sound" type="text" name="sound"
+      placeholder="e.g., BLORP!" required />
+
+    <label for="place">9. A ridiculous place</label>
+    <input id="place" type="text" name="place"
+      placeholder="e.g., the bottom of a swimming pool" required />
+
+    <label for="emotion">10. An emotion</label>
+    <input id="emotion" type="text" name="emotion"
+      placeholder="e.g., uncontrollable jealousy" required />
+
+    <label for="number">11. A number</label>
+    <input id="number" type="text" name="number"
+      placeholder="e.g., 47" required />
+
+    <label for="prize">12. A completely absurd prize</label>
+    <input id="prize" type="text" name="prize"
+      placeholder="e.g., a lifetime supply of socks" required />
+
+    <label for="judge">13. A famous person or imaginary judge</label>
+    <input id="judge" type="text" name="judge"
+      placeholder="e.g., Queen Pickle the Third" required />
+
+    <button type="submit">✨ Make Me a Superstar!</button>
+  </form>
+
+  <div id="story" class="story" aria-live="polite" style="display:none"></div>
+  <button id="tryAgainBtn" type="button">🔄 Enter Another Talent Show</button>
+
+  <p class="footer">Warning: Side effects may include snorting with laughter.</p>
+</div>
+
+<script>
+  const form = document.getElementById('madLibForm');
+  const storyDiv = document.getElementById('story');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const values = Object.fromEntries(new FormData(form).entries());
+    const rawStory = generateStory(values);
+
+    storyDiv.innerHTML = rawStory;
+    storyDiv.style.display = 'block';
+    form.style.display = 'none';
+    tryAgainBtn.style.display = 'block';
+
+    storyDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  tryAgainBtn.addEventListener('click', () => {
+    form.reset();
+    form.style.display = 'flex';
+    storyDiv.style.display = 'none';
+    storyDiv.innerHTML = '';
+    tryAgainBtn.style.display = 'none';
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, character => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    })[character]);
+  }
+
+  function generateStory(values) {
+    const {
+      performer,
+      adjective1,
+      animal,
+      talent,
+      verb,
+      prop,
+      food,
+      sound,
+      place,
+      emotion,
+      number,
+      prize,
+      judge
+    } = Object.fromEntries(
+      Object.entries(values).map(([key, value]) => [key, escapeHTML(value)])
+    );
+
+    return `
+      <div class="spotlight">🌟 🎪 🌟</div>
+      <h2>Ladies, Gentlemen, and Confused ${animal}s!</h2>
+
+      <p>
+        Welcome to the World's Most Ridiculous Talent Show, broadcast LIVE
+        from ${place}, where dignity goes to take a very long nap.
+        Tonight, our audience will witness ${number} minutes of spectacular
+        nonsense, questionable decisions, and at least one emergency
+        involving ${food}.
+      </p>
+
+      <p>
+        Our first contestant is none other than <strong>${performer}</strong>,
+        the world's most ${adjective1} entertainer. Their specialty?
+        <strong>${talent}</strong>! That's right, folks. Years of training,
+        absolutely no natural ability, and one very confused life coach have
+        led to this historic moment.
+      </p>
+
+      <p>
+        Dressed as a giant ${animal}, ${performer} struts onto the stage while
+        ${verb} dramatically. Suddenly, they pull out ${prop} and yell,
+        "<strong>${sound}!</strong>" Three audience members faint, two begin
+        crying, and one ${animal} in the front row demands a refund.
+      </p>
+
+      <p>
+        The judges are speechless. Well, all except ${judge}, who has already
+        eaten the emergency snacks and is now judging everyone based on how
+        delicious they look. "I have seen some strange things in my career,"
+        ${judge} announces, "but that performance made me feel
+        <strong>${emotion}</strong> in places I didn't know existed."
+      </p>
+
+      <p>
+        Then comes the grand finale! ${performer} attempts to perform
+        ${talent} while balancing ${number} pieces of ${food} on their head.
+        The lights flicker. The audience gasps. Someone accidentally releases
+        a flock of ${animal}s. And, of course, ${performer} shouts
+        "<strong>${sound}!</strong>" one more time.
+      </p>
+
+      <p>
+        Against all odds, the judges award ${performer} first place!
+        Their magnificent prize? <strong>${prize}</strong>!
+        The runner-up receives a firm handshake and a coupon for emotional
+        recovery.
+      </p>
+
+      <p>
+        As the confetti falls and the ${animal}s take over the snack table,
+        ${judge} declares this the greatest disaster in television history.
+        ${performer} promises to return next year with an even more
+        ${adjective1} act involving ${prop}, ${food}, and absolutely no
+        professional supervision.
+      </p>
+
+      <h2>🏆 The End... or Is It?! 🏆</h2>
+
+      <p>
+        Tune in next week for our exciting new competition:
+        <em>"Who Can Yell ${sound} the Loudest While Wearing a ${animal}
+        Costume?"</em> Admission is free. Earplugs are extra.
+      </p>
+
+      <div class="spotlight">👏 🤡 🎉</div>
+    `;
+  }
+</script>
+
+</body>
+</html>

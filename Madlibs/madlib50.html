@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>How to Win a Duel with a Duck</title>
+  <style>
+    body {
+      background-color: #191a17;
+      font-family: Georgia, serif;
+      color: #e8dfc8;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: #292b24;
+      border: 2px solid #a58b56;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+      text-align: center;
+      color: #d6b66c;
+      margin-bottom: 0.5rem;
+      font-size: 2.2rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #b8ad94;
+      font-style: italic;
+      margin-bottom: 2rem;
+    }
+
+    p.instructions {
+      text-align: center;
+      font-size: 1rem;
+      color: #d0c5ac;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    input[type="text"] {
+      padding: 0.8rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #70664e;
+      background-color: #1e201b;
+      color: #f3ead7;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    input::placeholder {
+      color: #9c927c;
+    }
+
+    input:focus {
+      outline: 2px solid #d6b66c;
+      border-color: transparent;
+    }
+
+    button {
+      margin-top: 1rem;
+      background-color: #a58b56;
+      color: #191a17;
+      padding: 0.85rem;
+      border: none;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-family: Georgia, serif;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #d6b66c;
+    }
+
+    .story {
+      background-color: #20221d;
+      border-left: 5px solid #d6b66c;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 8px;
+      line-height: 1.9;
+      white-space: normal;
+      display: none;
+    }
+
+    .story p {
+      margin-bottom: 1rem;
+    }
+
+    .story p:last-child {
+      margin-bottom: 0;
+    }
+
+    #tryAgainBtn {
+      display: none;
+      margin-top: 1.5rem;
+      width: 100%;
+    }
+
+    .warning {
+      color: #d6b66c;
+      text-align: center;
+      font-size: 0.85rem;
+      margin-top: 1.5rem;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>⚔️ How to Win a Duel with a Duck</h1>
+  <p class="subtitle">A questionable guide to a very serious problem.</p>
+
+  <form id="madLibForm">
+    <p class="instructions">
+      A duck has challenged you to a duel at dawn. Your honor is at stake.
+      Fill in the blanks to discover how this unfortunate situation unfolds.
+    </p>
+
+    <input type="text" name="noun1" placeholder="A weapon (noun)" required />
+    <input type="text" name="adjective1" placeholder="An intimidating adjective" required />
+    <input type="text" name="verb1" placeholder="An action (verb)" required />
+    <input type="text" name="place" placeholder="A dramatic location" required />
+    <input type="text" name="animal" placeholder="A rival animal" required />
+    <input type="text" name="emotion" placeholder="An emotion" required />
+    <input type="text" name="sound" placeholder="A ridiculous battle cry" required />
+
+    <button type="submit">Begin the Duel</button>
+  </form>
+
+  <div id="story" class="story"></div>
+  <button id="tryAgainBtn">Fight Another Day</button>
+
+  <p class="warning">Remember: never underestimate a duck with nothing left to lose.</p>
+</div>
+
+<script>
+  const form = document.getElementById('madLibForm');
+  const storyDiv = document.getElementById('story');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const values = Object.fromEntries(new FormData(form).entries());
+
+    const rawStory = generateStory(values);
+    storyDiv.innerHTML = formatStoryText(rawStory);
+
+    form.style.display = 'none';
+    storyDiv.style.display = 'block';
+    tryAgainBtn.style.display = 'block';
+  });
+
+  tryAgainBtn.addEventListener('click', () => {
+    form.reset();
+    form.style.display = 'flex';
+    storyDiv.style.display = 'none';
+    tryAgainBtn.style.display = 'none';
+  });
+
+  function generateStory(values) {
+    const {
+      noun1,
+      adjective1,
+      verb1,
+      place,
+      animal,
+      emotion,
+      sound
+    } = values;
+
+    return `
+At precisely dawn, you arrive at ${place}, prepared to face the most feared opponent in the kingdom: a duck. Armed with nothing but a ${noun1} and an unreasonable amount of confidence, you prepare for battle.
+
+Your opponent emerges from the mist. The duck looks surprisingly ${adjective1}. You immediately experience an overwhelming sense of ${emotion}, but you remember the ancient warrior's rule: never let them know you're making this up as you go.
+
+"Before we begin," declares the duck, "I must warn you that I once defeated a ${animal} using only a spoon."
+
+You respond with your secret battle cry: "${sound.toUpperCase()}!" The duck pauses. Nobody has ever shouted that at it before.
+
+Taking advantage of this moment of confusion, you ${verb1} with the grace of a startled goose. Your ${noun1} flies through the air, your dignity leaves your body, and the duck slips on a conveniently placed banana peel.
+
+Silence.
+
+The duck slowly rises, bows respectfully, and declares you the winner. Apparently, the ancient rules of dueling state that whoever looks the most ridiculous automatically wins.
+
+You return home a hero. Bards sing your name. Historians debate your technique. The duck opens a successful bakery.
+
+And that, dear reader, is how you win a duel with a duck: with courage, cunning, and an astonishing lack of preparation.
+    `;
+  }
+
+  function formatStoryText(story) {
+    return story.trim()
+      .split(/\n\s*\n/)
+      .map(paragraph => `<p>${paragraph.trim()}</p>`)
+      .join('');
+  }
+</script>
+
+</body>
+</html>

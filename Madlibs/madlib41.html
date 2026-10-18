@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Alarm Clock Declared War on Me</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --red: #ff3030;
+      --orange: #ffb000;
+      --dark: #141414;
+      --panel: #202020;
+      --white: #f5f0e6;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      background-color: var(--dark);
+      background-image:
+        linear-gradient(rgba(255,48,48,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,48,48,.045) 1px, transparent 1px);
+      background-size: 25px 25px;
+      font-family: 'Space Mono', monospace;
+      color: var(--white);
+      margin: 0;
+      padding: 2rem 1rem;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .container {
+      background: var(--panel);
+      border: 2px solid var(--red);
+      border-top: 8px solid var(--red);
+      padding: clamp(1.2rem, 5vw, 3rem);
+      max-width: 820px;
+      width: 100%;
+      box-shadow: 10px 10px 0 #651919;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: "⚠ CLASSIFIED: BEDROOM CONFLICT ⚠";
+      display: block;
+      color: var(--orange);
+      font-size: .7rem;
+      letter-spacing: .16em;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .stamp {
+      display: inline-block;
+      color: var(--red);
+      border: 2px solid var(--red);
+      padding: .35rem .6rem;
+      font-size: .7rem;
+      font-weight: bold;
+      transform: rotate(-3deg);
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: 'Black Ops One', Impact, sans-serif;
+      text-transform: uppercase;
+      font-size: clamp(2.5rem, 8vw, 5.2rem);
+      line-height: .98;
+      margin: 0 0 1rem;
+      color: var(--white);
+      text-shadow: 4px 4px 0 var(--red);
+      overflow-wrap: anywhere;
+    }
+
+    h1 span { color: var(--red); }
+
+    .instructions {
+      color: #c2bdb3;
+      font-size: .9rem;
+      line-height: 1.8;
+      margin: 1.5rem 0;
+      border-left: 3px solid var(--orange);
+      padding-left: 1rem;
+    }
+
+    .instructions strong { color: var(--orange); }
+
+    .mission {
+      color: var(--red);
+      font-size: .75rem;
+      font-weight: bold;
+      letter-spacing: .1em;
+      margin: 2rem 0 1rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+    }
+
+    label {
+      font-size: .75rem;
+      color: var(--orange);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      background: #101010;
+      color: var(--white);
+      padding: .9rem 1rem;
+      font: inherit;
+      font-size: .95rem;
+      border: 1px solid #57514b;
+      border-radius: 0;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 2px rgba(255,176,0,.15);
+    }
+
+    input::placeholder { color: #77716b; }
+
+    button {
+      font-family: 'Black Ops One', Impact, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      cursor: pointer;
+      transition: transform .15s, background .15s;
+    }
+
+    button:hover { transform: translateY(-2px); }
+
+    button:focus-visible {
+      outline: 3px solid var(--orange);
+      outline-offset: 4px;
+    }
+
+    button[type="submit"] {
+      margin-top: 1rem;
+      background: var(--red);
+      color: white;
+      padding: 1.1rem;
+      border: 0;
+      font-size: 1.15rem;
+      box-shadow: 5px 5px 0 #7d2020;
+    }
+
+    button[type="submit"]:hover { background: #e51f1f; }
+
+    .story {
+      background: #101010;
+      border: 1px solid #51453b;
+      border-left: 5px solid var(--red);
+      padding: clamp(1.2rem, 4vw, 2rem);
+      margin-top: 2.5rem;
+      line-height: 1.95;
+      font-size: .92rem;
+      overflow-wrap: anywhere;
+    }
+
+    .story-header {
+      color: var(--orange);
+      font-family: 'Black Ops One', Impact, sans-serif;
+      font-size: 1.5rem;
+      line-height: 1.3;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    .story p { margin: 0 0 1.3rem; }
+    .story p:last-child { margin-bottom: 0; }
+
+    .story strong {
+      color: var(--red);
+      text-transform: uppercase;
+    }
+
+    .story .classified {
+      color: var(--orange);
+      font-size: .72rem;
+      border-top: 1px dashed #5c5145;
+      padding-top: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    #tryAgainBtn {
+      display: none;
+      width: 100%;
+      margin-top: 1.5rem;
+      background: transparent;
+      border: 2px solid var(--orange);
+      color: var(--orange);
+      padding: 1rem;
+      font-size: 1rem;
+    }
+
+    #tryAgainBtn:hover {
+      background: var(--orange);
+      color: var(--dark);
+    }
+
+    .footer {
+      margin-top: 2.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid #45403a;
+      color: #77716b;
+      font-size: .65rem;
+      line-height: 1.8;
+      text-align: center;
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 480px) {
+      body { padding: 1rem .7rem; }
+      .container { box-shadow: 5px 5px 0 #651919; }
+      .instructions { font-size: .8rem; }
+      input[type="text"] { font-size: 16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+    <div class="stamp">TOP SECRET // OPERATION: WAKE UP</div>
+
+    <h1>My Alarm Clock <span>Declared War</span> on Me</h1>
+
+    <p class="instructions">
+      <strong>ATTENTION, RECRUIT.</strong><br>
+      At 0600 hours, your alarm clock betrayed you. The bedroom is now an active war zone.
+      Complete the intelligence report below to reconstruct the incident.
+      Your dignity will not survive this mission.
+    </p>
+
+    <div id="formArea">
+      <p class="mission">// COMPLETE YOUR PRE-MISSION BRIEFING</p>
+
+      <form id="madLibForm">
+        <div class="field">
+          <label for="noun1">01 / Your weapon of choice (a noun)</label>
+          <input id="noun1" type="text" name="noun1" placeholder="e.g. a suspicious baguette" maxlength="100" required>
+        </div>
+
+        <div class="field">
+          <label for="adjective1">02 / The alarm clock's personality</label>
+          <input id="adjective1" type="text" name="adjective1" placeholder="e.g. aggressively moist" maxlength="100" required>
+        </div>
+
+        <div class="field">
+          <label for="verb1">03 / Your desperate battle maneuver (verb)</label>
+          <input id="verb1" type="text" name="verb1" placeholder="e.g. moonwalk" maxlength="100" required>
+        </div>
+
+        <div class="field">
+          <label for="place">04 / Location of the final showdown</label>
+          <input id="place" type="text" name="place" placeholder="e.g. the International Space Station" maxlength="100" required>
+        </div>
+
+        <div class="field">
+          <label for="animal">05 / Your highly questionable war ally</label>
+          <input id="animal" type="text" name="animal" placeholder="e.g. a financially unstable raccoon" maxlength="100" required>
+        </div>
+
+        <div class="field">
+          <label for="emotion">06 / Your emotional state</label>
+          <input id="emotion" type="text" name="emotion" placeholder="e.g. aggressive confusion" maxlength="100" required>
+        </div>
+
+        <div class="field">
+          <label for="sound">07 / Your battle cry (make it weird)</label>
+          <input id="sound" type="text" name="sound" placeholder="e.g. HONKLE DOINK!" maxlength="100" required>
+        </div>
+
+        <div class="field">
+          <label for="food">08 / The breakfast you will never emotionally recover from</label>
+          <input id="food" type="text" name="food" placeholder="e.g. radioactive waffles" maxlength="100" required>
+        </div>
+
+        <div class="field">
+          <label for="celebrity">09 / The celebrity you blame for this</label>
+          <input id="celebrity" type="text" name="celebrity" placeholder="e.g. Nicolas Cage" maxlength="100" required>
+        </div>
+
+        <div class="field">
+          <label for="number">10 / Number of minutes you hit snooze</label>
+          <input id="number" type="text" name="number" placeholder="e.g. approximately seventeen thousand" maxlength="100" required>
+        </div>
+
+        <div class="field">
+          <label for="adverb">11 / How you ran away (an adverb)</label>
+          <input id="adverb" type="text" name="adverb" placeholder="e.g. majestically but with no pants" maxlength="100" required>
+        </div>
+
+        <div class="field">
+          <label for="title">12 / Your new military rank</label>
+          <input id="title" type="text" name="title" placeholder="e.g. Supreme Lord of the Mattress" maxlength="100" required>
+        </div>
+
+        <button type="submit">⚠ Declassify My Disaster</button>
+      </form>
+    </div>
+
+    <section id="story" class="story hidden" aria-live="polite" aria-atomic="true"></section>
+
+    <button id="tryAgainBtn" type="button">↻ Return to the Battlefield</button>
+
+    <div class="footer">
+      DEPARTMENT OF UNNECESSARY DRAMA · MORNING OPERATIONS DIVISION<br>
+      ALL ALARMS ARE PRESUMED GUILTY UNTIL PROVEN OTHERWISE.
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById('madLibForm');
+    const formArea = document.getElementById('formArea');
+    const storyDiv = document.getElementById('story');
+    const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const values = Object.fromEntries(new FormData(form).entries());
+      const rawStory = generateStory(values);
+
+      // Build the story using text nodes so user input is never interpreted as HTML.
+      storyDiv.replaceChildren();
+
+      const heading = document.createElement('div');
+      heading.className = 'story-header';
+      heading.textContent = 'Incident Report #0600: The Snooze Wars';
+      storyDiv.appendChild(heading);
+
+      rawStory.forEach((paragraph, index) => {
+        const p = document.createElement('p');
+
+        if (index === rawStory.length - 1) {
+          p.className = 'classified';
+        }
+
+        p.textContent = paragraph;
+        storyDiv.appendChild(p);
+      });
+
+      formArea.classList.add('hidden');
+      storyDiv.classList.remove('hidden');
+      tryAgainBtn.style.display = 'block';
+      storyDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    tryAgainBtn.addEventListener('click', () => {
+      form.reset();
+      formArea.classList.remove('hidden');
+      storyDiv.classList.add('hidden');
+      storyDiv.replaceChildren();
+      tryAgainBtn.style.display = 'none';
+      document.getElementById('noun1').focus();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    function generateStory(values) {
+      const {
+        noun1, adjective1, verb1, place, animal,
+        emotion, sound, food, celebrity, number, adverb, title
+      } = values;
+
+      return [
+        `DATE: THIS MORNING. TIME: ABSOLUTELY TOO EARLY. CASUALTIES: ONE (1) DREAM, THREE BRAIN CELLS, AND MY WILL TO LIVE.`,
+
+        `It began at 6:00 AM, when my alarm clock, a ${adjective1} little machine with the moral integrity of a tax-fraud billionaire, began screaming directly into my soul. I had hit snooze ${number} times. The clock had apparently interpreted this as an official declaration of hostilities.`,
+
+        `Its display flashed a message I swear was not there yesterday: "YOU HAVE SLEPT YOUR LAST, MORTAL." Then it launched itself off the nightstand, performed a tactical spin, and demanded I surrender my ${noun1}. I refused. The ${noun1} was all I had left.`,
+
+        `I immediately attempted to ${verb1} out of the bedroom. This maneuver was unsuccessful because my left leg was still buffering. Meanwhile, a ${animal} materialized from beneath the bed wearing tiny combat goggles. It saluted me and whispered, "The toaster has fallen. We are on our own."`,
+
+        `The battle escalated at ${place}. My alarm had recruited every electronic device in the house. The microwave beeped in Morse code. My phone displayed 47 missed calls from "THE CLOCK." Even the refrigerator began humming the national anthem of a country that does not exist.`,
+
+        `Overwhelmed with ${emotion}, I grabbed my emergency rations of ${food} and shouted, "${sound.toUpperCase()}!" It was the finest battle cry ever produced by a person wearing one sock. Somewhere, ${celebrity} felt a disturbance in the universe and immediately denied involvement.`,
+
+        `The alarm clock unleashed its ultimate weapon: a ringtone so terrible that three houseplants fainted and my ancestors collectively rolled over in their graves. I retaliated by threatening to replace it with a sundial. The clock gasped. "YOU WOULDN'T." I would. I absolutely would.`,
+
+        `At last, I escaped ${adverb}, pursued by an army of smart-home appliances and one deeply judgmental ${animal}. I barricaded myself in the bathroom, where I was promoted to "${title}" by the Department of People Who Really Should Have Gone to Bed Earlier.`,
+
+        `The alarm clock was captured at 8:43 AM after it accidentally rang during its own victory speech. I declared peace, confiscated its batteries, and established a strict new household policy: no alarms before noon, no negotiations before coffee, and absolutely no snooze-button taxation.`,
+
+        `FINAL CLASSIFICATION: The incident remains unresolved. At this very moment, the clock is charging in the kitchen. Its screen is dark. Its silence is suspicious. Tomorrow morning, we go to war again.`
+      ];
+    }
+  </script>
+</body>
+</html>

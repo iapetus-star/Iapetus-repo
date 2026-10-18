@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Magical Museum After Dark</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #10172e, #30204b, #182b43);
+      font-family: 'Georgia', serif;
+      color: #eee8ff;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fdfaff;
+      color: #29213c;
+      border-radius: 16px;
+      padding: 2rem;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+    }
+
+    h1 {
+      text-align: center;
+      color: #65439a;
+      margin-bottom: 0.75rem;
+    }
+
+    .instructions {
+      text-align: center;
+      color: #726881;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    label {
+      font-weight: bold;
+      color: #4c376b;
+      margin-bottom: -0.5rem;
+    }
+
+    input[type="text"] {
+      padding: 0.8rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #d5c7e6;
+      background: #faf7ff;
+      color: #29213c;
+    }
+
+    input:focus {
+      outline: 2px solid #a987d5;
+      border-color: transparent;
+    }
+
+    button {
+      margin-top: 1rem;
+      background: #65439a;
+      color: white;
+      padding: 0.9rem;
+      border: none;
+      font-size: 1.05rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #4b3078;
+    }
+
+    .story {
+      background: #f5efff;
+      border-left: 5px solid #9872c7;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 8px;
+      line-height: 1.85;
+      display: none;
+    }
+
+    .story h2 {
+      color: #65439a;
+      margin-top: 0;
+    }
+
+    #tryAgainBtn {
+      display: none;
+      width: 100%;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #9587a8;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🌙 The Magical Museum After Dark</h1>
+
+  <p class="instructions">
+    The museum closes at midnight, but the REAL magic begins after dark.
+    Fill in the blanks and discover what happens when the exhibits wake up!
+  </p>
+
+  <form id="madLibForm">
+    <label for="historicalFigure">A famous historical figure</label>
+    <input id="historicalFigure" type="text" name="historicalFigure"
+      placeholder="e.g. Cleopatra" required />
+
+    <label for="magicalObject">A magical object</label>
+    <input id="magicalObject" type="text" name="magicalObject"
+      placeholder="e.g. a glowing teapot" required />
+
+    <label for="creature">A mythical creature</label>
+    <input id="creature" type="text" name="creature"
+      placeholder="e.g. a tiny dragon" required />
+
+    <label for="adjective">An eerie adjective</label>
+    <input id="adjective" type="text" name="adjective"
+      placeholder="e.g. suspicious" required />
+
+    <label for="number">A number</label>
+    <input id="number" type="text" name="number"
+      placeholder="e.g. 47" required />
+
+    <label for="bodyPart">A body part (plural)</label>
+    <input id="bodyPart" type="text" name="bodyPart"
+      placeholder="e.g. elbows" required />
+
+    <label for="liquid">A liquid</label>
+    <input id="liquid" type="text" name="liquid"
+      placeholder="e.g. grape juice" required />
+
+    <label for="command">A command</label>
+    <input id="command" type="text" name="command"
+      placeholder="e.g. Do the chicken dance" required />
+
+    <label for="job">An unusual job</label>
+    <input id="job" type="text" name="job"
+      placeholder="e.g. professional pillow tester" required />
+
+    <label for="treasure">A treasure or valuable item</label>
+    <input id="treasure" type="text" name="treasure"
+      placeholder="e.g. a diamond sandwich" required />
+
+    <button type="submit">🔮 Unlock the Museum!</button>
+  </form>
+
+  <div id="story" class="story" aria-live="polite"></div>
+  <button id="tryAgainBtn">🌟 Explore Another Night</button>
+
+  <div class="footer">
+    Please do not feed the exhibits after midnight.
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('madLibForm');
+  const storyDiv = document.getElementById('story');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const values = Object.fromEntries(
+      new FormData(form).entries()
+    );
+
+    storyDiv.innerHTML = generateStory(values);
+    form.style.display = 'none';
+    storyDiv.style.display = 'block';
+    tryAgainBtn.style.display = 'block';
+  });
+
+  tryAgainBtn.addEventListener('click', () => {
+    form.reset();
+    form.style.display = 'flex';
+    storyDiv.style.display = 'none';
+    tryAgainBtn.style.display = 'none';
+    form.querySelector('input').focus();
+  });
+
+  function generateStory(v) {
+    const safe = value => String(value).replace(
+      /[&<>"']/g,
+      char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[char]
+    );
+
+    const historicalFigure = safe(v.historicalFigure);
+    const magicalObject = safe(v.magicalObject);
+    const creature = safe(v.creature);
+    const adjective = safe(v.adjective);
+    const number = safe(v.number);
+    const bodyPart = safe(v.bodyPart);
+    const liquid = safe(v.liquid);
+    const command = safe(v.command);
+    const job = safe(v.job);
+    const treasure = safe(v.treasure);
+
+    return `
+      <h2>🏛️ Midnight at the Museum</h2>
+
+      <p>
+        At exactly midnight, I snuck into the museum and discovered
+        that every exhibit had come alive! A statue of
+        <strong>${historicalFigure}</strong> was tap-dancing beside
+        a ${adjective} dinosaur skeleton, while a mysterious
+        ${magicalObject} floated through the air.
+      </p>
+
+      <p>
+        Suddenly, a ${creature} wearing a tiny security badge appeared.
+        "Welcome, night visitor!" it announced.
+        "You have exactly ${number} minutes to help us before the
+        morning guards arrive!"
+      </p>
+
+      <p>
+        Before I could ask any questions, the ancient paintings began
+        arguing about who had the best ${bodyPart}. One particularly
+        dramatic portrait demanded a swimming pool filled with
+        ${liquid}, claiming it was essential for its beauty routine.
+      </p>
+
+      <p>
+        Then the museum's enormous clock struck twelve-thirty.
+        Every exhibit froze. The ${creature} whispered,
+        "Oh no. The curator is coming! Whatever you do, yell:
+        '${command.toUpperCase()}!'"
+      </p>
+
+      <p>
+        I shouted the command at the top of my lungs.
+        To my surprise, the statues started breakdancing, the dinosaur
+        skeleton performed a backflip, and ${historicalFigure}
+        challenged a suit of armor to an arm-wrestling competition.
+      </p>
+
+      <p>
+        In the chaos, I discovered a hidden door behind an ancient
+        tapestry. Inside was a secret room containing a legendary
+        ${treasure}, guarded by a very sleepy dragon.
+      </p>
+
+      <p>
+        The dragon offered me the treasure if I agreed to become the
+        museum's official ${job}. I accepted immediately.
+        The benefits included unlimited snacks and one free wish
+        every Thursday.
+      </p>
+
+      <p>
+        Just then, the morning guards arrived. Every exhibit snapped
+        back into place, the dragon turned into a harmless garden
+        statue, and I found myself standing alone in the hallway.
+      </p>
+
+      <p>
+        The next morning, the museum director congratulated me for
+        somehow rearranging every exhibit overnight. I smiled politely,
+        hiding the ${treasure} in my backpack.
+      </p>
+
+      <p>
+        That night, I returned to the museum.
+        The ${creature} was waiting at the entrance.
+        "Ready for your first shift?" it asked.
+      </p>
+
+      <p>
+        I sighed, put on my imaginary security badge, and stepped
+        into the darkness.
+      </p>
+
+    `;
+  }
+</script>
+
+</body>
+</html>

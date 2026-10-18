@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>An Alien Tries to Blend In at School</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #d9f7ee, #dce5ff);
+      font-family: 'Georgia', serif;
+      color: #26352f;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      border-radius: 16px;
+      padding: 2rem;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    h1 {
+      text-align: center;
+      color: #237c68;
+      margin-bottom: 0.75rem;
+    }
+
+    .instructions {
+      text-align: center;
+      color: #6c7c75;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    label {
+      font-weight: bold;
+      color: #286451;
+      margin-bottom: -0.5rem;
+    }
+
+    input[type="text"] {
+      padding: 0.8rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #b8ddd0;
+      background: #f8fffc;
+      color: #26352f;
+    }
+
+    input:focus {
+      outline: 2px solid #66bba0;
+      border-color: transparent;
+    }
+
+    button {
+      margin-top: 1rem;
+      background: #237c68;
+      color: white;
+      padding: 0.9rem;
+      border: none;
+      font-size: 1.05rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #185c4d;
+    }
+
+    .story {
+      background: #effbf6;
+      border-left: 5px solid #54ad91;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 8px;
+      line-height: 1.85;
+      display: none;
+    }
+
+    .story h2 {
+      color: #237c68;
+      margin-top: 0;
+    }
+
+    #tryAgainBtn {
+      display: none;
+      width: 100%;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #8b9c94;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>👽 An Alien Tries to Blend In at School</h1>
+
+  <p class="instructions">
+    Earth mission: survive one ordinary school day without revealing
+    your extraterrestrial identity. What could possibly go wrong?
+  </p>
+
+  <form id="madLibForm">
+    <label for="alienName">Your alien's undercover name</label>
+    <input id="alienName" type="text" name="alienName"
+      placeholder="e.g. Bob Smith" required />
+
+    <label for="planet">The planet you're from</label>
+    <input id="planet" type="text" name="planet"
+      placeholder="e.g. Planet Wobbletron" required />
+
+    <label for="bodyFeature">A strange body feature</label>
+    <input id="bodyFeature" type="text" name="bodyFeature"
+      placeholder="e.g. glowing purple eyebrows" required />
+
+    <label for="schoolSubject">A school subject</label>
+    <input id="schoolSubject" type="text" name="schoolSubject"
+      placeholder="e.g. mathematics" required />
+
+    <label for="snack">A disgusting or unusual snack</label>
+    <input id="snack" type="text" name="snack"
+      placeholder="e.g. pickled marshmallows" required />
+
+    <label for="humanHabit">A human habit</label>
+    <input id="humanHabit" type="text" name="humanHabit"
+      placeholder="e.g. talking to houseplants" required />
+
+    <label for="teacherName">A teacher's name</label>
+    <input id="teacherName" type="text" name="teacherName"
+      placeholder="e.g. Mr. Noodle" required />
+
+    <label for="exclamation">An expression of surprise</label>
+    <input id="exclamation" type="text" name="exclamation"
+      placeholder="e.g. Great galaxies!" required />
+
+    <label for="schoolItem">An ordinary school supply</label>
+    <input id="schoolItem" type="text" name="schoolItem"
+      placeholder="e.g. a pencil sharpener" required />
+
+    <label for="superpower">A completely useless superpower</label>
+    <input id="superpower" type="text" name="superpower"
+      placeholder="e.g. making socks slightly warmer" required />
+
+    <button type="submit">🛸 Begin Earth School!</button>
+  </form>
+
+  <div id="story" class="story" aria-live="polite"></div>
+  <button id="tryAgainBtn">🔄 Try Another Mission</button>
+
+  <div class="footer">
+    Remember: humans do NOT normally have seventeen elbows.
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('madLibForm');
+  const storyDiv = document.getElementById('story');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const values = Object.fromEntries(
+      new FormData(form).entries()
+    );
+
+    storyDiv.innerHTML = generateStory(values);
+    form.style.display = 'none';
+    storyDiv.style.display = 'block';
+    tryAgainBtn.style.display = 'block';
+  });
+
+  tryAgainBtn.addEventListener('click', () => {
+    form.reset();
+    form.style.display = 'flex';
+    storyDiv.style.display = 'none';
+    tryAgainBtn.style.display = 'none';
+    form.querySelector('input').focus();
+  });
+
+  function generateStory(v) {
+    const safe = value => String(value).replace(
+      /[&<>"']/g,
+      char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[char]
+    );
+
+    const alienName = safe(v.alienName);
+    const planet = safe(v.planet);
+    const bodyFeature = safe(v.bodyFeature);
+    const schoolSubject = safe(v.schoolSubject);
+    const snack = safe(v.snack);
+    const humanHabit = safe(v.humanHabit);
+    const teacherName = safe(v.teacherName);
+    const exclamation = safe(v.exclamation);
+    const schoolItem = safe(v.schoolItem);
+    const superpower = safe(v.superpower);
+
+    return `
+      <h2>🚨 Classified Report: The New Student</h2>
+
+      <p>
+        On Monday morning, an alien from <strong>${planet}</strong>
+        landed on Earth with one very important mission: attend school
+        and avoid being discovered. The alien adopted the human name
+        <strong>${alienName}</strong> and practiced smiling in a mirror.
+        Unfortunately, the mirror cracked.
+      </p>
+
+      <p>
+        To look normal, ${alienName} wore a school uniform, two shoes,
+        and a baseball cap large enough to hide their
+        ${bodyFeature}. Their spaceship's instruction manual said
+        humans usually had two eyes, one nose, and absolutely no
+        antennae. This was going to be difficult.
+      </p>
+
+      <p>
+        First period was ${schoolSubject}. The teacher, ${teacherName},
+        asked everyone to solve a problem on the board. ${alienName}
+        accidentally calculated the answer using the gravitational
+        pull of three nearby moons and opened a tiny black hole
+        above the classroom.
+      </p>
+
+      <p>
+        "${exclamation.toUpperCase()}!" shouted ${teacherName}.
+        "Who can explain what just happened?"
+        ${alienName} raised a hand, then accidentally raised
+        three additional hands from their backpack.
+      </p>
+
+      <p>
+        At lunch, ${alienName} opened their lunchbox and pulled out
+        a sandwich filled with ${snack}. The other students stared
+        in horror. "Is that even food?" someone asked.
+        "Of course!" replied ${alienName}. "It's a delicacy back home.
+        It only screams a little."
+      </p>
+
+      <p>
+        Things got worse when ${alienName} tried copying a human habit:
+        ${humanHabit}. Unfortunately, they misunderstood the concept
+        completely and spent ten minutes doing it to a fire extinguisher.
+        The principal was called immediately.
+      </p>
+
+      <p>
+        During art class, the teacher handed out a ${schoolItem}.
+        ${alienName} pressed a secret button on it, accidentally
+        transforming every desk into a miniature spaceship.
+        The entire class began floating toward the ceiling.
+      </p>
+
+      <p>
+        "Relax!" ${alienName} announced. "I have a superpower!"
+        They demonstrated their amazing ability to ${superpower}.
+        Nobody was impressed, and one student started crying.
+      </p>
+
+      <p>
+        Just as the principal entered, ${alienName}'s disguise
+        malfunctioned. Their skin flashed neon green, their
+        ${bodyFeature} began glowing, and a robotic voice announced,
+        "WARNING: EARTH IDENTITY COMPROMISED."
+      </p>
+
+      <p>
+        Everyone went silent. Then a student in the back raised
+        a hand and asked, "Cool. Can you help me with homework?"
+      </p>
+
+      <p>
+        By Friday, ${alienName} was the most popular student in school.
+        They joined the science club, won the talent show, and were
+        elected class president after promising everyone free
+        intergalactic pizza.
+      </p>
+
+      <p>
+        Mission status: technically compromised, socially successful.
+        ${alienName} sent a message home:
+        "Earth is weird. The food is questionable. The teachers are
+        terrifying. I am extending my stay indefinitely."
+      </p>
+
+      <p><strong>THE END. 👽🛸</strong></p>
+    `;
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TRAPPED IN A VIDEO GAME!</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+    :root {
+      --bg: #100d24;
+      --panel: #211a42;
+      --pink: #ff4fd8;
+      --cyan: #46f7ff;
+      --yellow: #fff477;
+      --white: #f9f5ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px 14px;
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(#ffffff08 1px, transparent 1px),
+        linear-gradient(90deg, #ffffff08 1px, transparent 1px);
+      background-size: 24px 24px;
+      color: var(--white);
+      font-family: 'VT323', monospace;
+      font-size: 23px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 760px;
+      height: fit-content;
+      padding: clamp(18px, 5vw, 38px);
+      background: var(--panel);
+      border: 4px solid var(--cyan);
+      box-shadow: 8px 8px 0 var(--pink);
+    }
+
+    h1 {
+      color: var(--yellow);
+      font: clamp(19px, 4vw, 30px)/1.7 'Press Start 2P', monospace;
+      text-align: center;
+      text-shadow: 4px 4px 0 #a328ab;
+      margin: 8px 0 20px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--cyan);
+      font-size: 27px;
+      margin: 0 0 22px;
+    }
+
+    .pixel-art {
+      text-align: center;
+      font-size: 46px;
+      letter-spacing: 8px;
+      margin: 18px 0;
+      animation: bob 1.8s ease-in-out infinite;
+    }
+
+    @keyframes bob {
+      50% { transform: translateY(-6px); }
+    }
+
+    .status {
+      color: #a7ffae;
+      border-block: 2px dashed #756aa5;
+      padding: 12px 0;
+      font-size: 22px;
+    }
+
+    .instructions {
+      color: #d4c9ff;
+      line-height: 1.4;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      color: var(--yellow);
+      display: block;
+      margin-bottom: 5px;
+      font-size: 23px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #8174b5;
+      border-radius: 0;
+      background: #110e28;
+      color: var(--cyan);
+      font: 22px 'VT323', monospace;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: var(--pink);
+      box-shadow: 0 0 0 2px #ff4fd844;
+    }
+
+    button {
+      padding: 15px 12px;
+      border: 3px solid var(--yellow);
+      border-radius: 0;
+      background: var(--pink);
+      color: #180c2d;
+      font: 12px/1.8 'Press Start 2P', monospace;
+      cursor: pointer;
+      margin-top: 10px;
+      box-shadow: 4px 4px 0 #100d24;
+    }
+
+    button:hover {
+      background: var(--yellow);
+      transform: translate(-1px, -1px);
+    }
+
+    button:focus-visible {
+      outline: 3px solid white;
+      outline-offset: 4px;
+    }
+
+    .story {
+      margin-top: 26px;
+      padding: 22px;
+      border: 3px dashed var(--pink);
+      background: #110e28;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .story h2 {
+      color: var(--cyan);
+      font: 13px/1.9 'Press Start 2P', monospace;
+    }
+
+    .story p { margin: 0 0 18px; }
+    .story p:last-child { margin-bottom: 0; }
+
+    .story strong { color: var(--yellow); }
+
+    .ending {
+      color: var(--pink);
+      text-align: center;
+      font-size: 28px;
+    }
+
+    .hidden { display: none; }
+
+    footer {
+      color: #a99bcf;
+      text-align: center;
+      font-size: 18px;
+      margin-top: 28px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <div class="pixel-art" aria-hidden="true">👾 🎮 💀</div>
+
+    <h1>GAME OVER?</h1>
+    <p class="subtitle">TRAPPED INSIDE A VIDEO GAME</p>
+
+    <div class="status">
+      ▶ PLAYER STATUS: EXTREMELY CONCERNED<br />
+      ▶ REALITY STATUS: ABSOLUTELY COOKED
+    </div>
+
+    <form id="madLibForm">
+      <p class="instructions">
+        OH NO! You touched a suspicious cartridge and got
+        sucked into a video game. Fill in your stats to
+        determine your fate. Choose wisely. Or don't.
+        We're not your mom.
+      </p>
+
+      <div>
+        <label for="hero">1. Your most ridiculous nickname</label>
+        <input id="hero" name="hero" placeholder="e.g. Captain Noodle" required maxlength="60" />
+      </div>
+
+      <div>
+        <label for="adjective">2. An adjective</label>
+        <input id="adjective" name="adjective" placeholder="e.g. suspiciously moist" required maxlength="60" />
+      </div>
+
+      <div>
+        <label for="weapon">3. A completely useless weapon</label>
+        <input id="weapon" name="weapon" placeholder="e.g. a tactical baguette" required maxlength="60" />
+      </div>
+
+      <div>
+        <label for="verb">4. A verb ending in -ing</label>
+        <input id="verb" name="verb" placeholder="e.g. aggressively yodeling" required maxlength="60" />
+      </div>
+
+      <div>
+        <label for="food">5. A food</label>
+        <input id="food" name="food" placeholder="e.g. radioactive lasagna" required maxlength="60" />
+      </div>
+
+      <div>
+        <label for="animal">6. An animal</label>
+        <input id="animal" name="animal" placeholder="e.g. a judgmental goose" required maxlength="60" />
+      </div>
+
+      <div>
+        <label for="npc">7. A name for a suspicious NPC</label>
+        <input id="npc" name="npc" placeholder="e.g. Greg the Unfortunate" required maxlength="60" />
+      </div>
+
+      <div>
+        <label for="sound">8. A noise you'd make falling down stairs</label>
+        <input id="sound" name="sound" placeholder="e.g. SKRONK!" required maxlength="60" />
+      </div>
+
+      <div>
+        <label for="emotion">9. An emotion</label>
+        <input id="emotion" name="emotion" placeholder="e.g. overwhelming confusion" required maxlength="60" />
+      </div>
+
+      <div>
+        <label for="boss">10. The final boss (be creative)</label>
+        <input id="boss" name="boss" placeholder="e.g. Grandma's Sentient Vacuum" required maxlength="60" />
+      </div>
+
+      <button type="submit">▶ START CHAOS.EXE</button>
+    </form>
+
+    <section id="story" class="story hidden"
+      aria-live="polite" aria-atomic="true"></section>
+
+    <button id="tryAgainBtn" class="hidden" type="button">
+      ↻ RESPAWN & TRY AGAIN
+    </button>
+
+    <footer>
+      NO SAVING. NO REFUNDS. DEFINITELY NO TECH SUPPORT.
+    </footer>
+  </main>
+
+  <script>
+    const form = document.getElementById('madLibForm');
+    const storyDiv = document.getElementById('story');
+    const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      if (!form.reportValidity()) return;
+
+      const values = Object.fromEntries(
+        new FormData(form).entries()
+      );
+
+      storyDiv.replaceChildren();
+      generateStory(values).forEach(paragraph => {
+        const p = document.createElement('p');
+        p.textContent = paragraph;
+        storyDiv.appendChild(p);
+      });
+
+      const title = document.createElement('h2');
+      title.textContent = '★ YOUR TERRIBLE DESTINY ★';
+      storyDiv.prepend(title);
+
+      const ending = document.createElement('p');
+      ending.className = 'ending';
+      ending.textContent = '★ ACHIEVEMENT UNLOCKED: WHAT EVEN WAS THAT? ★';
+      storyDiv.appendChild(ending);
+
+      form.classList.add('hidden');
+      storyDiv.classList.remove('hidden');
+      tryAgainBtn.classList.remove('hidden');
+
+      storyDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    tryAgainBtn.addEventListener('click', () => {
+      form.reset();
+      form.classList.remove('hidden');
+      storyDiv.classList.add('hidden');
+      tryAgainBtn.classList.add('hidden');
+      document.getElementById('hero').focus();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    function generateStory(v) {
+      const {
+        hero, adjective, weapon, verb,
+        food, animal, npc, sound, emotion, boss
+      } = v;
+
+      return [
+        `It was a perfectly normal Tuesday when you, ${hero}, decided to play a ${adjective} video game you found behind a dumpster. The moment you pressed START, your screen screamed "LOL, GET REKT" and sucked you into the digital dimension. Your gaming chair was not included in the transfer. Tragic.`,
+
+        `You landed face-first in Pixelvania, a kingdom where the currency was ${food} and the local law required everyone to spend at least three hours a day ${verb}. A floating tutorial appeared: "WELCOME, HERO! YOUR QUEST IS TO DEFEAT ${boss.toUpperCase()}!" You asked if there was a less stressful quest. The tutorial blocked you.`,
+
+        `Luckily, you discovered a legendary weapon: ${weapon}. It dealt exactly four damage points and smelled weird. Your first enemy was a ${adjective} ${animal} wearing tiny sunglasses. It challenged you to a duel. You swung your weapon, missed completely, and yelled "${sound.toUpperCase()}!" The animal won by default and stole your shoelaces.`,
+
+        `With your confidence reduced to approximately zero, you encountered ${npc}, a suspicious NPC standing beside a dumpster labeled DEFINITELY NOT A TRAP. "${hero}," they whispered, "to defeat ${boss}, you must collect three sacred items: a golden ${food}, the tears of a ${animal}, and the legendary power of ${emotion}." You asked why. ${npc} replied, "Budget cuts."`,
+
+        `After ${verb} through a haunted arcade, surviving a stampede of angry ${animal}s, and accidentally eating the golden ${food}, you finally reached the final boss arena. There stood ${boss}, a towering monstrosity with ${adjective} eyebrows and the ability to uninstall your favorite games.`,
+
+        `"YOU DARE CHALLENGE ME?" roared ${boss}. You gripped your trusty ${weapon}, experienced a sudden wave of ${emotion}, and charged forward while screaming "${sound.toUpperCase()}!" In an incredible display of strategy, you threw the weapon, tripped over absolutely nothing, and accidentally hit the boss's OFF switch.`,
+
+        `CONGRATULATIONS! YOU WON! The entire kingdom erupted in cheers. ${npc} crowned you Supreme Ruler of Pixelvania, gifting you unlimited ${food} and a lifetime supply of suspiciously shaped pixels. You finally found the EXIT button. You pressed it.`,
+
+        `Your screen went black. A message appeared: "THANKS FOR PLAYING, ${hero.toUpperCase()}! NEW GAME PLUS UNLOCKED." You heard a familiar noise behind you. Your real-life toaster had started glowing. It whispered, "${sound.toUpperCase()}!"`
+
+      ];
+    }
+  </script>
+</body>
+</html>

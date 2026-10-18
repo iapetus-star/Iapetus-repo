@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Day Everyone Swapped Bodies</title>
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #fbc2eb, #a6c1ee, #c2e9fb);
+      font-family: 'Georgia', serif;
+      color: #302b45;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.97);
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: 0 12px 35px rgba(65, 55, 105, 0.2);
+      box-sizing: border-box;
+    }
+
+    h1 {
+      text-align: center;
+      color: #7655a6;
+      margin-bottom: 0.5rem;
+      font-size: 2.3rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #817795;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    .emoji-banner {
+      text-align: center;
+      font-size: 2.2rem;
+      margin: 0.5rem 0 1rem;
+      letter-spacing: 0.4rem;
+    }
+
+    .instructions {
+      text-align: center;
+      font-size: 1rem;
+      color: #655d78;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    input[type="text"] {
+      padding: 0.85rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #d7c9eb;
+      background: #fcfaff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #9b72cf;
+      box-shadow: 0 0 0 3px rgba(155, 114, 207, 0.15);
+    }
+
+    button {
+      margin-top: 1rem;
+      background: linear-gradient(135deg, #9b72cf, #7655a6);
+      color: white;
+      padding: 0.9rem;
+      border: none;
+      font-size: 1.05rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 12px rgba(118, 85, 166, 0.25);
+    }
+
+    .story {
+      background: linear-gradient(145deg, #fcfaff, #f3edff);
+      border-left: 5px solid #9b72cf;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 12px;
+      line-height: 1.85;
+      font-size: 1.05rem;
+      overflow-wrap: anywhere;
+    }
+
+    .story h2 {
+      text-align: center;
+      color: #7655a6;
+      margin-top: 0;
+    }
+
+    .story p {
+      margin-bottom: 1.2rem;
+    }
+
+    #tryAgainBtn {
+      display: none;
+      width: 100%;
+      background: linear-gradient(135deg, #48a9a6, #287f82);
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #9990aa;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
+
+      .container {
+        padding: 1.25rem;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>🔄 The Day Everyone Swapped Bodies</h1>
+    <p class="subtitle">New bodies. Wrong lives. Absolutely no instructions.</p>
+
+    <div class="emoji-banner">🧠 🐸 👵 🤖</div>
+
+    <form id="madLibForm">
+      <p class="instructions">
+        One mysterious morning, everybody woke up in somebody else's body.
+        Chaos spread faster than a rumor in a group chat.
+        Fill in the blanks to discover the weirdest day in human history!
+      </p>
+
+      <input type="text" name="mainCharacter" placeholder="A person's name" required />
+      <input type="text" name="profession" placeholder="A profession (e.g., dentist)" required />
+      <input type="text" name="celebrityLookalike" placeholder="A celebrity or fictional character" required />
+      <input type="text" name="bodyFeature" placeholder="A body feature (e.g., enormous eyebrows)" required />
+      <input type="text" name="hobby" placeholder="A hobby or activity" required />
+      <input type="text" name="householdAppliance" placeholder="A household appliance" required />
+      <input type="text" name="liquid" placeholder="A liquid" required />
+      <input type="text" name="vehicleType" placeholder="A type of vehicle" required />
+      <input type="text" name="sillyPhrase" placeholder="A ridiculous phrase" required />
+      <input type="text" name="schoolSubject" placeholder="A school subject" required />
+      <input type="text" name="insect" placeholder="An insect" required />
+      <input type="text" name="musicalInstrument" placeholder="A musical instrument" required />
+      <input type="text" name="expensiveObject" placeholder="An expensive object" required />
+      <input type="text" name="weatherEvent" placeholder="A type of weather" required />
+      <input type="text" name="oddFood" placeholder="A weird food combination" required />
+      <input type="text" name="personalityTrait" placeholder="A personality trait" required />
+      <input type="text" name="destination" placeholder="A vacation destination" required />
+
+      <button type="submit">🌀 Swap My Reality!</button>
+    </form>
+
+    <div id="story" class="story" style="display: none;"></div>
+
+    <button id="tryAgainBtn" type="button">🔄 Reverse the Swap & Try Again</button>
+
+    <p class="footer">
+      Side effects may include identity confusion, awkward introductions, and unexpected dance skills.
+    </p>
+  </div>
+
+  <script>
+    const form = document.getElementById('madLibForm');
+    const storyDiv = document.getElementById('story');
+    const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const values = Object.fromEntries(new FormData(form).entries());
+      const paragraphs = generateStory(values);
+
+      storyDiv.replaceChildren();
+
+      const title = document.createElement('h2');
+      title.textContent = '🧬 Identity Crisis: The ' + values.sillyPhrase + ' Incident';
+      storyDiv.appendChild(title);
+
+      paragraphs.forEach(paragraph => {
+        const p = document.createElement('p');
+        p.textContent = paragraph;
+        storyDiv.appendChild(p);
+      });
+
+      form.style.display = 'none';
+      storyDiv.style.display = 'block';
+      tryAgainBtn.style.display = 'block';
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    tryAgainBtn.addEventListener('click', () => {
+      form.reset();
+      form.style.display = 'flex';
+      storyDiv.style.display = 'none';
+      tryAgainBtn.style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    function generateStory(v) {
+      return [
+        `It was a perfectly ordinary Wednesday when ${v.mainCharacter}, a hardworking ${v.profession}, woke up feeling strangely different. Their hands looked unfamiliar, their voice sounded like a squeaky door, and their ${v.bodyFeature} seemed to belong to somebody else entirely. They stumbled to the mirror and discovered they were now trapped in the body of ${v.celebrityLookalike}. "Well," they whispered, "at least my hair looks fantastic."`,
+
+        `Across town, absolute pandemonium had erupted. The mayor was now a goldfish. A kindergarten teacher had swapped bodies with a ${v.insect}. Three professional wrestlers were stuck in the bodies of toddlers, and one very confused grandmother was attempting to operate a ${v.householdAppliance} using nothing but her feet. Nobody knew why it happened, but everybody had a theory involving aliens, expired yogurt, and a suspicious amount of ${v.liquid}.`,
+
+        `${v.mainCharacter} quickly discovered that their new body came with unexpected responsibilities. As ${v.celebrityLookalike}, they were apparently expected to spend the afternoon practicing ${v.hobby}, signing autographs, and explaining why they had suddenly developed a passionate interest in ${v.schoolSubject}. Meanwhile, the real owner of the body was somewhere inside ${v.mainCharacter}'s original body, enthusiastically attempting to drive a ${v.vehicleType} through a car wash.`,
+
+        `The government called an emergency press conference. Unfortunately, the president had swapped bodies with a house cat and refused to answer questions unless someone opened a can of tuna. The national spokesperson stepped forward, cleared their throat, and announced, "${v.sillyPhrase}!" Nobody understood what this meant, but the stock market immediately dropped twelve points and a man in the back started playing a ${v.musicalInstrument}.`,
+
+        `By lunchtime, the situation had become completely unmanageable. Best friends were arguing over who had to pay whose bills. Parents were trapped inside their teenagers' bodies and were horrified to discover how much time they spent looking at their phones. One billionaire had become a garden snail and was slowly crawling toward their ${v.expensiveObject}, presumably to reclaim their fortune one slime trail at a time.`,
+
+        `Then came the weather disaster. A sudden ${v.weatherEvent} swept across the city, causing everyone to panic and run in directions that their borrowed legs were not prepared to handle. ${v.mainCharacter} attempted to organize a rescue mission, but their new body kept getting distracted by the smell of ${v.oddFood}. It was difficult to be a hero when your borrowed stomach had such questionable priorities.`,
+
+        `Eventually, a brilliant scientist revealed the cause: a laboratory experiment designed to eliminate ${v.personalityTrait} had accidentally scrambled the identities of every living creature within a hundred-mile radius. The scientist admitted that the machine had been built from spare parts, a broken toaster, and a suspiciously large collection of rubber ducks. The solution was simple, they explained: everyone had to travel to ${v.destination} and shout their own name three times while hopping on one foot.`,
+
+        `Naturally, the entire population rushed to ${v.destination}. The journey was a disaster. People in the wrong bodies missed their trains, accidentally attended the wrong weddings, and repeatedly introduced themselves to their own spouses as strangers. ${v.mainCharacter} finally reached the destination, took a deep breath, and yelled their name so loudly that several nearby pigeons filed noise complaints.`,
+
+        `With a flash of purple light and a noise like a microwave full of forks, everyone snapped back into their original bodies. The president became human again, the goldfish returned to its bowl, and the billionaire discovered that the garden snail had somehow invested their entire fortune in cabbage futures. ${v.mainCharacter} checked their reflection and sighed with relief. Their own face had never looked so beautiful.`,
+
+        `The world agreed never to speak of the incident again. Unfortunately, the story leaked online within minutes, and a movie studio immediately offered ${v.mainCharacter} a seven-film contract. The scientist was awarded a medal for accidental innovation, the rubber ducks were placed under government protection, and a new international holiday was created: National Appreciate Your Own Body Day. The moral? Be careful what you wish for. You never know who might wake up wearing your face tomorrow.`
+      ];
+    }
+  </script>
+</body>
+</html>

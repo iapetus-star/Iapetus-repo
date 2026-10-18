@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Day the Weather Went Completely Crazy</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #72c6ef, #c2e59c, #f9d976);
+      font-family: Georgia, serif;
+      color: #293241;
+      margin: 0;
+      padding: 2rem 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fffdf7;
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 820px;
+      width: 100%;
+      box-shadow: 0 12px 35px rgba(32, 65, 80, 0.2);
+      border: 3px solid white;
+    }
+
+    h1 {
+      text-align: center;
+      color: #176b87;
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #d97706;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .instructions {
+      text-align: center;
+      color: #667085;
+      line-height: 1.7;
+      margin: 1.5rem 0;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    label {
+      color: #176b87;
+      font-weight: bold;
+      margin-top: 0.45rem;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border-radius: 9px;
+      border: 2px solid #d5e4e8;
+      background: #fff;
+      color: #293241;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #38a3a5;
+      box-shadow: 0 0 0 3px rgba(56, 163, 165, 0.15);
+    }
+
+    button {
+      margin-top: 1.2rem;
+      background: #176b87;
+      color: white;
+      padding: 0.9rem;
+      border: none;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    button:hover {
+      background: #104e64;
+      transform: translateY(-2px);
+    }
+
+    .story {
+      background: #eef9fb;
+      border-left: 6px solid #38a3a5;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 12px;
+      line-height: 1.85;
+      overflow-wrap: anywhere;
+    }
+
+    .story h2 {
+      text-align: center;
+      color: #176b87;
+      line-height: 1.4;
+    }
+
+    .story p {
+      margin-bottom: 1rem;
+    }
+
+    .story p:last-child {
+      margin-bottom: 0;
+    }
+
+    .weather-icons {
+      text-align: center;
+      font-size: 2rem;
+      margin: 0.5rem 0;
+      line-height: 1.8;
+    }
+
+    #tryAgainBtn {
+      display: none;
+      width: 100%;
+      background: #d97706;
+    }
+
+    #tryAgainBtn:hover {
+      background: #a95504;
+    }
+
+    .footer {
+      text-align: center;
+      color: #78858c;
+      font-size: 0.85rem;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 500px) {
+      body {
+        padding: 1rem 0.5rem;
+      }
+
+      .container {
+        padding: 1.25rem;
+      }
+
+      .story {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>🌪️ The Day the Weather Went Completely Crazy</h1>
+    <p class="subtitle">Forecast: 100% chance of absolute nonsense!</p>
+
+    <form id="madLibForm">
+      <p class="instructions">
+        Grab your umbrellas, snow boots, and emergency snacks!
+        Something has gone terribly wrong with Mother Nature.
+        Fill in the blanks to discover the weirdest weather event
+        in the history of planet Earth. Meteorologists are already
+        hiding under their desks.
+      </p>
+
+      <label for="city">1. Name of a city</label>
+      <input id="city" type="text" name="city"
+        placeholder="e.g., Wobbleton" required />
+
+      <label for="weatherPerson">2. A person's name</label>
+      <input id="weatherPerson" type="text" name="weatherPerson"
+        placeholder="e.g., Professor Pickles" required />
+
+      <label for="liquid">3. A type of liquid</label>
+      <input id="liquid" type="text" name="liquid"
+        placeholder="e.g., strawberry milkshake" required />
+
+      <label for="clothing">4. An item of clothing</label>
+      <input id="clothing" type="text" name="clothing"
+        placeholder="e.g., fuzzy pajamas" required />
+
+      <label for="temperature">5. A temperature in degrees</label>
+      <input id="temperature" type="text" name="temperature"
+        placeholder="e.g., 900" required />
+
+      <label for="vegetable">6. A vegetable</label>
+      <input id="vegetable" type="text" name="vegetable"
+        placeholder="e.g., broccoli" required />
+
+      <label for="dance">7. A dance move</label>
+      <input id="dance" type="text" name="dance"
+        placeholder="e.g., the wiggly noodle" required />
+
+      <label for="vehicle">8. A type of vehicle</label>
+      <input id="vehicle" type="text" name="vehicle"
+        placeholder="e.g., a unicycle" required />
+
+      <label for="creature">9. A mythical creature</label>
+      <input id="creature" type="text" name="creature"
+        placeholder="e.g., a grumpy dragon" required />
+
+      <label for="exclamation">10. An exclamation</label>
+      <input id="exclamation" type="text" name="exclamation"
+        placeholder="e.g., Great googly muffins!" required />
+
+      <label for="instrument">11. A musical instrument</label>
+      <input id="instrument" type="text" name="instrument"
+        placeholder="e.g., a tuba" required />
+
+      <label for="dessert">12. A dessert</label>
+      <input id="dessert" type="text" name="dessert"
+        placeholder="e.g., chocolate pudding" required />
+
+      <button type="submit">🌦️ Unleash the Weather!</button>
+    </form>
+
+    <div id="story" class="story" aria-live="polite"
+      style="display:none"></div>
+
+    <button id="tryAgainBtn" type="button">
+      🔄 Survive Another Forecast
+    </button>
+
+    <p class="footer">
+      Weather forecast provided by absolutely nobody who knows what they're doing.
+    </p>
+  </div>
+
+  <script>
+    const form = document.getElementById('madLibForm');
+    const storyDiv = document.getElementById('story');
+    const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const values = Object.fromEntries(new FormData(form).entries());
+
+      storyDiv.innerHTML = generateStory(values);
+      storyDiv.style.display = 'block';
+      form.style.display = 'none';
+      tryAgainBtn.style.display = 'block';
+
+      storyDiv.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    });
+
+    tryAgainBtn.addEventListener('click', () => {
+      form.reset();
+      form.style.display = 'flex';
+      storyDiv.style.display = 'none';
+      storyDiv.innerHTML = '';
+      tryAgainBtn.style.display = 'none';
+
+      form.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    });
+
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, character => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[character]);
+    }
+
+    function generateStory(values) {
+      const safe = Object.fromEntries(
+        Object.entries(values).map(([key, value]) => [
+          key,
+          escapeHTML(value)
+        ])
+      );
+
+      const {
+        city,
+        weatherPerson,
+        liquid,
+        clothing,
+        temperature,
+        vegetable,
+        dance,
+        vehicle,
+        creature,
+        exclamation,
+        instrument,
+        dessert
+      } = safe;
+
+      return `
+        <div class="weather-icons">☀️ 🌧️ 🌪️ ❄️</div>
+
+        <h2>Breaking News: The Sky Has Lost Its Mind!</h2>
+
+        <p>
+          It was an ordinary Tuesday morning in <strong>${city}</strong>.
+          Birds were singing, people were drinking coffee, and absolutely
+          nobody expected the sky to start raining <strong>${liquid}</strong>.
+          Within minutes, every street had turned into a sticky,
+          slippery swimming pool. One man tried to catch the rainfall
+          in a teacup and immediately regretted his life choices.
+        </p>
+
+        <p>
+          Local meteorologist <strong>${weatherPerson}</strong> rushed
+          onto live television wearing nothing but a
+          <strong>${clothing}</strong> and holding a very confused
+          weather map.
+          "At exactly <strong>${temperature}</strong> degrees, we expect
+          a massive cold front followed by a heatwave, a blizzard,
+          and possibly a spontaneous disco!"
+        </p>
+
+        <p>
+          Nobody believed the forecast until enormous
+          <strong>${vegetable}</strong>s began falling from the sky.
+          A nearby farmer declared it the best harvest of his life,
+          while a group of tourists started building a salad.
+          Then, without warning, the wind began performing
+          <strong>${dance}</strong> across the town square.
+        </p>
+
+        <p>
+          Things got worse when the tornado sirens started playing
+          <strong>${instrument}</strong> music instead of their usual
+          warning. Everyone rushed outside to investigate, only to
+          discover a giant <strong>${creature}</strong> riding a
+          <strong>${vehicle}</strong> through the middle of town.
+          "I'M JUST TRYING TO GET HOME!" it shouted.
+        </p>
+
+        <p>
+          Suddenly, the temperature shot up to
+          <strong>${temperature}</strong> degrees again.
+          Puddles evaporated, snowmen turned into tiny puddles of sadness,
+          and every ice cream truck in the city began melting at once.
+          One determined grandma stood on her porch waving a fan and
+          yelling, "<strong>${exclamation}</strong>"
+        </p>
+
+        <p>
+          Then came the thunderstorm. But instead of thunder, the clouds
+          made the sound of a thousand people burping after eating
+          <strong>${dessert}</strong>. Lightning flashed in the shape
+          of enormous smiley faces, and a rainbow appeared with
+          seventeen different colors, including "confused beige."
+        </p>
+
+        <p>
+          Desperate to save the city, ${weatherPerson} climbed onto
+          the roof of the town hall and played the
+          <strong>${instrument}</strong> as loudly as possible.
+          Miraculously, the clouds paused. The rain stopped.
+          The wind sat down. Even the giant ${creature} took off
+          its sunglasses and listened respectfully.
+        </p>
+
+        <p>
+          "The secret to controlling the weather," announced
+          ${weatherPerson}, "is apparently terrible music!"
+          The entire city cheered, and everyone celebrated by eating
+          <strong>${dessert}</strong> while wearing their finest
+          <strong>${clothing}</strong>.
+        </p>
+
+        <h2>🌈 The Forecast for Tomorrow: Who Knows?! 🌈</h2>
+
+        <p>
+          By sunset, the streets of ${city} were back to normal.
+          Mostly. One neighborhood was still knee-deep in
+          ${liquid}, and the local park was covered in
+          ${vegetable}s. The giant ${creature} had become the city's
+          official traffic officer, directing every ${vehicle}
+          with impressive enthusiasm.
+        </p>
+
+        <p>
+          Before signing off, ${weatherPerson} delivered one final
+          warning: "Tomorrow, we may experience flying furniture,
+          sideways sunshine, and a 90% chance of dancing penguins.
+          Please stay indoors unless you're wearing a helmet made
+          of <strong>${dessert}</strong>."
+        </p>
+
+        <p>
+          The citizens looked at one another and shouted,
+          "<strong>${exclamation}</strong>!"
+          And that, dear reader, was the day the weather went
+          completely, spectacularly, gloriously CRAZY.
+        </p>
+
+        <div class="weather-icons">🌪️ ☂️ 🥦 🌈</div>
+
+        <p style="text-align:center">
+          <strong>THE END — NO REFUNDS ON WEATHER!</strong>
+        </p>
+      `;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shopping at the Intergalactic Grocery Store</title>
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f1029, #302b63, #6b5b95);
+      font-family: 'Georgia', serif;
+      color: #292546;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.97);
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+      box-sizing: border-box;
+    }
+
+    h1 {
+      text-align: center;
+      color: #6741a5;
+      margin-bottom: 0.5rem;
+      font-size: 2.3rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #817a9d;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    .space-banner {
+      text-align: center;
+      font-size: 2.2rem;
+      margin: 0.5rem 0 1rem;
+      letter-spacing: 0.4rem;
+    }
+
+    .instructions {
+      text-align: center;
+      font-size: 1rem;
+      color: #655d78;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    input[type="text"] {
+      padding: 0.85rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #d8d0ee;
+      background: #fbfaff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #9874dc;
+      box-shadow: 0 0 0 3px rgba(152, 116, 220, 0.15);
+    }
+
+    button {
+      margin-top: 1rem;
+      background: linear-gradient(135deg, #9874dc, #6741a5);
+      color: white;
+      padding: 0.9rem;
+      border: none;
+      font-size: 1.05rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 12px rgba(103, 65, 165, 0.25);
+    }
+
+    .story {
+      background: linear-gradient(145deg, #fbfaff, #f0ebff);
+      border-left: 5px solid #9874dc;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 12px;
+      line-height: 1.85;
+      font-size: 1.05rem;
+      overflow-wrap: anywhere;
+    }
+
+    .story h2 {
+      text-align: center;
+      color: #6741a5;
+      margin-top: 0;
+    }
+
+    .story p {
+      margin-bottom: 1.2rem;
+    }
+
+    #tryAgainBtn {
+      display: none;
+      width: 100%;
+      background: linear-gradient(135deg, #36b9b0, #21867f);
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #9690aa;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
+
+      .container {
+        padding: 1.25rem;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>🛸 Shopping at the Intergalactic Grocery Store</h1>
+    <p class="subtitle">Your shopping list is weird. The universe is weirder.</p>
+
+    <div class="space-banner">👽 🪐 🛒 🌌</div>
+
+    <form id="madLibForm">
+      <p class="instructions">
+        Welcome to Galaxy Mart, the only supermarket with fourteen dimensions,
+        sentient shopping carts, and a suspiciously high return rate on alien eggs.
+        Fill in the blanks and prepare for the shopping trip of a lifetime!
+      </p>
+
+      <input type="text" name="shopperName" placeholder="Your name or space alias" required />
+      <input type="text" name="planet" placeholder="A weird planet name" required />
+      <input type="text" name="alienSpecies" placeholder="A type of alien species" required />
+      <input type="text" name="currency" placeholder="A strange form of money" required />
+      <input type="text" name="produce" placeholder="An unusual fruit or vegetable" required />
+      <input type="text" name="shelfItem" placeholder="A bizarre grocery product" required />
+      <input type="text" name="smellDescription" placeholder="A smell (e.g., burnt socks)" required />
+      <input type="text" name="groceryAisle" placeholder="A grocery aisle that shouldn't exist" required />
+      <input type="text" name="supermarketRule" placeholder="A ridiculous store rule" required />
+      <input type="text" name="bodyPartSingular" placeholder="A body part" required />
+      <input type="text" name="numberWord" placeholder="A number written in words" required />
+      <input type="text" name="spaceCreature" placeholder="A dangerous space creature" required />
+      <input type="text" name="kitchenUtensil" placeholder="A kitchen utensil" required />
+      <input type="text" name="snackName" placeholder="A favorite snack" required />
+      <input type="text" name="alienJob" placeholder="A ridiculous alien job" required />
+      <input type="text" name="spaceVehicle" placeholder="A type of spaceship or vehicle" required />
+      <input type="text" name="checkoutPhrase" placeholder="Something ridiculous to say at checkout" required />
+
+      <button type="submit">🚀 Start My Space Shopping Trip!</button>
+    </form>
+
+    <div id="story" class="story" style="display: none;"></div>
+
+    <button id="tryAgainBtn" type="button">🔄 Return to Earth & Shop Again</button>
+
+    <p class="footer">
+      Galaxy Mart is not responsible for wormhole-related purchases or emotionally attached groceries.
+    </p>
+  </div>
+
+  <script>
+    const form = document.getElementById('madLibForm');
+    const storyDiv = document.getElementById('story');
+    const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const values = Object.fromEntries(new FormData(form).entries());
+      const paragraphs = generateStory(values);
+
+      storyDiv.replaceChildren();
+
+      const title = document.createElement('h2');
+      title.textContent = '🛒 Galaxy Mart Adventure: ' + values.shopperName;
+      storyDiv.appendChild(title);
+
+      paragraphs.forEach(paragraph => {
+        const p = document.createElement('p');
+        p.textContent = paragraph;
+        storyDiv.appendChild(p);
+      });
+
+      form.style.display = 'none';
+      storyDiv.style.display = 'block';
+      tryAgainBtn.style.display = 'block';
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    tryAgainBtn.addEventListener('click', () => {
+      form.reset();
+      form.style.display = 'flex';
+      storyDiv.style.display = 'none';
+      tryAgainBtn.style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    function generateStory(v) {
+      return [
+        `It was a perfectly ordinary space Tuesday when ${v.shopperName} realized the refrigerator was empty except for one suspicious pickle. There was only one solution: a trip to Galaxy Mart on the distant planet ${v.planet}. The store advertised itself as "The Cheapest Groceries in This Universe and Several Questionable Others." ${v.shopperName} climbed into a ${v.spaceVehicle}, grabbed a shopping list, and blasted off with the confidence of someone who had never read the store's return policy.`,
+
+        `Upon arrival, ${v.shopperName} was greeted by a ${v.alienSpecies} cashier with seventeen eyebrows and a name tag reading "Definitely Not a Robot." The cashier handed over a shopping cart that immediately asked for dental insurance. "Welcome!" it beeped. "Please remember that ${v.supermarketRule}." ${v.shopperName} nodded politely, although the rule sounded suspiciously illegal in at least three galaxies.`,
+
+        `The first stop was the interstellar produce section, where the ${v.produce} were floating in zero gravity and singing traditional space opera. One particularly dramatic vegetable demanded to know whether ${v.shopperName} preferred its left or right side. Nearby, a display of ${v.shelfItem} was labeled "MAY CAUSE TEMPORARY TIME TRAVEL, UNCONTROLLABLE HICCUPS, OR BOTH." Naturally, ${v.shopperName} placed three packages in the cart.`,
+
+        `Suddenly, a horrible ${v.smellDescription} drifted from aisle ${v.groceryAisle}. The cart began shaking. The lights flickered. A store announcement echoed through the building: "Attention shoppers! A wild ${v.spaceCreature} has escaped from the frozen foods section. Please do not make eye contact, offer it snacks, or challenge it to a dance battle." Unfortunately, someone had already challenged it to a dance battle.`,
+
+        `The creature charged directly toward ${v.shopperName}, waving its many tentacles and demanding ${v.numberWord} pounds of premium ${v.produce}. Thinking quickly, ${v.shopperName} grabbed a ${v.kitchenUtensil} from a nearby display and held it up like a legendary sword. The creature stopped, stared at the utensil, and burst into tears. It turned out to be a retired intergalactic chef who had simply lost its favorite cooking tool.`,
+
+        `While helping the chef, ${v.shopperName} discovered a secret passage behind the shelves marked "Absolutely Not a Portal to Another Dimension." Curiosity won. Inside, hundreds of tiny aliens were working as ${v.alienJob}, packing groceries into bags made of recycled stardust. One employee whispered that Galaxy Mart had been secretly selling expired black holes at a discount. Another offered ${v.shopperName} a suspiciously glowing ${v.snackName} as a bribe to keep quiet.`,
+
+        `At last, ${v.shopperName} reached the checkout counter. The cashier scanned every item, including the emotional-support shopping cart, which insisted it was a separate customer. The total came to 400,000 ${v.currency}, plus a small fee for existing in the wrong dimension. ${v.shopperName} attempted to negotiate, but the cashier simply pointed to a sign reading "NO REFUNDS, NO EXCHANGES, NO COMPLAINING ABOUT THE LAWS OF PHYSICS."`,
+
+        `Desperate, ${v.shopperName} shouted, "${v.checkoutPhrase}!" The entire supermarket went silent. Every alien turned around. The cashier dropped the scanner. Somewhere in the ceiling, an alarm began playing polka music. Apparently, the phrase was an ancient royal command from the long-forgotten Galactic Shopping Empire. A trapdoor opened, revealing a throne made of shopping baskets.`,
+
+        `In an instant, ${v.shopperName} was crowned Supreme Grocery Commander of the known universe. The ${v.alienSpecies} bowed respectfully, the chef creature presented a lifetime supply of ${v.produce}, and the shopping cart finally received its dental insurance. Unfortunately, the new commander was also legally responsible for cleaning aisle ${v.groceryAisle} every Thursday.`,
+
+        `And so, ${v.shopperName} returned home with a spaceship full of groceries, a royal crown, and a receipt longer than the Milky Way. The refrigerator was stocked, the bills were astronomical, and one package of ${v.shelfItem} had started whispering secrets about the future. The moral of the story? Always bring a shopping list to the intergalactic grocery store. And never, ever shop while hungry in a dimension where the snacks can shop back.`
+      ];
+    }
+  </script>
+</body>
+</html>

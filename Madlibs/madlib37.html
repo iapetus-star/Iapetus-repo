@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Worst Superhero Origin Story Ever</title>
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #ffecd2, #fcb69f, #f6d365);
+      font-family: 'Georgia', serif;
+      color: #382b38;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: 0 12px 35px rgba(80, 35, 35, 0.2);
+      box-sizing: border-box;
+    }
+
+    h1 {
+      text-align: center;
+      color: #c0392b;
+      margin-bottom: 0.5rem;
+      font-size: 2.3rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #846b6b;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    .hero-emoji {
+      text-align: center;
+      font-size: 2.2rem;
+      margin: 0.5rem 0 1rem;
+      letter-spacing: 0.4rem;
+    }
+
+    .instructions {
+      text-align: center;
+      font-size: 1rem;
+      color: #665656;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    input[type="text"] {
+      padding: 0.85rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #e0c9c9;
+      background: #fffafa;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #e17055;
+      box-shadow: 0 0 0 3px rgba(225, 112, 85, 0.15);
+    }
+
+    button {
+      margin-top: 1rem;
+      background: linear-gradient(135deg, #e17055, #c0392b);
+      color: white;
+      padding: 0.9rem;
+      border: none;
+      font-size: 1.05rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 12px rgba(192, 57, 43, 0.25);
+    }
+
+    .story {
+      background: linear-gradient(145deg, #fffafa, #fff0e8);
+      border-left: 5px solid #e17055;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 12px;
+      line-height: 1.85;
+      font-size: 1.05rem;
+      overflow-wrap: anywhere;
+    }
+
+    .story h2 {
+      text-align: center;
+      color: #c0392b;
+      margin-top: 0;
+    }
+
+    .story p {
+      margin-bottom: 1.2rem;
+    }
+
+    #tryAgainBtn {
+      display: none;
+      width: 100%;
+      background: linear-gradient(135deg, #6c5ce7, #4834d4);
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #a08d8d;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
+
+      .container {
+        padding: 1.25rem;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>🦸 The Worst Superhero Origin Story Ever</h1>
+    <p class="subtitle">Every hero has a beginning. This one should've stayed home.</p>
+
+    <div class="hero-emoji">💥 🩲 🦹</div>
+
+    <form id="madLibForm">
+      <p class="instructions">
+        Every superhero needs a tragic backstory, a cool costume, and a dramatic
+        entrance. Unfortunately, this superhero has you writing all three.
+        Fill in the blanks and prepare for legendary disappointment.
+      </p>
+
+      <input type="text" name="heroName" placeholder="A ridiculous superhero name" required />
+      <input type="text" name="liquid" placeholder="A type of liquid" required />
+      <input type="text" name="bodyPart" placeholder="A body part (plural)" required />
+      <input type="text" name="occupation" placeholder="An occupation" required />
+      <input type="text" name="snack" placeholder="A snack food" required />
+      <input type="text" name="adverb" placeholder="An adverb (e.g., dramatically)" required />
+      <input type="text" name="weakness" placeholder="A hilariously bad weakness" required />
+      <input type="text" name="catchphrase" placeholder="A ridiculous catchphrase" required />
+      <input type="text" name="fabric" placeholder="A type of fabric or material" required />
+      <input type="text" name="villainName" placeholder="A villain's name" required />
+      <input type="text" name="smell" placeholder="Something with a terrible smell" required />
+      <input type="text" name="weapon" placeholder="A completely useless weapon" required />
+      <input type="text" name="celebrity" placeholder="A celebrity or famous person" required />
+      <input type="text" name="dance" placeholder="A dance move" required />
+      <input type="text" name="soundEffect" placeholder="A dramatic sound effect" required />
+      <input type="text" name="prize" placeholder="Something you would win at a carnival" required />
+      <input type="text" name="embarrassingSecret" placeholder="An embarrassing secret" required />
+
+      <button type="submit">Create This Disaster! 💥</button>
+    </form>
+
+    <div id="story" class="story" style="display: none;"></div>
+
+    <button id="tryAgainBtn" type="button">🔄 Retire This Hero & Try Again</button>
+
+    <p class="footer">
+      No actual superheroes were harmed. Several reputations, however, were destroyed.
+    </p>
+  </div>
+
+  <script>
+    const form = document.getElementById('madLibForm');
+    const storyDiv = document.getElementById('story');
+    const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const values = Object.fromEntries(new FormData(form).entries());
+      const paragraphs = generateStory(values);
+
+      storyDiv.replaceChildren();
+
+      const title = document.createElement('h2');
+      title.textContent = '💥 Behold... ' + values.heroName + '!';
+      storyDiv.appendChild(title);
+
+      paragraphs.forEach(paragraph => {
+        const p = document.createElement('p');
+        p.textContent = paragraph;
+        storyDiv.appendChild(p);
+      });
+
+      form.style.display = 'none';
+      storyDiv.style.display = 'block';
+      tryAgainBtn.style.display = 'block';
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    tryAgainBtn.addEventListener('click', () => {
+      form.reset();
+      form.style.display = 'flex';
+      storyDiv.style.display = 'none';
+      tryAgainBtn.style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    function generateStory(v) {
+      return [
+        `Our story begins in the sleepy town of Blandsville, where an ordinary ${v.occupation} named ${v.heroName} was having the worst lunch break in recorded history. While attempting to microwave a ${v.snack}, they accidentally spilled an entire bucket of ${v.liquid} into an experimental science machine. The machine made a noise like a dying lawn mower, flashed neon purple, and exploded directly into their ${v.bodyPart}.`,
+
+        `When the smoke cleared, ${v.heroName} discovered they had gained incredible superpowers! They could leap tall buildings in a single bound! They could see through walls! They could fly! Just kidding. They could make one specific sock slightly warmer than the other. Scientists were baffled. The government was concerned. The insurance company simply hung up.`,
+
+        `Determined to become a legendary protector of justice, ${v.heroName} fashioned a superhero costume out of ${v.fabric}. It included a cape, a mask, and a utility belt containing seventeen loose buttons and a coupon for expired ${v.snack}. They practiced their heroic pose in the mirror for three hours, then tripped over the cape and headbutted a laundry basket.`,
+
+        `Their first opportunity for greatness arrived when the notorious villain ${v.villainName} threatened to destroy downtown with a giant machine powered entirely by the smell of ${v.smell}. Citizens screamed. Police fled. A nearby pigeon filed a formal complaint. ${v.heroName} arrived on the scene ${v.adverb}, shouting, "${v.catchphrase}" Nobody was impressed. A child actually asked if they were the entertainment for a birthday party.`,
+
+        `The villain laughed so hard that they dropped the remote control to their doomsday machine. This was ${v.heroName}'s moment! They whipped out their trusty weapon: a ${v.weapon}. They swung it with all their might, missed the villain by several feet, and accidentally knocked over a parking meter. The parking meter, in a shocking twist, turned out to be the real mastermind behind the entire operation.`,
+
+        `Suddenly, the ground began to shake. The parking meter activated its secret defense system, blasting the area with an ear-splitting "${v.soundEffect}!" ${v.heroName} responded with their ultimate finishing move: the ${v.dance}. It was less of a combat technique and more of an involuntary medical episode, but somehow the parking meter short-circuited from secondhand embarrassment.`,
+
+        `The city was saved! News helicopters circled overhead. Reporters rushed forward. Even ${v.celebrity} sent a congratulatory message, although it was later revealed they had mistaken ${v.heroName} for a promotional mascot. The mayor presented the hero with a prestigious award: one slightly dented ${v.prize}. The crowd cheered politely, then immediately went back to checking their phones.`,
+
+        `But every hero has a dark secret. During the victory celebration, an investigative journalist revealed that ${v.heroName}'s most embarrassing secret was ${v.embarrassingSecret}. The crowd gasped. Someone dropped a hot dog. Three sponsors withdrew their support. The superhero's official merchandise was marked down by 90 percent before midnight.`,
+
+        `Despite the humiliation, ${v.heroName} vowed to continue protecting the city. Their next mission was to stop a gang of rogue shopping carts from escaping a supermarket parking lot. It was a dangerous assignment, and they approached it with the confidence of someone who had learned absolutely nothing. Within five minutes, they were trapped inside a revolving door, shouting for backup.`,
+
+        `And that, dear reader, is how the world's most spectacularly mediocre superhero was born. They never saved the planet, never joined the Avengers, and never got their own movie franchise. But they did receive a lifetime supply of ${v.snack} and a strongly worded letter from the parking authority. Their legacy lives on in the hearts of dozens of people who vaguely remember seeing something embarrassing on the news.`
+      ];
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A Secret Meeting of Talking Animals</title>
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #d4fc79, #96e6a1, #c4e0e5);
+      font-family: 'Georgia', serif;
+      color: #263b2b;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.97);
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: 0 12px 35px rgba(35, 75, 45, 0.2);
+      box-sizing: border-box;
+    }
+
+    h1 {
+      text-align: center;
+      color: #287447;
+      margin-bottom: 0.5rem;
+      font-size: 2.3rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #718778;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    .animal-emoji {
+      text-align: center;
+      font-size: 2.2rem;
+      margin: 0.5rem 0 1rem;
+      letter-spacing: 0.4rem;
+    }
+
+    .instructions {
+      text-align: center;
+      font-size: 1rem;
+      color: #5e7063;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    input[type="text"] {
+      padding: 0.85rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #c8dfcd;
+      background: #f8fff9;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #4caa72;
+      box-shadow: 0 0 0 3px rgba(76, 170, 114, 0.15);
+    }
+
+    button {
+      margin-top: 1rem;
+      background: linear-gradient(135deg, #38a169, #287447);
+      color: white;
+      padding: 0.9rem;
+      border: none;
+      font-size: 1.05rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 12px rgba(40, 116, 71, 0.25);
+    }
+
+    .story {
+      background: linear-gradient(145deg, #f8fff9, #eaf8ed);
+      border-left: 5px solid #38a169;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 12px;
+      line-height: 1.85;
+      font-size: 1.05rem;
+      overflow-wrap: anywhere;
+    }
+
+    .story h2 {
+      text-align: center;
+      color: #287447;
+      margin-top: 0;
+    }
+
+    .story p {
+      margin-bottom: 1.2rem;
+    }
+
+    #tryAgainBtn {
+      display: none;
+      width: 100%;
+      background: linear-gradient(135deg, #718096, #4a5568);
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #8a9a8d;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
+
+      .container {
+        padding: 1.25rem;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>🦊 A Secret Meeting of Talking Animals</h1>
+    <p class="subtitle">The humans must never discover the truth.</p>
+
+    <div class="animal-emoji">🦝 🐸 🦉 🐿️</div>
+
+    <form id="madLibForm">
+      <p class="instructions">
+        Deep in the forest, behind a suspiciously ordinary tree stump,
+        the animal kingdom is holding an emergency meeting.
+        Fill in the blanks to uncover their scandalous secret agenda.
+        Remember: what happens in the forest stays in the forest!
+      </p>
+
+      <input type="text" name="leaderTitle" placeholder="A fancy title (e.g., Supreme Commander)" required />
+      <input type="text" name="animalLeader" placeholder="An animal that leads the meeting" required />
+      <input type="text" name="meetingPlace" placeholder="A secret meeting location" required />
+      <input type="text" name="timeOfDay" placeholder="A time of day" required />
+      <input type="text" name="humanHabit" placeholder="An annoying thing humans do" required />
+      <input type="text" name="plant" placeholder="A type of plant" required />
+      <input type="text" name="pluralAnimal" placeholder="A different animal (plural)" required />
+      <input type="text" name="secretPassword" placeholder="A ridiculous secret password" required />
+      <input type="text" name="crime" placeholder="A silly crime or forbidden activity" required />
+      <input type="text" name="accessory" placeholder="A fashionable accessory" required />
+      <input type="text" name="royalFood" placeholder="A fancy meal or food" required />
+      <input type="text" name="humanName" placeholder="A human's name" required />
+      <input type="text" name="complaint" placeholder="Something to complain about" required />
+      <input type="text" name="escapeMethod" placeholder="A weird way to escape" required />
+      <input type="text" name="animalSound" placeholder="A funny animal noise" required />
+      <input type="text" name="treasure" placeholder="A valuable or ridiculous object" required />
+      <input type="text" name="planName" placeholder="A dramatic name for their master plan" required />
+
+      <button type="submit">🤫 Reveal the Secret Meeting</button>
+    </form>
+
+    <div id="story" class="story" style="display: none;"></div>
+
+    <button id="tryAgainBtn" type="button">🔄 Erase the Evidence & Try Again</button>
+
+    <p class="footer">
+      Classified forest business. If a squirrel asks, you saw nothing.
+    </p>
+  </div>
+
+  <script>
+    const form = document.getElementById('madLibForm');
+    const storyDiv = document.getElementById('story');
+    const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const values = Object.fromEntries(new FormData(form).entries());
+      const paragraphs = generateStory(values);
+
+      storyDiv.replaceChildren();
+
+      const title = document.createElement('h2');
+      title.textContent = '🔒 TOP SECRET: ' + values.planName;
+      storyDiv.appendChild(title);
+
+      paragraphs.forEach(paragraph => {
+        const p = document.createElement('p');
+        p.textContent = paragraph;
+        storyDiv.appendChild(p);
+      });
+
+      form.style.display = 'none';
+      storyDiv.style.display = 'block';
+      tryAgainBtn.style.display = 'block';
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    tryAgainBtn.addEventListener('click', () => {
+      form.reset();
+      form.style.display = 'flex';
+      storyDiv.style.display = 'none';
+      tryAgainBtn.style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    function generateStory(v) {
+      return [
+        `At exactly ${v.timeOfDay}, deep beneath an ancient oak tree, the most secretive organization in the animal kingdom assembled at ${v.meetingPlace}. The meeting was chaired by ${v.animalLeader}, who proudly held the title of "${v.leaderTitle}." Wearing a tiny ${v.accessory}, the chairperson banged a pinecone on the table and declared, "Order! And somebody please tell the rabbits to stop eating the minutes!"`,
+
+        `Before anyone could speak, the security guard demanded the secret password. Every animal leaned forward and whispered, "${v.secretPassword}." A nearby raccoon got it wrong and said "Banana Pancake," so the committee confiscated his snacks and made him sit in the corner. This was no ordinary gathering. These animals had been talking for centuries, and they had a LOT to discuss.`,
+
+        `"We need to address the humans," announced ${v.animalLeader}, adjusting their ${v.accessory}. "Every day, they keep ${v.humanHabit}, and frankly, we're exhausted." A chorus of indignant squeaks, growls, and suspicious throat-clearing filled the room. The ${v.pluralAnimal} delegation demanded compensation, while the local squirrels submitted a 47-page complaint written entirely in acorns.`,
+
+        `The next item on the agenda was a serious accusation: somebody had been caught committing ${v.crime} near the community ${v.plant} garden. Gasps echoed around the chamber. One hedgehog fainted into a bowl of ${v.royalFood}. A suspicious-looking badger pointed a paw at ${v.humanName}, who had been seen wandering nearby with the expression of someone who had definitely done something questionable.`,
+
+        `"Enough!" shouted the chairperson. "We must unite under ${v.planName}!" The plan was simple: replace every human alarm clock with a rooster, train pigeons to deliver strongly worded letters, and teach the neighborhood cats to judge people silently even harder than they already did. The owls would handle public relations because, according to them, looking disappointed was their natural talent.`,
+
+        `Unfortunately, the meeting took a disastrous turn when somebody accidentally knocked over the emergency snack table. ${v.royalFood} rolled everywhere. A possum yelled "${v.animalSound}!" and pretended to be dead to avoid cleanup duty. The rabbits began arguing over who had eaten the last carrot, and the raccoon security team immediately suspected a conspiracy involving the squirrels and their suspiciously large cheeks.`,
+
+        `Just as the animals were voting on the next phase of their plan, the forest's most feared enemy appeared: ${v.humanName}, armed with a flashlight and a complete lack of awareness. Everyone froze. The chairperson whispered, "Initiate the escape protocol!" In an instant, the animals scattered using their highly sophisticated escape method: ${v.escapeMethod}. It was not elegant, but it was surprisingly effective.`,
+
+        `From behind a bush, the animals watched as ${v.humanName} wandered away, muttering about strange noises. The committee reconvened three minutes later and discovered that their most precious ${v.treasure} had gone missing. Every paw pointed at the raccoon. The raccoon pointed at the owl. The owl pointed at a suspicious mushroom. The mushroom, naturally, declined to comment.`,
+
+        `Despite the chaos, the animals declared the meeting a success. They had established a new secret council, agreed to keep humans away from their ${v.plant} garden, and officially banned ${v.complaint} from all future gatherings. The minutes were buried beneath a tree, guarded by three grumpy badgers and a very judgmental pigeon.`,
+
+        `And so, the animal kingdom continued its secret operations. Every night, they meet to discuss world domination, snack distribution, and why humans insist on putting tiny sweaters on dogs. If you ever hear strange whispers in the woods, don't investigate. Just keep walking, pretend you heard nothing, and definitely don't ask the squirrels why they're wearing sunglasses. The first rule of the forest council is simple: never talk about the forest council.`
+      ];
+    }
+  </script>
+</body>
+</html>
